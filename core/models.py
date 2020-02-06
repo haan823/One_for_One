@@ -1,7 +1,8 @@
 from django.db import models
 
-class Category(models.Model):
-    title = models.CharField()
+# class Category(models.Model):
+#     name = models.CharField()
+
 
 class Store(models.Model):
     logo = models.URLField()

@@ -1,0 +1,31 @@
+{% extends "main.html" %}
+
+<comment>매칭 중인 게시물만 보이게!</comment>
+
+{% block content %}
+    <div style="text-align: center">
+        <h1 class="card-title">1인 배달 매칭 서비스</h1>
+        <ul style="list-style: none">
+            <li>매칭 중인 게시물</li>
+            <li>매칭 중인 게시물</li>
+            <li>매칭 중인 게시물</li>
+            <li>매칭 중인 게시물</li>
+            <li>매칭 중인 게시물</li>
+            <li>매칭 중인 게시물</li>
+            <li>매칭 중인 게시물</li>
+            <li>매칭 중인 게시물</li>
+            <li>매칭 중인 게시물</li>
+            <li>매칭 중인 게시물</li>
+            <li>매칭 중인 게시물</li>
+            <li>매칭 중인 게시물</li>
+            <li>매칭 중인 게시물</li>
+            <li>매칭 중인 게시물</li>
+            <li>매칭 중인 게시물</li>
+        </ul>
+    </div>
+
+    <a href="{% url 'core:match_new' %}"><img src="https://image.flaticon.com/icons/svg/1659/1659463.svg" width="200px"
+                                              height="200px" alt="">매칭 생성</a>
+    {#    <button class="btn btn-warning"><a href="{% url 'core:match_new' %}">매칭 생성</a>#}
+    {#                </button>#}
+{% endblock %}
