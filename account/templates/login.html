@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+로그인
+<form action="{% url 'login' %}" method="POST">
+    {% csrf_token %}
+    <label for="id">아이디</label>
+    <input id='id' type="text" name="id"><br>
+    <label for="password">패스워드</label>
+    <input id='password' type="password" name="password"><br>
+    <button type="submit">로그인</button>
+    {{ error }}
+</form>
+</body>
+</html>
