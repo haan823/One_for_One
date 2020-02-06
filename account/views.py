@@ -56,8 +56,13 @@ def signup(request, pk):
             user.is_active = False
             user.save()
             nickname = request.POST["nickname"]
-
-            profile = Profile(user=user, nickname=nickname, univ=univ)
+            phone_number = request.POST['phone_number']
+            profile = Profile(
+                user=user,
+                nickname=nickname,
+                univ=univ,
+                phone_number=phone_number,
+            )
             profile.save()
             auth.login(request, user)
             mail = EmailMessage('One for One 회원가입 인증 메일입니다.',
