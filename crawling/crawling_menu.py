@@ -40,7 +40,7 @@ for univ_addr in univ_addr_list:
     time.sleep(1)
     SCROLL_PAUSE_TIME = 0.5
     body = driver.find_element_by_css_selector('body')
-    for i in range(12, 13):
+    for i in range(6, 7):
         try:
             index = ['상세페이지URL', '로고URL', '상호명', '별점', '최소주문금액', '소요시간', '리뷰수']
             sheet.append(index)
@@ -68,7 +68,7 @@ for univ_addr in univ_addr_list:
 
             containers = driver.find_elements_by_css_selector('div.item.clearfix')
             print(len(containers))
-            for c in range(70, len(containers)):
+            for c in range(len(containers)):
                 try:
                     time.sleep(1)
 
@@ -92,16 +92,17 @@ for univ_addr in univ_addr_list:
                     # container.click()
                     # container = driver.find_element_by_xpath(f'//*[@id="content"]/div/div[3]/div[{c+2}]/div').click()
                     # container.send_keys(Keys.ENTER)
+
                     container = driver.find_element_by_xpath(f'//*[@id="content"]/div/div[3]/div[{c+2}]/div')
                     driver.execute_script("arguments[0].click();", container)
                     # print(container.text)
                     # container.click()
                     # container.send_keys('\n')
-                    time.sleep(2)
+                    time.sleep(1)
                     link = driver.current_url
                     time.sleep(0.5)
                     driver.back()
-                    time.sleep(2)
+                    time.sleep(1)
 
                     last_height = driver.execute_script("return document.body.scrollHeight")
 
@@ -135,12 +136,12 @@ for univ_addr in univ_addr_list:
 
                 except:
                     print(1)
-                    wb.save('./data/yogiyo_홍익대_final_10.xlsx')
+                    wb.save('./data/yogiyo_홍익대_final_12.xlsx')
                     print(2)
                     break
         except:
             print(3)
-            wb.save('./data/yogiyo_홍익대_final_10.xlsx')
+            wb.save('./data/yogiyo_홍익대_final_12.xlsx')
             print(4)
             sys.exit()
-wb.save('./data/yogiyo_홍익대_final_10.xlsx')
+wb.save('./data/yogiyo_홍익대_final_12.xlsx')

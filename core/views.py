@@ -1,13 +1,16 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render
 from core.models import Category, Store, Location
+from account.models import Univ, Profile
 
 
 def home(request):
     return render(request, 'core/home.html')
 
 
-def match_new(request):
-    locations = Location.objects.get()
+def match_new(request, pk):
+    univ = request.user.profile.univ
+    locations = Location.objects.filter(name=univ)
     categories = Category.objects.get()
     stores = Store.objects.all()
 
