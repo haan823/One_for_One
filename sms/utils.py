@@ -61,6 +61,7 @@ from random import randint
 
 import requests
 from django.http import JsonResponse
+from django.shortcuts import render
 from django.views import View
 
 from sms.models import AuthSms
@@ -94,23 +95,23 @@ class AuthSmsSendView(View):
 
         requests.post(SMS_URL, headers=headers, json=data)
 
-    # def post(self, request):
-    #     try:
-    #         input_data = json.loads(request.body)
-    #         input_phone_number = input_data['phone_number']
-    #         created_auth_number = randint(1000, 10000)
-    #         exist_phone_number = AuthSms.objects.get(phone_number=input_phone_number)
-    #         exist_phone_number.auth_number = created_auth_number
-    #         exist_phone_number.save()
-    #
-    #         self.send_sms(phone_number=input_phone_number, auth_number=created_auth_number)
-    #         return JsonResponse({'message': 'SUCCESS'}, status=200 )
-    #
-    #     except AuthSms.DoesNotExist:
-    #         AuthSms.objects.create(
-    #             phone_number=input_phone_number,
-    #             auth_number=created_auth_number
-    #         ).save()
-    #
-    #         self.send_sms(phone_number=input_phone_number, auth_number=created_auth_number)
-    #         return JsonResponse({'message': 'SUCCESS'}, status=200, )
+    def post(self, request, phone_number):
+        try:
+            input_phone_number = phone_number
+            created_auth_number = randint(1000, 10000)
+            exist_phone_number = AuthSms.objects.get(phone_number=input_phone_number)
+            exist_phone_number.auth_number = created_auth_number
+            exist_phone_number.save()
+
+            self.send_sms(phone_number=input_phone_number, auth_number=created_auth_number)
+            context = {'auth_number': created_auth_number }
+            return render(request, 'sms/certificate_phone.html', context)
+
+        except AuthSms.DoesNotExist:
+            AuthSms.objects.create(
+                phone_number=input_phone_number,
+                auth_number=created_auth_number
+            ).save()
+
+            self.send_sms(phone_number=input_phone_number, auth_number=created_auth_number)
+            return JsonResponse({'message': 'SUCCESS'}, status=200)

@@ -2,9 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>daskjflkadlkajhdsfdsahlkjfds</title>
 </head>
+
 <body>
-테스트 페이지입니다.
+
+<button id="addedKeyword">추가 버튼</button>
+<div id="imdiv"></div>
+
+<script type="text/javascript">
+    var addedFormDiv = document.querySelector("#addedKeyword");
+    console.log(addedFormDiv);
+    addedFormDiv.addEventListener('click', function(){
+            var imdiv = document.querySelector('#imdiv');
+            imdiv.innerHTML = "<input value=name />";
+    })
+</script>
 </body>
 </html>

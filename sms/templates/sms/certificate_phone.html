@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+{% block content %}
+    <div>
+        <form action="sms:certificate_phone_done" method="POST" >
+            {% csrf_token %}
+            <label for="auth_number_input">인증번호: </label>
+            <input id="auth_number_input" type="text" name="auth_number_input" >
+            <button type="submit">저장</button>
+        </form>
+    </div>
+
+{% endblock %}

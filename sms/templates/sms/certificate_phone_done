@@ -1,0 +1,7 @@
+{% extends 'main.html' %}
+{% block content %}
+    <div>
+        <p3>휴대폰 번호 인증이 완료되었습니다. 회원가입이 완료되었습니다!</p3>
+    </div>
+
+{% endblock %}
