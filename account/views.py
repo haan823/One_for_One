@@ -73,26 +73,16 @@ def signup(request, pk):
         else:
             return render(request, 'signup.html', {'message': '비밀번호가 일치하지 않습니다.'})
     else:
-        if univ.univ == '서울대학교':
-            data = {
-                'univ': univ,
-                'email_domain': 'snu.ac.kr'
-            }
-        elif univ.univ == '성균관대학교':
-            data = {
-                'univ': univ,
-                'email_domain': 'g.skku.edu'
-            }
-        elif univ.univ == '이화여자대학교':
-            data = {
-                'univ': univ,
-                'email_domain': 'ewhain.net'
-            }
-        elif univ.univ == '홍익대학교':
-            data = {
-                'univ': univ,
-                'email_domain': 'mail.hongik.ac.kr'
-            }
+        UNIV_DOMAIN_MAPPING = {
+            '서울대학교': 'snu.ac.kr',
+            '성균관대학교': 'g.skku.edu',
+            '이화여자대학교': 'ewhain.net',
+            '홍익대학교': 'mail.hongik.ac.kr',
+        }
+        data = {
+            'univ': univ,
+            'email_domain': UNIV_DOMAIN_MAPPING.get(univ.univ)
+        }
         return render(request, 'signup.html', data)
 
 def login(request):
