@@ -1,11 +1,15 @@
 from django.shortcuts import render
+from core.models import Category, Store, Location
 
-# Create your views here.
+
 def home(request):
     return render(request, 'core/home.html')
 
 
 def match_new(request):
+    locations = Location.objects.get()
+    categories = Category.objects.get()
+    stores = Store.objects.all()
 
     return render(request, 'core/match_new.html')
 

@@ -6,6 +6,6 @@ app_name = 'core'
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('new', views.match_new, name='match_new'),
-    path('new/choice/', views.store_choice, name='store_choice'),
+    path('new/', views.match_new, name='match_new'),
+    # path('new/choice/', views.store_choice, name='store_choice'),
 ]
