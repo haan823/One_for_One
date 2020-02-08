@@ -3,27 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style_login.css' %}">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 </head>
 <body>
-회원가입
-<form action="{% url 'signup' univ.id %}" method="POST">
-    {% csrf_token %}
-    <label for="id">아이디</label>
-    <input id='id' type="text" name="id"><br>
-    <label for="password1">패스워드</label>
-    <input id='password1' type="password" name="password1"><br>
-    <label for="password2">패스워드 확인</label>
-    <input id='password2' type="password" name="password2"><br>
-    <label for="nickname">닉네임</label>
-    <input id='nickname' type="text" name='nickname'><br>
-    <label for="email_id">이메일 id</label>
-    <input id='email_id' type="text" name="email_id"><br>
-    <label for="email_domain">이메일 domain</label>
-    <input id='email_domain' type="text" name='email_domain' value="{{ email_domain }}" readonly ><br>
-    <label for="phone_number">전화번호('-' 제외하고 입력하세요)</label>
-    <input id='phone_number' type="text" name="phone_number">
-    <button type="submit">회원가입</button>
-    {{ message }}
-</form>
+{#회원가입#}
+{#<form action="{% url 'signup' univ.id %}" method="POST">#}
+{#    {% csrf_token %}#}
+{#    <label for="id">아이디</label>#}
+{#    <input id='id' type="text" name="id"><br>#}
+{#    <label for="password1">패스워드</label>#}
+{#    <input id='password1' type="password" name="password1"><br>#}
+{#    <label for="password2">패스워드 확인</label>#}
+{#    <input id='password2' type="password" name="password2"><br>#}
+{#    <label for="nickname">닉네임</label>#}
+{#    <input id='nickname' type="text" name='nickname'><br>#}
+{#    <label for="email_id">이메일 id</label>#}
+{#    <input id='email_id' type="text" name="email_id"><br>#}
+{#    <label for="email_domain">이메일 domain</label>#}
+{#    <input id='email_domain' type="text" name='email_domain' value="{{ email_domain }}" readonly ><br>#}
+{#    <label for="phone_number">전화번호('-' 제외하고 입력하세요)</label>#}
+{#    <input id='phone_number' type="text" name="phone_number">#}
+{#    <button type="submit">회원가입</button>#}
+{#    {{ message }}#}
+{#</form>#}
+
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-signup100 p-t-50 p-b-90">
+				<form class="login100-form validate-form flex-sb flex-w" action="{% url 'signup' univ.id %}" method="POST">
+                    {% csrf_token %}
+					<span class="login100-form-title p-b-51">
+						Sign Up
+					</span>
+                    <br>
+
+					<div class="wrap-input100 validate-input m-b-16" data-validate = "Username is required">
+						<input id='id' class="input100" type="text" name="id" placeholder="Username">
+						<span class="focus-input100"></span>
+					</div>
+                    <br>
+
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="wrap-input49 validate-input m-b-16" data-validate = "Password is required" style="">
+                            <input id='password1' class="input100" type="password" name="password1" placeholder="Password">
+                            <span class="focus-input100"></span>
+                        </div>
+
+                        <div class="wrap-input49 validate-input m-b-16" data-validate = "Password is required" style="">
+                            <input id='password2' class="input100" type="password" name="password2" placeholder="Password confirm">
+                            <span class="focus-input100"></span>
+                        </div>
+                    </div>
+                    <br>
+
+                    <div class="wrap-input100 validate-input m-b-16" data-validate = "Nickname is required">
+						<input id='nickname' class="input100" type="text" name="nickname" placeholder="Nickname">
+						<span class="focus-input100"></span>
+					</div>
+                    <br>
+                    <div style="display: flex; justify-content: space-between;">
+                        <div class="wrap-input49 validate-input m-b-16" data-validate = "Email ID is required">
+                            <input id='email_id' class="input100" type="text" name="email_id" placeholder="Email ID">
+                            <span class="focus-input100"></span>
+                        </div>
+                        <div class="wrap-input10 validate-input m-b-16">
+                            <input id='email_id' class="input100" type="text" name="email_id" value="@" disabled style="text-align: center; color: black; padding-left: 0px; padding-right: 0px;">
+                            <span class="focus-input100"></span>
+                        </div>
+                        <div class="wrap-input49 validate-input m-b-16">
+                            <input id='email_domain' class="input100" type="text" name="email_domain" value="{{ email_domain }}" readonly>
+                            <span class="focus-input100"></span>
+                        </div>
+                    </div>
+                    <br>
+
+
+                    <div class="wrap-input100 validate-input m-b-16" data-validate = "Phone Number is required">
+						<input id='phone_number' class="input100" type="text" name="phone_number" placeholder="Phone Number">
+						<span class="focus-input100"></span>
+					</div>
+                    <br>
+
+					<div class="container-login100-form-btn m-t-17">
+						<button type='submit' class="login100-form-btn">
+							Submit
+						</button>
+					</div>
+                    <br>
+
+                    <div>
+                        {{ message }}
+                    </div>
+
+
+				</form>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
