@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Univ(models.Model):
-    univ = models.TextField(max_length=255)
+    name = models.TextField(max_length=255)
+    addr = models.CharField(max_length=255)
 
     def __str__(self):
         return self.univ

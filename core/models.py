@@ -4,17 +4,9 @@ from django.db import models
 from account.models import Univ
 
 
-class Location(models.Model):
-    name = models.ForeignKey(Univ, on_delete=models.CASCADE)
-    addr = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.name
-
-
 class Category(models.Model):
-    name = models.CharField(max_length=255, verbose_name='카테고리명')
-    location = models.ForeignKey(Location, on_delete=models.CASCADE, verbose_name='대학', related_name='category')
+    cat_name = models.CharField(max_length=255, verbose_name='카테고리명')
+    univ_name = models.ForeignKey(Univ, on_delete=models.CASCADE, verbose_name='대학', related_name='category')
 
     def __str__(self):
         return self.name
