@@ -8,13 +8,12 @@ def index(request):
 
 @login_required
 def room(request, room_name):
-    rooms  = Room.objects.filter(room_name=room_name)
-    if len(rooms) == 0:
-        raise Exception
-    room = rooms[0]
-    if request.user.id not in [ user.id for user in room.allowed_users]:
-        raise Exception
-
+    # rooms  = Room.objects.filter(room_name=room_name)
+    # if len(rooms) == 0:
+    #     raise Exception
+    # room = rooms[0]
+    # if request.user.id not in [ user.id for user in room.allowed_users]:
+    #     raise Exception
     return render(request, 'chat/room.html', {
         'room_name_json': mark_safe(json.dumps(room_name)),
         'username' : mark_safe(json.dumps(request.user.username)),
