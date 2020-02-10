@@ -14,3 +14,9 @@ class Profile(models.Model):
     univ = models.ForeignKey(Univ, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=20, default='01000000000')
 
+class AuthSms(models.Model):
+    phone_number = models.CharField(max_length=20, primary_key=True)
+    auth_number = models.IntegerField()
+
+    class Meta:
+        db_table = 'auth_numbers'
