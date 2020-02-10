@@ -6,10 +6,11 @@ class Univ(models.Model):
     addr = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.univ
+        return self.name
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     nickname = models.TextField(max_length=10)
     univ = models.ForeignKey(Univ, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=20, default='01000000000')
+
