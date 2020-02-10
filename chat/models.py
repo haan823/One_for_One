@@ -1,8 +1,6 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 # Create your models here.
-
-User = get_user_model()
 
 class Message(models.Model):
     author = models.ForeignKey(User, related_name = 'author_messages', on_delete=models.CASCADE)
@@ -14,3 +12,7 @@ class Message(models.Model):
 
     def last_10_messages():
         return Message.objects.order_by('-timestamp').all()[:10]
+
+# class Room(models.Model):
+#     room_name = models.TextField()
+#     allowed_users = model.OneToManyField(User)
