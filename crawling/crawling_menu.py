@@ -1,11 +1,27 @@
 import sys
-
 from selenium import webdriver
 import time
 import openpyxl
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
+
+
+def scroll_down():
+    last_height = driver.execute_script("return document.body.scrollHeight")
+
+    while True:
+        # Scroll down to bottom
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+        # Wait to load page
+        time.sleep(SCROLL_PAUSE_TIME)
+
+        # Calculate new scroll height and compare with last scroll height
+        new_height = driver.execute_script("return document.body.scrollHeight")
+        if new_height == last_height:
+            break
+        last_height = new_height
 
 
 univ_addr_list = [
@@ -23,7 +39,7 @@ sheet = wb.active
 sheet.title = f"요기요_{x}_new"
 options = Options()
 
-driver = webdriver.Chrome(executable_path="./chromedriver", chrome_options=options)
+driver = webdriver.Chrome(executable_path="C:\dev\chromedriver", chrome_options=options)
 driver.get("https://www.yogiyo.co.kr/mobile/#/")
 driver.set_window_size(1600, 1000)
 
@@ -40,7 +56,7 @@ for univ_addr in univ_addr_list:
     time.sleep(1)
     SCROLL_PAUSE_TIME = 0.5
     body = driver.find_element_by_css_selector('body')
-    for i in range(6, 7):
+    for i in range(8, 9):
         try:
             index = ['상세페이지URL', '로고URL', '상호명', '별점', '최소주문금액', '소요시간', '리뷰수']
             sheet.append(index)
@@ -51,41 +67,16 @@ for univ_addr in univ_addr_list:
             selector = Select(order)
             selector.select_by_value('review_count')
             time.sleep(1)
-            last_height = driver.execute_script("return document.body.scrollHeight")
 
-            while True:
-                # Scroll down to bottom
-                driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-                # Wait to load page
-                time.sleep(SCROLL_PAUSE_TIME)
-
-                # Calculate new scroll height and compare with last scroll height
-                new_height = driver.execute_script("return document.body.scrollHeight")
-                if new_height == last_height:
-                    break
-                last_height = new_height
+            scroll_down()
 
             containers = driver.find_elements_by_css_selector('div.item.clearfix')
             print(len(containers))
-            for c in range(len(containers)):
+            for c in range(238, len(containers)):
                 try:
                     time.sleep(1)
 
-                    last_height = driver.execute_script("return document.body.scrollHeight")
-
-                    while True:
-                        # Scroll down to bottom
-                        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-                        # Wait to load page
-                        time.sleep(SCROLL_PAUSE_TIME)
-
-                        # Calculate new scroll height and compare with last scroll height
-                        new_height = driver.execute_script("return document.body.scrollHeight")
-                        if new_height == last_height:
-                            break
-                        last_height = new_height
+                    scroll_down()
 
                     time.sleep(1)
                     # container = driver.find_elements_by_css_selector(f'#content > div > div.restaurant-list > div:nth-child({c+2}) > div > table > tbody > tr > td:nth-child(2) > div > div.restaurant-name.ng-binding')
@@ -104,20 +95,7 @@ for univ_addr in univ_addr_list:
                     driver.back()
                     time.sleep(1)
 
-                    last_height = driver.execute_script("return document.body.scrollHeight")
-
-                    while True:
-                        # Scroll down to bottom
-                        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-                        # Wait to load page
-                        time.sleep(SCROLL_PAUSE_TIME)
-
-                        # Calculate new scroll height and compare with last scroll height
-                        new_height = driver.execute_script("return document.body.scrollHeight")
-                        if new_height == last_height:
-                            break
-                        last_height = new_height
+                    scroll_down()
 
                     time.sleep(1)
                     raw_image_url = driver.find_element_by_css_selector(f'#content > div > div.restaurant-list > div:nth-child({c+2}) > div > table > tbody > tr > td:nth-child(1) > div:nth-child(1)').get_attribute('style').split('\"')[1]
@@ -128,8 +106,6 @@ for univ_addr in univ_addr_list:
                     del_time = driver.find_element_by_css_selector(f'#content > div > div.restaurant-list > div:nth-child({c+2}) > div > table > tbody > tr > td:nth-child(2) > div > ul > li.delivery-time.ng-binding').text
                     review_num = driver.find_element_by_css_selector(f'#content > div > div.restaurant-list > div:nth-child({c+2}) > div > table > tbody > tr > td:nth-child(2) > div > div.stars > span:nth-child(2)').text[3:]
 
-                    # print(link)
-                    # print(image_url)
                     print(link, image_url, title, star, min_price, del_time, review_num)
                     item = [link, image_url, title, star, min_price, del_time, review_num]
                     sheet.append(item)

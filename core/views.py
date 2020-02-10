@@ -13,7 +13,6 @@ def match_new(request, pk):
     locations = Location.objects.filter(name=univ)
     categories = Category.objects.get()
     stores = Store.objects.all()
-
     return render(request, 'core/match_new.html')
 
 
