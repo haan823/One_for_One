@@ -81,7 +81,7 @@ def signup(request, pk):
         }
         data = {
             'univ': univ,
-            'email_domain': UNIV_DOMAIN_MAPPING.get(univ.univ)
+            'email_domain': UNIV_DOMAIN_MAPPING.get(univ.name)
         }
         return render(request, 'signup.html', data)
 
