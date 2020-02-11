@@ -23,3 +23,6 @@ def choice_page(request):
 def match_fin(request):
     return render(request, 'core/match_fin.html')
 
+
+def mypage(request):
+    return render(request, 'core/mypage.html')

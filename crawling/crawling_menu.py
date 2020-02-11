@@ -57,7 +57,7 @@ for univ_addr in univ_addr_list:
     SCROLL_PAUSE_TIME = 0.5
     body = driver.find_element_by_css_selector('body')
 
-    for i in range(6, 15):
+    for i in range(7, 8):
         try:
             index = ['상세페이지URL', '로고URL', '상호명', '별점', '최소주문금액', '소요시간', '리뷰수']
             sheet.append(index)
@@ -87,7 +87,7 @@ for univ_addr in univ_addr_list:
             containers = driver.find_elements_by_css_selector('div.item.clearfix')
             print(len(containers))
             if len(containers) > 100:
-                con = 101
+                con = 102
             else:
                 con = len(containers)
             for c in range(15, con):
