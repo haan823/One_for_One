@@ -10,7 +10,7 @@ class Category(models.Model):
     univ_id = models.ForeignKey(Univ, on_delete=models.CASCADE, verbose_name='대학', related_name='category')
 
     def __str__(self):
-        return self.name
+        return self.cat_name
 
 
 class Store(models.Model):
