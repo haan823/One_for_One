@@ -14,7 +14,7 @@ class Message(models.Model):
 
     def last_10_messages():
         return Message.objects.order_by('-timestamp').all()[:10]
-
-class Room(models.Model):
-    room_name = models.TextField()
-    allowed_users = model.OneToManyField(User)
+#
+# class Room(models.Model):
+#     room_name = models.TextField()
+#     allowed_users = models.OneToManyField(User)

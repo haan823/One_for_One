@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+        <script>
+
+            //frameName의 타겟명으로 새창띄우기 (타겟명,너비,높이)
+
+            function openBlankFrame(frameName, width, height) {
+
+                var winprops = "";
+
+                var left = (screen.width - winWidth) / 2;
+
+                var top = (screen.height - winHeight) / 2;
+
+
+                winprops += "toolbar=no,menubar=no,scrollbars=yes,statusbar=no,resizable=yes";
+
+                winprops += ",top=" + top + ",left=" + left + ",width=" + width + ",height=" + height;
+
+
+                window.open("", frameName, winprops);
+
+            }
+
+
+            function go() {
+
+                var doc = document.getElementById("frm");
+
+
+                openBlankFrame("reuseF", "940", "720");
+
+
+                doc.action = "S070202050.do?form_reuse=1";
+
+                doc.ServiceName.value = "S070202050-service";
+
+                doc.submit();
+
+            }
+
+
+        </script>
+
+
+    </head>
+
+
+
+
+
+    <body>
+
+
+    <form id="frmReuse" name="frm" method="post" style="margin:0 0 0 0;" target="reuseF">
+
+        <input type="hidden" id="ServiceName" name="ServiceName"/>
+
+        <input type="hidden" id="COMPANY" name="COMPANY" value="<%=RPT_COMPANY%>"/>
+
+        <input type="hidden" id="RPT_ID" name="RPT_ID" value="<%=HR_AYTI_JOB_RPT_ID%>"/>
+
+    </form>
+
+
+    </body>
+</html>
