@@ -1,4 +1,4 @@
-{% extends "main.html" %}
+{% extends "base.html" %}
 
 {% block content %}
     <div style="text-align: center">
@@ -17,6 +17,8 @@
         </ul>
     </div>
     <div>
+    {% if user.is_active %}
         <a href="{% url 'core:match_new' user.id %}"><img src="https://image.flaticon.com/icons/svg/1659/1659463.svg" width="200px" height="200px" alt=""></a>
+    {% endif %}
     </div>
 {% endblock %}

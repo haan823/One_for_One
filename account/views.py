@@ -33,7 +33,7 @@ def home(request):
 def goto_signup(request):
     if request.method == 'POST':
         univ = request.POST['univ']
-        return redirect(reverse('signup', args=[univ]))
+        return redirect(reverse('account:signup', args=[univ]))
     else:
         univs = Univ.objects.all()
         data = {
@@ -91,10 +91,11 @@ def login(request):
         password = request.POST["password"]
         # 해당 user가 있으면 username, 없으면 None
         user = auth.authenticate(request, username=username, password=password)
-
+        profile = Profile.objects.get(user=user.id)
+        univ = Univ.objects.get(name=profile.univ)
         if user is not None:
             auth.login(request, user)
-            return redirect('home')
+            return render(request, 'core/home.html')
         else:
             return render(request, 'login.html', {'error':'username or password is incorrect'})
     else:
@@ -102,7 +103,7 @@ def login(request):
 
 def logout(request):
     auth.logout(request)
-    return render(request, "home.html")
+    return redirect("account:login")
 
 def user_active(request, token):
     user = User.objects.get(last_name=token)
