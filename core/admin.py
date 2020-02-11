@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from core.models import Store, Category
+from core.models import Store, Category, Posting
 
 admin.site.register(Category)
 admin.site.register(Store)
+admin.site.register(Posting)
