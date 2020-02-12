@@ -11,4 +11,5 @@ urlpatterns = [
     path('signup/', goto_signup, name='goto_signup'),
     path('signup/<int:pk>/', signup, name='signup'),
     path('active/<token>', user_active, name='user_active'),
+    path('signup/<int:pk>/send_sms', send_sms),
 ]

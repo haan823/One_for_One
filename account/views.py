@@ -46,6 +46,12 @@ def goto_signup(request):
 def signup(request, pk):
     univ = Univ.objects.get(pk=pk)
     if request.method == "POST":
+        user_authsms = AuthSms.objects.get(phone_number=request.POST['phone_number'])
+        if int(request.POST['user_auth_number']) != int(user_authsms.auth_number):
+            # print(request.POST['user_auth_number'])
+            # print(user_authsms.auth_number)
+            return render(request, 'signup.html', {'message': '비밀번호가 일치하지 않습니다.', 'pk': request.GET.pk})
+
         if request.POST["password1"] == request.POST["password2"]:
             email = request.POST['email_id']+'@'+request.POST['email_domain']
             user = User.objects.create_user(
@@ -72,7 +78,7 @@ def signup(request, pk):
             mail.send()
             return render(request, 'notify.html')
         else:
-            return render(request, 'signup.html', {'message': '비밀번호가 일치하지 않습니다.'})
+            return render(request, 'signup.html', {'message': '비밀번호가 일치하지 않습니다.', 'pk': request.GET.pk})
     else:
         UNIV_DOMAIN_MAPPING = {
             '서울대학교': 'snu.ac.kr',
@@ -113,3 +119,14 @@ def user_active(request, token):
     user.save()
     message = "이메일이 인증되었습니다."
     return render(request, 'signup_complete.html', {'message': message })
+
+
+def send_sms(request, pk):
+    from account.utils import AuthSmsSendView
+    assv = AuthSmsSendView()
+    print(request.POST)
+    user_phone_number = request.POST['user_phone_number']
+    print(user_phone_number, '------')
+    assv.post(request, user_phone_number)
+    print('-----------------')
+    return None
