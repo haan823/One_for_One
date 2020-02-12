@@ -11,4 +11,5 @@ urlpatterns = [
     path('cat/<int:pk>/store/', views.choice_store, name='choice_store'),
     path('new/fin/', views.match_fin, name='match_fin'),
     path('mypage/', views.mypage, name='mypage'),
+    path('polls/', views.upload, name='upload')
 ]
