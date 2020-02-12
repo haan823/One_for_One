@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('cat_name', models.CharField(max_length=255, verbose_name='카테고리명')),
-                ('univ_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='category', to='account.Univ', verbose_name='대학')),
+                ('univ_name', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='category', to='account.Univ', verbose_name='대학')),
             ],
         ),
         migrations.CreateModel(
