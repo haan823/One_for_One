@@ -36,7 +36,7 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-signup100 p-t-50 p-b-90">
-				<form class="login100-form validate-form flex-sb flex-w" action="{% url 'signup' univ.id %}" method="POST">
+				<form class="login100-form validate-form flex-sb flex-w" action="{% url 'account:signup' univ.id %}" method="POST">
                     {% csrf_token %}
 					<span class="login100-form-title p-b-51">
 						Sign Up
