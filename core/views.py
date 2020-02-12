@@ -10,7 +10,7 @@ def home(request, pk):
     current_user = request.user
     profile = Profile.objects.get(user=current_user.id)
     univ = profile.univ
-    categories = Category.objects.filter(univ_name=univ)
+    categories = Category.objects.filter(univ_id=univ)
     data = {
         'current_user': current_user.id,
         'univ': univ,
