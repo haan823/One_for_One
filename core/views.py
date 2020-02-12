@@ -1,4 +1,3 @@
-import django_excel as excel
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse

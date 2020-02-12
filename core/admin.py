@@ -1,5 +1,4 @@
 from django.contrib import admin
-from import_export.admin import ImportExport
 # Register your models here.
 from core.models import *
 
@@ -10,4 +9,4 @@ admin.site.register(Category)
 admin.site.register(Store)
 admin.site.register(Posting)
 admin.site.register(Tag)
-# admin.stie.register(Boards, BoardAdmin)
+# admin.site.register(Boards, BoardAdmin)

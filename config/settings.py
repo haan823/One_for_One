@@ -141,8 +141,8 @@ CHANNEL_LAYERS = {
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'vandlaw2015@gmail.com'
-EMAIL_HOST_PASSWORD = '016513@math'
+EMAIL_HOST_USER = 'oneforone.service@gmail.com'
+EMAIL_HOST_PASSWORD = 'asdf@1234'
 EMAIL_USE_TLS = True
 
 # FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
