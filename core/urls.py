@@ -12,4 +12,5 @@ urlpatterns = [
     path('new/fin/', views.match_fin, name='match_fin'),
     path('mypage/', views.mypage, name='mypage'),
     # path('polls/', views.upload, name='upload'),
+    path('import/', views.simple_upload, name='simple_upload')
 ]
