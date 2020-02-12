@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'core',
     'account',
     'chat',
-
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -145,3 +145,5 @@ EMAIL_HOST_USER = 'vandlaw2015@gmail.com'
 EMAIL_HOST_PASSWORD = '016513@math'
 EMAIL_USE_TLS = True
 
+# FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
+#                         "django_excel.TemporaryExcelFileUploadHandler")
