@@ -6,8 +6,18 @@ from core.models import Category, Store
 from account.models import Univ, Profile
 
 
-def home(request):
-    return render(request, 'core/home.html')
+def home(request, pk):
+    current_user = request.user
+    profile = Profile.objects.get(user=current_user.id)
+    univ = profile.univ
+    categories = Category.objects.filter(univ_name=univ)
+    data = {
+        'current_user': current_user.id,
+        'univ': univ,
+        'profile': profile,
+        'categories': categories,
+    }
+    return render(request, 'core/home.html', data)
 
 
 
