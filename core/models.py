@@ -37,13 +37,3 @@ class Posting(models.Model):
 class Tag(models.Model):
     posting_id = models.ForeignKey(Posting, on_delete=models.CASCADE, related_name='tag')
     content = models.CharField(max_length=20)
-
-
-class Question(models.Model):
-    logo = models.CharField(max_length=200)
-    pub_date = models.DateTimeField('date published')
-    slug = models.CharField(max_length=10, unique=True,
-                            default="question")
-
-    def __str__(self):
-        return self.question_text

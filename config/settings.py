@@ -146,3 +146,5 @@ EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = True
 
+# FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
+#                         "django_excel.TemporaryExcelFileUploadHandler")

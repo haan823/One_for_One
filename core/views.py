@@ -1,5 +1,4 @@
-from csv import excel
-
+import django_excel as excel
 from django.contrib.auth.models import User
 from django.forms import forms
 from django.shortcuts import render
@@ -46,26 +45,26 @@ def mypage(request):
     return render(request, 'core/mypage.html')
 
 
-class UploadFileForm(forms.Form):
-    file = forms.FileField()
-
-
-# Create your views here.
-def upload(request):
-    if request.method == "POST":
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            filehandle = request.FILES['file']
-            return excel.make_response(filehandle.get_sheet(), "xlsx",
-                                       file_name="download")
-    else:
-        form = UploadFileForm()
-    return render(
-        request,
-        'upload_form.html',
-        {
-            'form': form,
-            'title': 'Excel file upload and download example',
-            'header': ('Please choose any excel file ' +
-                       'from your cloned repository:')
-        })
+# class UploadFileForm(forms.Form):
+#     file = forms.FileField()
+#
+#
+# # Create your views here.
+# def upload(request):
+#     if request.method == "POST":
+#         form = UploadFileForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             filehandle = request.FILES['file']
+#             return excel.make_response(filehandle.get_sheet(), "xlsx",
+#                                        file_name="download")
+#     else:
+#         form = UploadFileForm()
+#     return render(
+#         request,
+#         'upload_form.html',
+#         {
+#             'form': form,
+#             'title': 'Excel file upload and download example',
+#             'header': ('Please choose any excel file ' +
+#                        'from your cloned repository:')
+#         })

@@ -1,5 +1,5 @@
 from django.contrib import admin
-# from import_export.admin import ExportActionModelAdmin
+from import_export.admin import ImportExport
 # Register your models here.
 from core.models import Store, Category
 
