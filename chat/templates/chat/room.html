@@ -44,7 +44,8 @@
                 <div id="expanded">
                     <div>
                         <label for="store">가게명</label>
-                        <input name="store" type="text" value="{{ posting.store_id.title }}" disabled style="text-align: center"/>
+                        <input name="store" type="text" value="{{ posting.store_id.title }}" disabled
+                               style="text-align: center"/>
                     </div>
                     <div>
                         <label for="menu">메뉴</label>
@@ -56,7 +57,8 @@
                     </div>
                     <div>
                         <label for="now_num">참여인원</label>
-                        <input name="now_num" type="text" value="{{ room.now_number }}" disabled style="text-align: center"/>
+                        <input name="now_num" type="text" value="{{ room.now_number }}" disabled
+                               style="text-align: center"/>
                     </div>
                 </div>
             </div>
@@ -81,7 +83,7 @@
             </ul>
         </div>
         <div id="bottom-bar">
-            <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span>
+            <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>매칭 완료</span>
             </button>
             <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
         </div>
@@ -123,6 +125,7 @@
 <script src="{% static 'main.js' %}"></script>
 <script src="{% static 'reconnecting-websocket.js' %}"></script>
 <script>
+    var room = {{ room }};
     var room_id = {{ room.pk }};
     var username = {{ username }};
 
@@ -159,6 +162,7 @@
         var messageInputDom = document.getElementById('chat-message-input');
         var message = messageInputDom.value;
         chatSocket.send(JSON.stringify({
+            'room_id': room,
             'command': 'new_message',
             'message': message,
             'from': username
@@ -173,22 +177,23 @@
 
     function createMessage(data) {
         var author = data['author'];
+        var message_room_id = data['room_id'];
         var msgListTag = document.createElement('li');
         var imgTag = document.createElement('img');
         var pTag = document.createElement('p');
         pTag.textContent = data.content;
         imgTag.src = 'http://emilcarlsson.se/assets/mikeross.png';
-
-        if (author === username) {
-            msgListTag.className = 'sent';
-        } else {
-            msgListTag.className = 'replies';
+        if (message_room_id === room_id) {
+            if (author === username) {
+                msgListTag.className = 'sent';
+            } else {
+                msgListTag.className = 'replies';
+            }
+            msgListTag.appendChild(imgTag);
+            msgListTag.appendChild(pTag);
+            document.querySelector('#chat-log').appendChild(msgListTag);
         }
-        msgListTag.appendChild(imgTag);
-        msgListTag.appendChild(pTag);
-        document.querySelector('#chat-log').appendChild(msgListTag);
     }
-
 </script>
 </body>
 

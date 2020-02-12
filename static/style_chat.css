@@ -64,7 +64,7 @@ body {
 }
 
 #frame #sidepanel #profile.expanded .wrap {
-    height: 210px;
+    height: auto;
     line-height: initial;
 }
 
@@ -327,7 +327,7 @@ body {
     border-radius: 3px;
     color: #f5f5f5;
     padding: 7px;
-    width: calc(100% - 43px);
+    width: calc(100% - 60px);
 }
 
 #frame #sidepanel #profile .wrap #expanded input:focus {
@@ -643,6 +643,7 @@ body {
 }
 
 #frame .content .messages {
+    width: 100%;
     height: auto;
     min-height: calc(100% - 93px);
     max-height: calc(100% - 93px);
