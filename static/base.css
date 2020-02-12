@@ -15,6 +15,7 @@ body {
 .btn-xl {
     padding: 1.25rem 2.5rem
 }
+
 ㅠㅁ
 .content-section {
     padding-top: 7.5rem;
@@ -82,14 +83,15 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
     display: table;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
     padding-top: 8rem;
     padding-bottom: 8rem;
     background: linear-gradient(90deg, rgba(255, 255, 255, .1) 0, rgba(255, 255, 255, .1) 100%), url('img/bg-masthead.jpg');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
-    background-attachment: scroll;
+    background-attachment: fixed;
 }
 
 .masthead h1 {
@@ -100,7 +102,8 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (min-width: 992px) {
     .masthead {
-        height: 100vh
+        min-height: 100vh;
+        height: auto;
     }
 
     .masthead h1 {
@@ -252,42 +255,42 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 1.2rem
 }
 
-@media (min-width: 992px) {
-    .portfolio-item {
-        max-width: none;
-        margin: 0
-    }
+/*@media (min-width: 992px) {*/
+/*    .portfolio-item {*/
+/*        max-width: none;*/
+/*        margin: 0*/
+/*    }*/
 
-    .portfolio-item .caption {
-        -webkit-transition: -webkit-clip-path .25s ease-out, background-color .7s;
-        -webkit-clip-path: inset(0);
-        clip-path: inset(0)
-    }
+/*    .portfolio-item .caption {*/
+/*        -webkit-transition: -webkit-clip-path .25s ease-out, background-color .7s;*/
+/*        -webkit-clip-path: inset(0);*/
+/*        clip-path: inset(0)*/
+/*    }*/
 
-    .portfolio-item .caption .caption-content {
-        transition: opacity .25s;
-        margin-left: 5rem;
-        margin-right: 5rem;
-        margin-bottom: 5rem
-    }
+/*    .portfolio-item .caption .caption-content {*/
+/*        transition: opacity .25s;*/
+/*        margin-left: 5rem;*/
+/*        margin-right: 5rem;*/
+/*        margin-bottom: 5rem*/
+/*    }*/
 
-    .portfolio-item img {
-        -webkit-transition: -webkit-clip-path .25s ease-out;
-        -webkit-clip-path: inset(-1px);
-        clip-path: inset(-1px)
-    }
+/*    .portfolio-item img {*/
+/*        -webkit-transition: -webkit-clip-path .25s ease-out;*/
+/*        -webkit-clip-path: inset(-1px);*/
+/*        clip-path: inset(-1px)*/
+/*    }*/
 
-    .portfolio-item:hover img {
-        -webkit-clip-path: inset(2rem);
-        clip-path: inset(2rem)
-    }
+/*    .portfolio-item:hover img {*/
+/*        -webkit-clip-path: inset(2rem);*/
+/*        clip-path: inset(2rem)*/
+/*    }*/
 
-    .portfolio-item:hover .caption {
-        background-color: rgba(29, 128, 159, .9);
-        -webkit-clip-path: inset(2rem);
-        clip-path: inset(2rem)
-    }
-}
+/*    .portfolio-item:hover .caption {*/
+/*        background-color: rgba(29, 128, 159, .9);*/
+/*        -webkit-clip-path: inset(2rem);*/
+/*        clip-path: inset(2rem)*/
+/*    }*/
+/*}*/
 
 footer.footer {
     padding-top: 5rem;

@@ -10,7 +10,7 @@ class Category(models.Model):
     univ_id = models.ForeignKey(Univ, on_delete=models.CASCADE, verbose_name='대학', related_name='category')
 
     def __str__(self):
-        return self.cat_name
+        return (self.cat_name +  str(self.univ_id))
 
 
 class Store(models.Model):
@@ -27,6 +27,7 @@ class Store(models.Model):
 
 
 class Posting(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     store_id = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='posting')
     menu = models.CharField(max_length=255)
     price = models.IntegerField()

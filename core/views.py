@@ -4,7 +4,7 @@ from django.urls import reverse
 
 from django.forms import forms
 from django.shortcuts import render
-from core.models import Category, Store
+from core.models import Category, Store, Posting
 from account.models import Univ, Profile
 
 
@@ -13,7 +13,9 @@ def home(request, pk):
     profile = Profile.objects.get(user=current_user.id)
     univ = profile.univ
     categories = Category.objects.filter(univ_id=univ)
+    postings = Posting.objects.filter(user_id=current_user.id)
     data = {
+        'postings': postings,
         'current_user': current_user.id,
         'univ': univ,
         'profile': profile,
