@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'stylish-portfolio.min.css' %}">
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic"
+          rel="stylesheet" type="text/css">
+    <link href="{% static 'vendor/simple-line-icons/css/simple-line-icons.css' %}" rel="stylesheet">
+
+</head>
+<body id="page-top">
+<a class="menu-toggle rounded" href="#">
+    <i class="fas fa-bars"></i>
+</a>
+<nav id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+        <li class="sidebar-brand">
+            <a class="js-scroll-trigger" href="#page-top">우리 학교 둘러보기</a>
+        </li>
+        {% for univ in univs %}
+            <li class="sidebar-nav-item">
+                <a class="js-scroll-trigger" href="#page-top">{{ univ.name }}</a>
+            </li>
+        {% endfor %}
+
+    </ul>
+</nav>
+<header class="masthead d-flex">
+    <div class="container text-center my-auto">
+        <h1 class="mb-1">One for One</h1>
+        <h3 class="mb-5">
+            <em>1인 배달 매칭 서비스</em>
+        </h3>
+        <a class="btn btn-primary btn-xl js-scroll-trigger" href="{% url 'account:login' %}">로그인</a>
+        <a class="btn btn-primary btn-xl js-scroll-trigger" href="{% url 'account:goto_signup' %}">회원가입</a>
+    </div>
+    <div class="overlay"></div>
+</header>
+
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Plugin JavaScript -->
+<script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Custom scripts for this template -->
+<script src="{% static 'js/stylish-portfolio.min.js' %}"></script>
+</body>
+</html>
