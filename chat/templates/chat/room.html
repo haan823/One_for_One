@@ -27,7 +27,7 @@
         <div id="profile">
             <div class="wrap">
                 <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt=""/>
-                <p>Mike Ross</p>
+                <p>{{ username }}</p>
                 <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
                 <div id="status-options">
                     <ul>
@@ -42,12 +42,22 @@
                     </ul>
                 </div>
                 <div id="expanded">
-                    <label for="twitter"><i class="fa fa-facebook fa-fw" aria-hidden="true"></i></label>
-                    <input name="twitter" type="text" value="mikeross"/>
-                    <label for="twitter"><i class="fa fa-twitter fa-fw" aria-hidden="true"></i></label>
-                    <input name="twitter" type="text" value="ross81"/>
-                    <label for="twitter"><i class="fa fa-instagram fa-fw" aria-hidden="true"></i></label>
-                    <input name="twitter" type="text" value="mike.ross"/>
+                    <div>
+                        <label for="store">가게명</label>
+                        <input name="store" type="text" value="{{ posting.store_id.title }}" disabled style="text-align: center"/>
+                    </div>
+                    <div>
+                        <label for="menu">메뉴</label>
+                        <input name="menu" type="text" value="{{ posting.menu }}" disabled style="text-align: center"/>
+                    </div>
+                    <div>
+                        <label for="price">가격</label>
+                        <input name="menu" type="text" value="{{ posting.price }}" disabled style="text-align: center"/>
+                    </div>
+                    <div>
+                        <label for="now_num">참여인원</label>
+                        <input name="now_num" type="text" value="{{ room.now_number }}" disabled style="text-align: center"/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,27 +67,17 @@
         </div>
         <div id="contacts">
             <ul>
-                <li class="contact">
-                    <div class="wrap">
-                        <span class="contact-status online"></span>
-                        <img src="http://emilcarlsson.se/assets/louislitt.png" alt=""/>
-                        <div class="meta">
-                            <p class="name">Louis Litt</p>
-                            <p class="preview">You just got LITT up, Mike.</p>
+                {% for user in allowed_users %}
+                    <li class="contact">
+                        <div class="wrap">
+                            <span class="contact-status online"></span>
+                            <img src="http://emilcarlsson.se/assets/louislitt.png" alt=""/>
+                            <div class="meta">
+                                <p class="name">{{ user }}</p>
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <li class="contact active">
-                    <div class="wrap">
-                        <span class="contact-status busy"></span>
-                        <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt=""/>
-                        <div class="meta">
-                            <p class="name">Harvey Specter</p>
-                            <p class="preview">Wrong. You take the gun, or you pull out a bigger one. Or, you call their
-                                bluff. Or, you do any one of a hundred and forty six other things.</p>
-                        </div>
-                    </div>
-                </li>
+                    </li>
+                {% endfor %}
             </ul>
         </div>
         <div id="bottom-bar">
@@ -123,16 +123,16 @@
 <script src="{% static 'main.js' %}"></script>
 <script src="{% static 'reconnecting-websocket.js' %}"></script>
 <script>
-    var roomName = {{ room_name_json }};
+    var room_id = {{ room.pk }};
     var username = {{ username }};
 
     var chatSocket = new ReconnectingWebSocket(
         'ws://' + window.location.host +
-        '/ws/chat/' + roomName + '/');
+        '/ws/chat/' + room_id + '/');
 
     chatSocket.onopen = function (e) {
         fetchMessages();
-    }
+    };
 
     chatSocket.onmessage = function (e) {
         var data = JSON.parse(e.data);

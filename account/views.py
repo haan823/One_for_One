@@ -11,7 +11,8 @@ from django.utils import timezone
 from django.utils.crypto import random
 from django.views import View
 
-from .models import Profile, Univ, AuthSms
+from core.models import Category
+from .models import Profile, Univ
 
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
@@ -97,11 +98,11 @@ def login(request):
         password = request.POST["password"]
         # 해당 user가 있으면 username, 없으면 None
         user = auth.authenticate(request, username=username, password=password)
-        profile = Profile.objects.get(user=user.id)
-        univ = Univ.objects.get(name=profile.univ)
+        profile = Profile.objects.get(user=user)
+        univ = profile.univ
         if user is not None:
             auth.login(request, user)
-            return render(request, 'core/home.html')
+            return redirect(reverse('core:home', args=[univ.id]))
         else:
             return render(request, 'login.html', {'error':'username or password is incorrect'})
     else:
