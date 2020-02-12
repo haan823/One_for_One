@@ -1,7 +1,6 @@
 from import_export import resources
-from .models import Crawling
+from .models import Store
 
-
-class CrawlingResource(resources.ModelResource):
+class StoreResource(resources.ModelResource):
     class Meta:
-        model = Crawling
+        model = Store

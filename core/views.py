@@ -9,7 +9,7 @@ from tablib import Dataset
 
 from core.models import Category, Store
 from account.models import Univ, Profile
-from core.resources import CrawlingResource
+from core.resources import StoreResource
 
 
 def home(request):
@@ -103,7 +103,7 @@ def export(request):
 
 def simple_upload(request):
     if request.method == 'POST':
-        person_resource = CrawlingResource()
+        person_resource = StoreResource()
         dataset = Dataset()
         new_persons = request.FILES['myfile']
 
