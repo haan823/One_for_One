@@ -145,5 +145,7 @@ EMAIL_HOST_USER = 'oneforone.service@gmail.com'
 EMAIL_HOST_PASSWORD = 'asdf@1234'
 EMAIL_USE_TLS = True
 
+IMPORT_EXPORT_USE_TRANSACTIONS = True
+
 # FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
 #                         "django_excel.TemporaryExcelFileUploadHandler")

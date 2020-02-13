@@ -2,10 +2,14 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
+from django.http import HttpResponse
 from django.forms import forms
 from django.shortcuts import render
+from tablib import Dataset
+
 from core.models import Category, Store
 from account.models import Univ, Profile
+from core.resources import StoreResource
 
 
 def home(request, pk):
@@ -88,3 +92,33 @@ def main(request):
 #             'header': ('Please choose any excel file ' +
 #                        'from your cloned repository:')
 #         })
+
+def export(request):
+    person_resource = CrawlingResource()
+    dataset = person_resource.export()
+    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="persons.xlsx"'
+    return response
+
+
+def simple_upload(request):
+    if request.method == 'POST':
+        person_resource = StoreResource()
+        dataset = Dataset()
+        new_persons = request.FILES['myfile']
+
+        imported_data = dataset.load(new_persons.read())
+        result = person_resource.import_data(dataset, dry_run=True)  # Test the data import
+
+        if not result.has_errors():
+            person_resource.import_data(dataset, dry_run=False)  # Actually import now
+
+    return render(request, 'core/simple_upload.html')
+
+#
+# def export(request):
+#     person_resource = CrawlingResource()
+#     dataset = person_resource.export()
+#     response = HttpResponse(dataset.csv, content_type='text/csv')
+#     response['Content-Disposition'] = 'attachment; filename="persons.csv"'
+#     return response
