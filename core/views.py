@@ -5,10 +5,7 @@ from django.urls import reverse
 <<<<<<< Updated upstream
 from django.forms import forms
 from django.shortcuts import render
-from core.models import Category, Store, Posting
-=======
-from core.models import Category, Store
->>>>>>> Stashed changes
+from core.models import Store, Posting
 from account.models import Univ, Profile
 
 
@@ -16,8 +13,7 @@ def home(request, pk):
     current_user = request.user
     profile = Profile.objects.get(user=current_user.id)
     univ = profile.univ
-<<<<<<< Updated upstream
-    categories = Category.objects.filter(univ_id=univ)
+    # categories = Category.objects.filter(univ_id=univ)
     postings = Posting.objects.filter(user_id=current_user.id)
     data = {
         'postings': postings,
@@ -25,10 +21,11 @@ def home(request, pk):
     categories = Category.objects.filter(univ_name=univ)
     data = {
 >>>>>>> Stashed changes
+        'postings': postings,
         'current_user': current_user.id,
         'univ': univ,
         'profile': profile,
-        'categories': categories,
+        #'categories': categories,
     }
     return render(request, 'core/home.html', data)
 
@@ -37,7 +34,7 @@ def home(request, pk):
 def match_new(request, pk):
     univ = request.user.profile.univ
     univ_input = Profile.objects.filter(name=univ)
-    categories = Category.objects.get()
+    # categories = Category.objects.get()
     stores = Store.objects.all()
     if request.method == "POST":
         pass
@@ -48,12 +45,12 @@ def match_new(request, pk):
 
 <<<<<<< Updated upstream
 def choice_cat(request, pk):
-    cats = Category.objects.all()
+    # cats = Category.objects.all()
     if request.method == 'POST':
         pass
     else:
         data = {
-            'cats':cats,
+           # 'cats':cats,
         }
     return render(request, 'core/choice_cat.html', data)
 
