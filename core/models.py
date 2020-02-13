@@ -5,14 +5,13 @@ from django.db import models
 from account.models import Univ
 
 
-class Category(models.Model):
-    cat_name = models.CharField(max_length=255, verbose_name='카테고리명')
-    univ_id = models.ForeignKey(Univ, on_delete=models.CASCADE, verbose_name='대학', related_name='category')
-
-    def __str__(self):
-        return self.cat_name
-
-
+# class Category(models.Model):
+#     cat_name = models.CharField(max_length=255, verbose_name='카테고리명')
+#     univ_cat = models.ManyToManyField(Univ)
+#     # univ_id = models.ForeignKey(Univ, on_delete=models.CASCADE, verbose_name='대학', related_name='category')
+#
+#     def __str__(self):
+#         return self.cat_name
 class Store(models.Model):
     logo = models.URLField()
     title = models.CharField(max_length=255, verbose_name='가게명')
@@ -20,9 +19,11 @@ class Store(models.Model):
     min_price = models.CharField(max_length=255, verbose_name='최소주문금액')
     del_time = models.CharField(max_length=255, verbose_name='배달시간')
     store_url = models.URLField()
-    category_id = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='카테고리명', related_name='store', null=True)
-    cat_name = models.CharField(max_length=255, verbose_name='카테고리_이름')
-    univ_name = models.CharField(max_length=255, verbose_name='학교_이름')
+    cat_name = models.CharField(max_length=255, verbose_name='카테고리명')
+    univ_id = models.ForeignKey(Univ, on_delete=models.CASCADE, verbose_name='대학', related_name='category', null=True)
+    # category_id = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='카테고리명', related_name='store', null=True)
+    # cat_name = models.CharField(max_length=255, verbose_name='카테고리_이름')
+    # univ_name = models.CharField(max_length=255, verbose_name='학교_이름')
 
     def __str__(self):
         return self.title
