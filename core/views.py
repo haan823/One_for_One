@@ -2,9 +2,13 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
+<<<<<<< Updated upstream
 from django.forms import forms
 from django.shortcuts import render
 from core.models import Category, Store, Posting
+=======
+from core.models import Category, Store
+>>>>>>> Stashed changes
 from account.models import Univ, Profile
 
 
@@ -12,10 +16,15 @@ def home(request, pk):
     current_user = request.user
     profile = Profile.objects.get(user=current_user.id)
     univ = profile.univ
+<<<<<<< Updated upstream
     categories = Category.objects.filter(univ_id=univ)
     postings = Posting.objects.filter(user_id=current_user.id)
     data = {
         'postings': postings,
+=======
+    categories = Category.objects.filter(univ_name=univ)
+    data = {
+>>>>>>> Stashed changes
         'current_user': current_user.id,
         'univ': univ,
         'profile': profile,
@@ -37,6 +46,7 @@ def match_new(request, pk):
     return render(request, 'core/match_new.html')
 
 
+<<<<<<< Updated upstream
 def choice_cat(request, pk):
     cats = Category.objects.all()
     if request.method == 'POST':
@@ -50,6 +60,11 @@ def choice_cat(request, pk):
 
 def choice_store(request):
     return render(request, 'core/choice_store.html')
+=======
+<<<<<<< HEAD
+def choice_page(request):
+    return render(request, 'core/store_choice.html')
+>>>>>>> Stashed changes
 
 
 def match_fin(request):
@@ -58,6 +73,12 @@ def match_fin(request):
 
 def mypage(request):
     return render(request, 'core/mypage.html')
+<<<<<<< Updated upstream
+=======
+=======
+def store_choice(request):
+    return render(request, 'core/store_choice.html')
+>>>>>>> Stashed changes
 
 def main(request):
     univs = Univ.objects.all()
@@ -65,6 +86,7 @@ def main(request):
         'univs': univs
     }
     return render(request, 'core/main.html', data)
+<<<<<<< Updated upstream
 
 
 # class UploadFileForm(forms.Form):
@@ -90,3 +112,6 @@ def main(request):
 #             'header': ('Please choose any excel file ' +
 #                        'from your cloned repository:')
 #         })
+=======
+>>>>>>> KSH_POSTING
+>>>>>>> Stashed changes

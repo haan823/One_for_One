@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>One_for_One</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic"
+          rel="stylesheet" type="text/css">
+    <link href="{% static 'vendor/simple-line-icons/css/simple-line-icons.css' %}" rel="stylesheet">
+
+    <link href="{% static 'Rapid/img/favicon.png' %}" rel="icon">
+    <link href="{% static 'Rapid/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,500,600,700,700i|Montserrat:300,400,500,600,700"
+          rel="stylesheet">
+
+    <!-- Bootstrap CSS File -->
+    <link href="{% static 'Rapid/lib/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Libraries CSS Files -->
+    <link href="{% static 'Rapid/lib/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'Rapid/lib/animate/animate.min.css' %}" rel="stylesheet">
+    <link href="{% static 'Rapid/lib/ionicons/css/ionicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'Rapid/lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'Rapid/lib/lightbox/css/lightbox.min.css' %}" rel="stylesheet">
+
+    <!-- Main Stylesheet File -->
+    <link href="{% static 'Rapid/css/style.css' %}" rel="stylesheet">
+
+</head>
+<body id="page-top">
+<a class="menu-toggle rounded" href="#">
+    <i class="fas fa-bars"></i>
+</a>
+<nav id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+        <li class="sidebar-brand">
+            {% if user.is_active %}
+                <a>{{ user.username }}</a>
+                <a href="{% url 'account:logout' %}">로그아웃</a>
+            {% else %}
+                <a href="{% url 'account:login' %}">로그인</a>
+                <a href="{% url 'account:goto_signup' %}">회원가입</a>
+            {% endif %}
+        </li>
+        <li class="sidebar-nav-item">
+            <a class="js-scroll-trigger" href="{% url 'core:home' univ.id %}">home</a>
+        </li>
+
+        {#        {% for univ in univs %}#}
+        {#            <li class="sidebar-nav-item">#}
+        {#                <a class="js-scroll-trigger" href="#page-top">{{ univ.name }}</a>#}
+        {#            </li>#}
+        {#        {% endfor %}#}
+
+    </ul>
+</nav>
+
+<header class="masthead d-flex">
+    <div class="container text-center my-auto">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <div class="overlay"></div>
+</header>
+
+
+{#<div class="nav-right">#}
+{#    {% if user.is_active %}#}
+{#        <p>유저 이름: {{ user.username }}</p>#}
+{#        <a href="{% url 'account:logout' %}">로그아웃</a>#}
+{#    {% else %}#}
+{#        <a href="{% url 'account:login' %}">로그인</a>#}
+{#        <a href="{% url 'account:goto_signup' %}">회원가입</a>#}
+{#    {% endif %}#}
+{#</div>#}
+
+{##}
+{#<div class="card-body">#}
+{#    {% block content %}#}
+{#    {% endblock %}#}
+{##}
+{#</div>#}
+
+
+{#<div class="footer">#}
+{#    &copy; 피로그래밍 | 회장: 김상현#}
+{#    <p>서울특별시 관악구 관악로 1, 서울대학교 벤처경영 교육 및 연구 동아리</p>#}
+{#</div>#}
+
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Plugin JavaScript -->
+<script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Custom scripts for this template -->
+<script src="{% static 'js/stylish-portfolio.min.js' %}"></script>
+
+<script src="{% static 'Rapid/lib/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'Rapid/lib/jquery/jquery-migrate.min.js' %}"></script>
+<script src="{% static 'Rapid/lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'Rapid/lib/easing/easing.min.js' %}"></script>
+<script src="{% static 'Rapid/lib/mobile-nav/mobile-nav.js' %}"></script>
+<script src="{% static 'Rapid/lib/wow/wow.min.js' %}"></script>
+<script src="{% static 'Rapid/lib/waypoints/waypoints.min.js' %}"></script>
+<script src="{% static 'Rapid/lib/counterup/counterup.min.js' %}"></script>
+<script src="{% static 'Rapid/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+<script src="{% static 'Rapid/lib/isotope/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'Rapid/lib/lightbox/js/lightbox.min.js' %}"></script>
+<!-- Contact Form JavaScript File -->
+<script src="{% static 'Rapid/contactform/contactform.js' %}"></script>
+
+<!-- Template Main Javascript File -->
+<script src="{% static 'Rapid/js/main.js' %}"></script>
+</body>
+</html>

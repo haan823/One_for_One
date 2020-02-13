@@ -12,7 +12,11 @@ from django.utils.crypto import random
 from django.views import View
 
 from core.models import Category
+<<<<<<< Updated upstream
 from .models import Profile, Univ, AuthSms
+=======
+from .models import Profile, Univ
+>>>>>>> Stashed changes
 
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
