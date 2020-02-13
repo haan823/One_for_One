@@ -9,7 +9,7 @@ class Univ(models.Model):
         return self.name
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     nickname = models.TextField(max_length=10)
     univ = models.ForeignKey(Univ, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=20, default='01000000000')

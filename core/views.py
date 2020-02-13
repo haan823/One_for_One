@@ -4,6 +4,8 @@ from django.urls import reverse
 
 from django.forms import forms
 from django.shortcuts import render
+
+from chat.models import Room, Contact
 from core.models import Category, Store
 from account.models import Univ, Profile
 
@@ -13,11 +15,15 @@ def home(request, pk):
     profile = Profile.objects.get(user=current_user.id)
     univ = profile.univ
     categories = Category.objects.filter(univ_id=univ)
+    contacts = Contact.objects.filter(allowed_user=current_user)
+    rooms = Room.objects.all()
     data = {
         'current_user': current_user.id,
         'univ': univ,
         'profile': profile,
         'categories': categories,
+        'contacts': contacts,
+        'rooms': rooms
     }
     return render(request, 'core/home.html', data)
 

@@ -26,7 +26,8 @@
     <div id="sidepanel">
         <div id="profile">
             <div class="wrap">
-                <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt=""/>
+                <img id="profile-img" src="https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png"
+                     class="online" alt=""/>
                 <p>{{ username }}</p>
                 <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
                 <div id="status-options">
@@ -42,20 +43,20 @@
                     </ul>
                 </div>
                 <div id="expanded">
-                    <div>
+                    <div id="ex_content">
                         <label for="store">가게명</label>
                         <input name="store" type="text" value="{{ posting.store_id.title }}" disabled
                                style="text-align: center"/>
                     </div>
-                    <div>
+                    <div id="ex_content">
                         <label for="menu">메뉴</label>
                         <input name="menu" type="text" value="{{ posting.menu }}" disabled style="text-align: center"/>
                     </div>
-                    <div>
+                    <div id="ex_content">
                         <label for="price">가격</label>
                         <input name="menu" type="text" value="{{ posting.price }}" disabled style="text-align: center"/>
                     </div>
-                    <div>
+                    <div id="ex_content">
                         <label for="now_num">참여인원</label>
                         <input name="now_num" type="text" value="{{ room.now_number }}" disabled
                                style="text-align: center"/>
@@ -63,34 +64,38 @@
                 </div>
             </div>
         </div>
-        <div id="search">
-            <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-            <input type="text" placeholder="Search contacts..."/>
-        </div>
         <div id="contacts">
             <ul>
                 {% for user in allowed_users %}
                     <li class="contact">
                         <div class="wrap">
                             <span class="contact-status online"></span>
-                            <img src="http://emilcarlsson.se/assets/louislitt.png" alt=""/>
+                            <img src="https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png" alt=""/>
                             <div class="meta">
-                                <p class="name">{{ user }}</p>
+                                <p class="name">{{ user.username }}</p>
                             </div>
                         </div>
+                        <button type="button" class="btn-danger user_out" name={{ user.pk }}>
+                            <span>OUT</span>
+                        </button>
                     </li>
                 {% endfor %}
             </ul>
         </div>
         <div id="bottom-bar">
-            <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>매칭 완료</span>
+            <button type="button" class="match-finished" name="{{ room.pk }}">
+                <i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>
+                <span>매칭 완료</span>
             </button>
-            <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
+            <button type="button" class="re_match" name="{{ room.pk }}">
+                <i class="fa fas fa-check" aria-hidden="true"></i>
+                <span>추가 매칭 신청</span>
+            </button>
         </div>
     </div>
     <div class="content">
         <div class="contact-profile">
-            <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt=""/>
+            <img src="https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png" alt=""/>
             <p>{{ username }}</p>
             <div class="social-media">
                 <i class="fa fa-facebook" aria-hidden="true"></i>
@@ -100,14 +105,7 @@
         </div>
         <div class="messages">
             <ul id="chat-log">
-                {% comment %} <li class="sent">
-            <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-            <p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
-          </li>
-          <li class="replies">
-            <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
-            <p>When you're backed against the wall, break the god damn thing down.</p>
-          </li> {% endcomment %}
+
             </ul>
         </div>
         <div class="message-input">
@@ -177,12 +175,13 @@
 
     function createMessage(data) {
         var author = data['author'];
+        var timestamp = data['']
         var message_room_id = data['room_id'];
         var msgListTag = document.createElement('li');
         var imgTag = document.createElement('img');
         var pTag = document.createElement('p');
         pTag.textContent = data.content;
-        imgTag.src = 'http://emilcarlsson.se/assets/mikeross.png';
+        imgTag.src = 'https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png';
         if (message_room_id === room_id) {
             if (author === username) {
                 msgListTag.className = 'sent';
@@ -194,6 +193,53 @@
             document.querySelector('#chat-log').appendChild(msgListTag);
         }
     }
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+    $(".match-finished").click(function () {
+        var pk = $(this).attr('name');
+        $.ajax({
+            type: "GET",
+            url: "{% url 'chat:match_finished' room.pk%}",
+            data: {'pk': pk},
+            success: function () {
+                alert("매칭완료처리되었습니다.");
+            },
+            error: function (request, status, error) {
+                alert("이미 매칭완료 처리되었습니다.");
+            },
+        });
+    });
+    $(".re_match").click(function () {
+        var pk = $(this).attr('name');
+        $.ajax({
+            type: "GET",
+            url: "{% url 'chat:re_match' room.pk%}",
+            data: {'pk': pk},
+            success: function () {
+                alert("포스팅을 재업로드 했습니다.");
+            },
+            error: function (request, status, error) {
+                alert("이미 재업로드 되었습니다.")
+            },
+        });
+    });
+    {##}
+    {#$(".user_out").click(function () {#}
+    {#    var user_pk= $(this).attr('name');#}
+    {#    var pk = {{ room.pk }}#}
+    {#    $.ajax({#}
+    {#        type: "GET",#}
+    {#        url: "{% url 'chat:delete_contact' room.pk%}",#}
+    {#        data: {'pk':pk, 'user_pk': user_pk},#}
+    {#        success: function () {#}
+    {#            alert("해당 사용자를 퇴장시켰습니다.");#}
+    {#        },#}
+    {#        error: function (request, status, error) {#}
+    {#            alert(error + "Posting 게시자에 의해 퇴장처리된 채팅방입니다.")#}
+    {#        },#}
+    {#    });#}
+    {#});#}
 </script>
 </body>
 

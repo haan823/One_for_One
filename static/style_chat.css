@@ -3,7 +3,7 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: #27ae60;
+    background: white;
     font-family: "proxima-nova", "Source Sans Pro", sans-serif;
     font-size: 1em;
     letter-spacing: 0.1px;
@@ -343,6 +343,10 @@ body {
 
 @media screen and (max-width: 735px) {
     #frame #sidepanel #search {
+        display: none;
+    }
+
+    #frame #sidepanel #profile .wrap #expanded #ex_content {
         display: none;
     }
 }
