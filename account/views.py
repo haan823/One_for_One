@@ -11,7 +11,7 @@ from django.utils import timezone
 from django.utils.crypto import random
 from django.views import View
 
-from core.models import Category
+# from core.models import Category
 from .models import Profile, Univ
 
 from django.contrib.auth.models import User
