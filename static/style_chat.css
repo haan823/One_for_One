@@ -3,9 +3,9 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: #27ae60;
+    background: white;
     font-family: "proxima-nova", "Source Sans Pro", sans-serif;
-    font-size: 1em;
+    font-size: 1.2em;
     letter-spacing: 0.1px;
     color: #32465a;
     text-rendering: optimizeLegibility;
@@ -64,7 +64,7 @@ body {
 }
 
 #frame #sidepanel #profile.expanded .wrap {
-    height: 210px;
+    height: auto;
     line-height: initial;
 }
 
@@ -327,7 +327,7 @@ body {
     border-radius: 3px;
     color: #f5f5f5;
     padding: 7px;
-    width: calc(100% - 43px);
+    width: calc(100% - 60px);
 }
 
 #frame #sidepanel #profile .wrap #expanded input:focus {
@@ -343,6 +343,10 @@ body {
 
 @media screen and (max-width: 735px) {
     #frame #sidepanel #search {
+        display: none;
+    }
+
+    #frame #sidepanel #profile .wrap #expanded #ex_content {
         display: none;
     }
 }
@@ -416,10 +420,9 @@ body {
 #frame #sidepanel #contacts ul li.contact {
     position: relative;
     padding: 10px 0 15px 0;
-    font-size: 0.9em;
+    font-size: 1em;
     cursor: pointer;
 }
-
 @media screen and (max-width: 735px) {
     #frame #sidepanel #contacts ul li.contact {
         padding: 6px 0 46px 8px;
@@ -643,6 +646,7 @@ body {
 }
 
 #frame .content .messages {
+    width: 100%;
     height: auto;
     min-height: calc(100% - 93px);
     max-height: calc(100% - 93px);

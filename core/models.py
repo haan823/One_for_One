@@ -30,11 +30,13 @@ class Store(models.Model):
 
 
 class Posting(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     store_id = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='posting')
     menu = models.CharField(max_length=255)
     price = models.IntegerField()
     max_num = models.IntegerField()
     timer = models.DateTimeField(auto_now_add=False, blank=True, null=True)
+    finished = models.BooleanField(default=False)
 
 
 class Tag(models.Model):

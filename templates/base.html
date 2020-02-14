@@ -42,7 +42,7 @@
     <ul class="sidebar-nav">
         <li class="sidebar-brand">
             {% if user.is_active %}
-                <a>{{ user.username }}</a>
+                <a style="color:white;">{{ user.username }}</a>
                 <a href="{% url 'account:logout' %}">로그아웃</a>
             {% else %}
                 <a href="{% url 'account:login' %}">로그인</a>
@@ -52,13 +52,28 @@
         <li class="sidebar-nav-item">
             <a class="js-scroll-trigger" href="{% url 'core:home' univ.id %}">home</a>
         </li>
+        <li class="sidebar-nav-item">
+            <div style="color:white; text-align:center;">현재 참여중인 Posting 목록</div>
+        </li>
+        {% for contact in contacts %}
+            {% for room in rooms %}
+                {% if room.pk == contact.room_id.pk %}
+                    <li class="sidebar-nav-item">
+                        <a class="js-scroll-trigger" href="{% url 'chat:room' room.pk %}">
+                            <div>메뉴: {{ room.Posting_id.menu }}</div>
+                            <div>가게: {{ room.Posting_id.store_id.title }}</div>
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+
 
         {#        {% for univ in univs %}#}
         {#            <li class="sidebar-nav-item">#}
         {#                <a class="js-scroll-trigger" href="#page-top">{{ univ.name }}</a>#}
         {#            </li>#}
         {#        {% endfor %}#}
-
     </ul>
 </nav>
 
