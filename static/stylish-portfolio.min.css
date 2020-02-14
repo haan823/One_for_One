@@ -8,18 +8,53 @@
     font-family: BMDOHYEON_ttf;
     src: url('fonts/BMDOHYEON_ttf.ttf');
 }
+
 @font-face {
     font-family: BMHANNAAir_ttf;
     src: url('fonts/BMHANNAAir_ttf.ttf');
 }
+
 @font-face {
     font-family: BMHANNAPro;
     src: url('fonts/BMHANNAPro.ttf');
 }
+
 @font-face {
     font-family: BMYEONSUNG_ttf;
     src: url('fonts/BMYEONSUNG_ttf.ttf');
 }
+
+.nav {
+    color: white;
+    font-family: BMHANNAPro;
+    height: 70px;
+    line-height: 70px;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    z-index: 1000;
+    width: 100%;
+    min-width: 400px;
+    display: flex;
+}
+.nav > .nav-item2 {
+    flex-direction: row-reverse;
+}
+.nav > .nav-item2 > a {
+    font-size: 1.5rem;
+    color: white;
+
+}
+
+.nav > .nav-item2 > a:hover {
+    color: red;
+}
+.nav > .nav-item > a{
+    color: white;
+    font-size: 2.5rem;
+    margin-left: 1.5rem;
+}
+
 .masthead {
     font-family: BMHANNAPro;
     position: relative;
@@ -43,7 +78,7 @@
 }
 
 body, html {
-
+    min-width: 400px;
     width: 100%;
     height: 100%
 }
@@ -112,7 +147,6 @@ h1, h2, h3, h4, h5, h6 {
 .scroll-to-top i {
     font-weight: 800
 }
-
 
 
 @media (min-width: 992px) {
