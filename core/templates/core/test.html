@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for store in stores %}
+        <div class="cont" style="border: 2px solid black">
+            <img src="{{ store.logo }}" alt="">
+            {{ store.title }}
+            {{ store.star }}
+            {{ store.min_price }}
+            {{ store.del_time }}
+            <a href="{{ store.store_url }}">페이지로 이동</a>
+        </div>
+    {% endfor %}
+{% endblock %}

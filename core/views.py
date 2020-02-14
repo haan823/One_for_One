@@ -27,7 +27,7 @@ def home(request, pk):
 
 def match_new(request, pk):
     univ = request.user.profile.univ
-    univ_input = Profile.objects.filter(name=univ)
+    Stores = Profile.objects.filter(name=univ)
     # categories = Category.objects.get()
     stores = Store.objects.all()
     if request.method == "POST":
@@ -38,7 +38,8 @@ def match_new(request, pk):
 
 
 def choice_cat(request, pk):
-    # cats = Category.objects.all()
+    Stores = Store.objects.filter(univ_id=pk)
+
     if request.method == 'POST':
         pass
     else:
@@ -58,6 +59,7 @@ def match_fin(request):
 
 def mypage(request):
     return render(request, 'core/mypage.html')
+
 
 def main(request):
     univs = Univ.objects.all()
@@ -90,3 +92,9 @@ def main(request):
 #             'header': ('Please choose any excel file ' +
 #                        'from your cloned repository:')
 #         })
+def test(request):
+    stores = Store.objects.all()
+    data = {
+        'stores': stores,
+    }
+    return render(request, 'core/test.html', data)
