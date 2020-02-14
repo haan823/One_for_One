@@ -3,19 +3,55 @@
  * Copyright 2013-2019 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-stylish-portfolio/blob/master/LICENSE)
  */
-body, html {
+
+@font-face {
+    font-family: BMDOHYEON_ttf;
+    src: url('fonts/BMDOHYEON_ttf.ttf');
+}
+@font-face {
+    font-family: BMHANNAAir_ttf;
+    src: url('fonts/BMHANNAAir_ttf.ttf');
+}
+@font-face {
+    font-family: BMHANNAPro;
+    src: url('fonts/BMHANNAPro.ttf');
+}
+@font-face {
+    font-family: BMYEONSUNG_ttf;
+    src: url('fonts/BMYEONSUNG_ttf.ttf');
+}
+.masthead {
+    font-family: BMHANNAPro;
+    position: relative;
+    display: table;
     width: 100%;
-    height: 100%
+    height: 100vh;
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/pizza-slices-food.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
 }
 
-body {
-    font-family: 'Source Sans Pro'
+.masthead h1 {
+
+    font-size: 4rem;
+    margin: 0;
+    padding: 0
+}
+
+body, html {
+
+    width: 100%;
+    height: 100%
 }
 
 .btn-xl {
     padding: 1.25rem 2.5rem
 }
-ㅠㅁ
+
 .content-section {
     padding-top: 7.5rem;
     padding-bottom: 7.5rem
@@ -77,25 +113,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 800
 }
 
-.masthead {
 
-    position: relative;
-    display: table;
-    width: 100%;
-    height: 100vh;
-    padding-top: 8rem;
-    padding-bottom: 8rem;
-    background: linear-gradient(90deg, rgba(255, 255, 255, .1) 0, rgba(255, 255, 255, .1) 100%), url('img/bg-masthead.jpg');
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover
-}
-
-.masthead h1 {
-    font-size: 4rem;
-    margin: 0;
-    padding: 0
-}
 
 @media (min-width: 992px) {
     .masthead {
@@ -108,6 +126,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #sidebar-wrapper {
+    font-family: BMHANNAAir_ttf;
     position: fixed;
     z-index: 2;
     right: 0;

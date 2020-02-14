@@ -11,12 +11,12 @@ from django.utils import timezone
 from django.utils.crypto import random
 from django.views import View
 
-from core.models import Category
-<<<<<<< Updated upstream
+
+
 from .models import Profile, Univ, AuthSms
-=======
+
 from .models import Profile, Univ
->>>>>>> Stashed changes
+
 
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
@@ -48,6 +48,7 @@ def goto_signup(request):
 
 
 def signup(request, pk):
+    univs = Univ.objects.all()
     univ = Univ.objects.get(pk=pk)
     if request.method == "POST":
         user_authsms = AuthSms.objects.get(phone_number=request.POST['phone_number'])
@@ -91,12 +92,24 @@ def signup(request, pk):
             '홍익대학교': 'mail.hongik.ac.kr',
         }
         data = {
+            'univs': univs,
             'univ': univ,
             'email_domain': UNIV_DOMAIN_MAPPING.get(univ.name)
         }
         return render(request, 'signup.html', data)
 
 def login(request):
+    if request.user.is_authenticated:
+        current_user = request.user
+        profile = Profile.objects.get(user=current_user)
+        data = {
+            'profile': profile
+        }
+    else:
+        univs = Univ.objects.all()
+        data = {
+            'univs': univs
+        }
     if request.method == "POST":
         username = request.POST["id"]
         password = request.POST["password"]
@@ -107,14 +120,12 @@ def login(request):
         if user is not None:
             auth.login(request, user)
             return redirect(reverse('core:home', args=[univ.id]))
-        else:
-            return render(request, 'login.html', {'error':'username or password is incorrect'})
     else:
-        return render(request, 'login.html')
+        return render(request, 'login.html', data)
 
 def logout(request):
     auth.logout(request)
-    return redirect("account:login")
+    return redirect("core:main")
 
 def user_active(request, token):
     user = User.objects.get(last_name=token)

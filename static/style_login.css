@@ -11,6 +11,22 @@
     src: url('fonts/ubuntu/Ubuntu-Bold.ttf');
 }
 
+@font-face {
+    font-family: BMDOHYEON_ttf;
+    src: url('fonts/BMDOHYEON_ttf.ttf');
+}
+@font-face {
+    font-family: BMHANNAAir_ttf;
+    src: url('fonts/BMHANNAAir_ttf.ttf');
+}
+@font-face {
+    font-family: BMHANNAPro;
+    src: url('fonts/BMHANNAPro.ttf');
+}
+@font-face {
+    font-family: BMYEONSUNG_ttf;
+    src: url('fonts/BMYEONSUNG_ttf.ttf');
+}
 /*//////////////////////////////////////////////////////////////////
 [ RESTYLE TAG ]*/
 
@@ -22,12 +38,12 @@
 
 body, html {
     height: 100%;
-    font-family: Ubuntu-Regular, sans-serif;
+    font-family: BMHANNAAir_ttf, sans-serif;
 }
 
 /*---------------------------------------------*/
 a {
-    font-family: Ubuntu-Regular;
+    font-family: BMHANNAAir_ttf;
     font-size: 14px;
     line-height: 1.7;
     color: #666666;
@@ -53,7 +69,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p {
-    font-family: Ubuntu-Regular;
+    font-family: BMHANNAAir_ttf;
     font-size: 14px;
     line-height: 1.7;
     color: #666666;
@@ -137,7 +153,7 @@ iframe {
 /*//////////////////////////////////////////////////////////////////
 [ Utility ]*/
 .txt1 {
-    font-family: Ubuntu-Regular;
+    font-family: BMHANNAAir_ttf;
     font-size: 16px;
     color: #827ffe;
     line-height: 1.4;
@@ -201,7 +217,7 @@ iframe {
 }
 
 .login100-form-title {
-    font-family: Ubuntu-Bold;
+    font-family: BMHANNAAir_ttf;
     font-size: 30px;
     color: #403866;
     line-height: 1.2;
@@ -313,7 +329,7 @@ iframe {
 }
 
 .label-checkbox100 {
-    font-family: Ubuntu-Regular;
+    font-family: BMHANNAAir_ttf;
     font-size: 16px;
     color: #999999;
     line-height: 1.2;
@@ -370,7 +386,7 @@ iframe {
 }
 
 .login100-form-btn {
-    font-family: Ubuntu-Bold;
+    font-family: BMHANNAAir_ttf;
     font-size: 16px;
     color: #fff;
     line-height: 1.2;
@@ -424,7 +440,7 @@ iframe {
     right: 12px;
     pointer-events: none;
 
-    font-family: Ubuntu-Regular;
+    font-family: BMHANNAAir_ttf;
     color: #c80000;
     font-size: 14px;
     line-height: 1.4;

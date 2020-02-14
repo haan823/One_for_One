@@ -473,7 +473,7 @@ h6 {
 
 .section-header h3 {
   font-size: 36px;
-  color: #413e66;
+  color: white;
   text-align: center;
   font-weight: 700;
   position: relative;
@@ -493,7 +493,7 @@ h6 {
 --------------------------------*/
 
 .section-bg {
-  background: #f5f8fd;
+  background-color: inherit;
 }
 
 /* About Us Section
@@ -759,7 +759,7 @@ h6 {
   padding: 6px 10px;
   font-size: 16px;
   line-height: 20px;
-  color: #413e66;
+  color: white;
   margin-bottom: 5px;
   transition: all 0.3s ease-in-out;
 }
