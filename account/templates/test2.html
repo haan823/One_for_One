@@ -1,0 +1,109 @@
+<script type="text/javascript">
+    var button_joinus = document.getElementById('button_joinus');
+    var boo1 = false;
+    var boo2 = false;
+    var boo3 = false;
+    var boo4 = false;
+    var boo5 = false;
+    button_joinus.disabled = boo1 && boo2 && boo3 && boo4 && boo5;
+
+    $(".alert").hide();
+    var username_list = {{ username_list }};
+    var nickname_list ={{ username_list }};
+    var phone_number_list = {{ phone_number_list }};
+
+    $("input").keyup(function () {
+        var username = $("#username").val();
+        if (username in username_list) {
+            $("#username-alert-success").hide();
+            $("#username-alert-danger").show();
+        } else {
+            $("#username-alert-success").show;
+            $("#username-alert-danger").hide();
+        }
+
+        var pwd1 = $("#password1").val();
+        var pwd2 = $("#password2").val();
+        if (pwd1 != "" || pwd2 != "") {
+            if (pwd1 == pwd2) {
+                $("#password-alert-success").show();
+                $("#password-alert-danger").hide();
+                boo2 = true
+            } else {
+                $("#password-alert-success").hide();
+                $("#password-alert-danger").show();
+            }
+        }
+
+        var nickname = $("#nickname").val();
+        if (nickname in nickname_list) {
+            $("#nickname-alert-success").hide();
+            $("#nickname-alert-danger").show();
+        } else {
+            $("#nickname-alert-success").show;
+            $("#nickname-alert-danger").hide();
+        }
+
+        var phone_number = $("#phone_number").val();
+        if (phone_number in phone_number_list) {
+            $("#phone_number-alert-success").hide();
+            $("#phone_number-alert-danger").show();
+        } else {
+            $("#phone_number-alert-success").show;
+            $("#phone_number-alert-danger").hide();
+        }
+    });
+</script>
+
+
+<script type="text/javascript">
+    var str = "<div class=\"wrap-input100 validate-input m-b-16\" data-validate=\"user_auth_number is required\">\n" +
+        "                    <input id='user_auth_number' class=\"input100\" type=\"text\" name=\"user_auth_number\"\n" +
+        "                           placeholder=\"인증번호를 입력해주세요\">\n" +
+        "                    <span class=\"focus-input100\"></span>\n" +
+        "                </div>\n" +
+        "                <br>"
+
+    var list = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+    function validation_check(string) {
+        var bool1 = string.slice(0, 3) === '010' && string.length === 11;
+        var bool2 = true
+        for (var i = 0; i < string.length; i++) {
+            if (!(string.charAt(i) in list)) {
+                bool2 = false;
+                break;
+            }
+        }
+        return bool1 && bool2
+    }
+
+    function send() {
+        var imdiv = document.querySelector('#imdiv');
+        imdiv.innerHTML = str;
+        var user_phone_number = document.getElementById("phone_number").value;
+        $.ajax({
+            type: "POST",
+            url: "send_sms",
+            data: {
+                'user_phone_number': user_phone_number,
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            dataType: "json",
+            success: function () {
+                alert('입력하신 휴대폰 번호로 인증번호가 전송되었습니다.');
+                boo4 = true;
+            }
+        })
+    }
+
+    function sms() {
+        var user_phone_number = document.getElementById("phone_number").value;
+        if (validation_check(user_phone_number)) {
+            send()
+        } else {
+            alert('올바른 형식의 휴대폰 번호를 입력해주세요.')
+        }
+    }
+
+</script>

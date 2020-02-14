@@ -27,8 +27,9 @@ def scroll_down():
 univ_addr_list = [
     # '서울특별시 마포구 상수동 와우산로 94',
     # '서울특별시 관악구 신림동 산 56-1 서울대학교',
-    '경기도 수원시 장안구 율천동 서부로 2066',
+    # '경기도 수원시 장안구 율천동 서부로 2066',
     # '서울특별시 서대문구 대현동 11-1 이화여자대학교',
+    '서울특별시 동대문구 이문로 107',
 ]
 
 x = "서울대"
@@ -57,7 +58,7 @@ for univ_addr in univ_addr_list:
     SCROLL_PAUSE_TIME = 0.5
     body = driver.find_element_by_css_selector('body')
 
-    for i in range(5, 6):
+    for i in range(13,15):
         try:
             index = ['상세페이지URL', '로고URL', '상호명', '별점', '최소주문금액', '소요시간', '리뷰수']
             sheet.append(index)
@@ -166,12 +167,12 @@ for univ_addr in univ_addr_list:
 
                 except:
                     print(1)
-                    wb.save('./data/yogiyo_성대_new.xlsx')
+                    wb.save('./data/yogiyo_한국외대_new.xlsx')
                     print(2)
                     break
         except:
             print(3)
-            wb.save('./data/yogiyo_성대_new.xlsx')
+            wb.save('./data/yogiyo_한국외대_new.xlsx')
             print(4)
             sys.exit()
-wb.save('./data/yogiyo_성대_new.xlsx')
+wb.save('./data/yogiyo_한국외대_new.xlsx')

@@ -21,27 +21,6 @@
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body>
-{#회원가입#}
-{#<form action="{% url 'signup' univ.id %}" method="POST">#}
-{#    {% csrf_token %}#}
-{#    <label for="id">아이디</label>#}
-{#    <input id='id' type="text" name="id"><br>#}
-{#    <label for="password1">패스워드</label>#}
-{#    <input id='password1' type="password" name="password1"><br>#}
-{#    <label for="password2">패스워드 확인</label>#}
-{#    <input id='password2' type="password" name="password2"><br>#}
-{#    <label for="nickname">닉네임</label>#}
-{#    <input id='nickname' type="text" name='nickname'><br>#}
-{#    <label for="email_id">이메일 id</label>#}
-{#    <input id='email_id' type="text" name="email_id"><br>#}
-{#    <label for="email_domain">이메일 domain</label>#}
-{#    <input id='email_domain' type="text" name='email_domain' value="{{ email_domain }}" readonly ><br>#}
-{#    <label for="phone_number">전화번호('-' 제외하고 입력하세요)</label>#}
-{#    <input id='phone_number' type="text" name="phone_number">#}
-{#    <button type="submit">회원가입</button>#}
-{#    {{ message }}#}
-{#</form>#}
-
 <div class="limiter">
     <div class="container-login100">
         <div class="wrap-signup100 p-t-50 p-b-90">
@@ -54,33 +33,43 @@
                 <br>
 
                 <div class="wrap-input100 validate-input m-b-16" data-validate="Username is required">
-                    <input id='id' class="input100" type="text" name="id" placeholder="Username">
+                    <input id='username' class="input100" type="text" name="username" placeholder="Username" value="{{ de_username }}">
                     <span class="focus-input100"></span>
                 </div>
                 <br>
 
+                <div class="alert alert-success" id="username-alert-success">사용할 수 있는 username입니다.</div>
+                <div class="alert alert-danger" id="username-alert-danger">username이 중복되었습니다.</div>
+
                 <div style="display: flex; justify-content: space-between;">
                     <div class="wrap-input49 validate-input m-b-16" data-validate="Password is required" style="">
-                        <input id='password1' class="input100" type="password" name="password1" placeholder="Password">
+                        <input id='password1' class="input100" type="password" name="password1" placeholder="Password" value="{{ de_password1}}">
                         <span class="focus-input100"></span>
                     </div>
 
                     <div class="wrap-input49 validate-input m-b-16" data-validate="Password is required" style="">
-                        <input id='password2' class="input100" type="password" name="password2"
+                        <input id='password2' class="input100" type="password" name="password2" value="{{ de_password2 }}"
                                placeholder="Password confirm">
                         <span class="focus-input100"></span>
                     </div>
                 </div>
                 <br>
 
+                <div class="alert alert-success" id="password-alert-success">비밀번호가 일치합니다.</div>
+                <div class="alert alert-danger" id="password-alert-danger">비밀번호가 일치하지 않습니다.</div>
+
                 <div class="wrap-input100 validate-input m-b-16" data-validate="Nickname is required">
-                    <input id='nickname' class="input100" type="text" name="nickname" placeholder="Nickname">
+                    <input id='nickname' class="input100" type="text" name="nickname" placeholder="Nickname" value="{{ de_nickname }}">
                     <span class="focus-input100"></span>
                 </div>
                 <br>
+
+                <div class="alert alert-success" id="nickname-alert-success">사용할 수 있는 nickname입니다.</div>
+                <div class="alert alert-danger" id="nickname-alert-danger">nickname이 중복되었습니다.</div>
+
                 <div style="display: flex; justify-content: space-between;">
                     <div class="wrap-input49 validate-input m-b-16" data-validate="Email ID is required">
-                        <input id='email_id' class="input100" type="text" name="email_id" placeholder="Email ID">
+                        <input id='email_id' class="input100" type="text" name="email_id" placeholder="Email ID" value="{{ de_email_id }}">
                         <span class="focus-input100"></span>
                     </div>
                     <div class="wrap-input10 validate-input m-b-16">
@@ -96,45 +85,21 @@
                 </div>
                 <br>
 
+                <div class="alert alert-success" id="email_id-alert-success">등록 가능한 이메일입니다.</div>
+                <div class="alert alert-danger" id="email_id-alert-danger">이미 등록된 이메일입니다.</div>
 
                 <div class="wrap-input100 validate-input m-b-16" data-validate="Phone Number is required">
-                    <input id='phone_number' class="input100" type="text" name="phone_number"
-                           placeholder="Phone Number">
+                    <input id='phone_number' class="input100" type="text" name="phone_number" value="{{ de_phone_number }}"
+                           placeholder="-없이 '01012345678'과 같이 전화번호를 입력해주세요.">
                     <span class="focus-input100"></span>
                 </div>
                 <br>
 
-                <button type="button" id="addedKeyword" onclick="send()">인증번호 전송</button>
-                <div id="imdiv"></div>
+                <div class="alert alert-success" id="phone_number-alert-success">등록 가능한 전화번호입니다.</div>
+                <div class="alert alert-danger" id="phone_number-alert-danger">이미 등록된 전화번호이거나 올바른 형식의 전화번호가 아닙니다.</div>
 
-                <script type="text/javascript">
-                    {#var temp;#}
-                    var addedFormDiv = document.querySelector("#addedKeyword");
-                    var str = "<div class=\"wrap-input100 validate-input m-b-16\" data-validate=\"user_auth_number is required\">\n" +
-                        "                    <input id='user_auth_number' class=\"input100\" type=\"text\" name=\"user_auth_number\"\n" +
-                        "                           placeholder=\"인증번호를 입력해주세요\">\n" +
-                        "                    <span class=\"focus-input100\"></span>\n" +
-                        "                </div>\n" +
-                        "                <br>"
-                    function send() {
-                        {#addedFormDiv.addEventListener('click', function () {#}
-                        var imdiv = document.querySelector('#imdiv');
-                        imdiv.innerHTML = str;
-                        var user_phone_number = document.getElementById("phone_number").value;
-                        alert('입력하신 전화번호로 인증번호가 전송되었습니다.');
-                        $.ajax({
-                            type: "POST",
-                            url: "send_sms",
-                            data: {
-                                'user_phone_number': user_phone_number,
-                                'csrfmiddlewaretoken': '{{ csrf_token }}',
-                            },
-                            dataType: "json",
-                        }).done(function () {
-                            alert('finished python script');
-                        });
-                    }
-                </script>
+                <button type="button" id="addedKeyword" onclick="sms()">인증번호 전송</button>
+                <div id="imdiv"></div>
 
                 <div class="container-login100-form-btn m-t-17">
                     <button type='submit' class="login100-form-btn">
@@ -147,10 +112,144 @@
                     {{ message }}
                 </div>
 
+                <script type="text/javascript">
+                    var str = "<div class=\"wrap-input100 validate-input m-b-16\" data-validate=\"user_auth_number is required\">\n" +
+                        "                    <input id='user_auth_number' class=\"input100\" type=\"text\" name=\"user_auth_number\"\n" +
+                        "                           placeholder=\"인증번호를 입력해주세요\">\n" +
+                        "                    <span class=\"focus-input100\"></span>\n" +
+                        "                </div>\n" +
+                        "                <br>"
+
+                    var list = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+                    var username_list, nickname_list, phone_number_list, email_id_list;
+                    username_list = [
+                        {% for i in username_list %}
+                            '{{ i }}'
+                        {% endfor %}
+                    ];
+                    nickname_list = [
+                        {% for i in nickname_list %}
+                            '{{ i }}'
+                        {% endfor %}
+                    ];
+                    phone_number_list = [
+                        {% for i in phone_number_list %}
+                            '{{ i }}',
+                        {% endfor %}
+                    ];
+                    email_id_list = [
+                        {% for i in email_id_list %}
+                            '{{ i }}',
+                        {% endfor %}
+                    ];
+
+                    function validation_check(string) {
+                        var bool1 = string.slice(0, 3) === '010' && string.length === 11;
+                        var bool2 = true
+                        for (var i = 0; i < string.length; i++) {
+                            if (!(string.charAt(i) in list)) {
+                                bool2 = false;
+                                break;
+                            }
+                        }
+                        return bool1 && bool2
+                    }
+
+                    var auth_number;
+                    function send() {
+                        var imdiv = document.querySelector('#imdiv');
+                        imdiv.innerHTML = str;
+                        var user_phone_number = document.getElementById("phone_number").value;
+                        $.ajax({
+                            type: "POST",
+                            url: "send_sms",
+                            data: {
+                                'user_phone_number': user_phone_number,
+                                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            },
+                            success: function () {
+                                alert('입력하신 휴대폰 번호로 인증번호가 전송되었습니다.');}
+                        })
+                    }
+
+                    function sms() {
+                        var user_phone_number = document.getElementById("phone_number").value;
+                        if (validation_check(user_phone_number)) {
+                            send()
+                        } else {
+                            alert('올바른 형식의 휴대폰 번호를 입력해주세요.')
+                        }
+                    }
+
+                    $(".alert").hide();
+                    $("input").keyup(function () {
+                        var pwd1 = $("#password1").val();
+                        var pwd2 = $("#password2").val();
+                        if (pwd1 != "" || pwd2 != "") {
+                            if (pwd1 == pwd2) {
+                                $("#password-alert-success").show();
+                                $("#password-alert-danger").hide();
+                            } else {
+                                $("#password-alert-success").hide();
+                                $("#password-alert-danger").show();
+                            }
+                        }
+
+                        var username = $("#username").val();
+                        if (username !== "") {
+                            if (username_list.indexOf(username) > -1) {
+                                $("#username-alert-success").hide();
+                                $("#username-alert-danger").show();
+                            } else {
+                                $("#username-alert-success").show();
+                                $("#username-alert-danger").hide();
+                            }
+                        }
+
+                        var nickname = $("#nickname").val();
+                        if (nickname !== "") {
+                            if (nickname_list.indexOf(nickname) > -1) {
+                                $("#nickname-alert-success").hide();
+                                $("#nickname-alert-danger").show();
+                            } else {
+                                $("#nickname-alert-success").show();
+                                $("#nickname-alert-danger").hide();
+                            }
+                        }
+
+                        var email_id = $("#email_id").val();
+                        if (email_id !== "") {
+                            if (email_id_list.indexOf(email_id) > -1) {
+                                $("#email_id-alert-success").hide();
+                                $("#email_id-alert-danger").show();
+                            } else {
+                                $("#email_id-alert-success").show();
+                                $("#email_id-alert-danger").hide();
+                            }
+                        }
+
+                        var phone_number = $("#phone_number").val();
+                        console.log('validation check result:' + validation_check(phone_number));
+
+                        if (phone_number !== "") {
+                            if (phone_number_list.indexOf(phone_number) > -1 || !(validation_check(phone_number))) {
+                                $("#phone_number-alert-success").hide();
+                                $("#phone_number-alert-danger").show();
+
+                            } else {
+                                $("#phone_number-alert-success").show();
+                                $("#phone_number-alert-danger").hide();
+                            }
+                        }
+                    })
+
+
+                </script>
 
             </form>
         </div>
     </div>
 </div>
+
 </body>
 </html>

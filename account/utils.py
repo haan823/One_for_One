@@ -90,7 +90,7 @@ class AuthSmsSendView(View):
             'to': [
                 f'{phone_number}',
             ],
-            'content': f'인증번호 [{auth_number}]'
+            'content': f'OneforOne 서비스의 인증번호는 [{auth_number}]입니다.'
         }
 
         requests.post(SMS_URL, headers=headers, json=data)
