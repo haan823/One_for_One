@@ -16,14 +16,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Category',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('cat_name', models.CharField(max_length=255, verbose_name='카테고리명')),
-                ('univ_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='category', to='account.Univ', verbose_name='대학')),
-            ],
-        ),
-        migrations.CreateModel(
             name='Posting',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -49,10 +41,11 @@ class Migration(migrations.Migration):
                 ('logo', models.URLField()),
                 ('title', models.CharField(max_length=255, verbose_name='가게명')),
                 ('star', models.CharField(max_length=255, verbose_name='별점')),
-                ('min_price', models.PositiveIntegerField(verbose_name='최소주문금액')),
-                ('del_time', models.PositiveIntegerField(verbose_name='배달시간')),
+                ('min_price', models.CharField(max_length=255, verbose_name='최소주문금액')),
+                ('del_time', models.CharField(max_length=255, verbose_name='배달시간')),
                 ('store_url', models.URLField()),
-                ('category_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='store', to='core.Category', verbose_name='카테고리명')),
+                ('cat_name', models.CharField(max_length=255, verbose_name='카테고리명')),
+                ('univ_id', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='category', to='account.Univ', verbose_name='대학')),
             ],
         ),
         migrations.AddField(
