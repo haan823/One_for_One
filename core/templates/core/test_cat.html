@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for cat in cat_list %}
+        <div style="border: solid 2px black">
+            <h1>{{ cat }}</h1>
+            {% for s in stores_univ %}
+                {% if s.cat_name == cat %}
+                    <div class="cont" style="border: 2px solid black">
+                        <img src="{{ s.logo }}" alt="">
+                        {{ s.title }}
+                        {{ s.star }}
+                        {{ s.min_price }}
+                        {{ s.del_time }}
+                        <a href="{{ s.store_url }}">페이지로 이동</a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% endblock %}

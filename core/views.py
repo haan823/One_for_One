@@ -24,10 +24,9 @@ def home(request, pk):
     return render(request, 'core/home.html', data)
 
 
-
-def match_new(request, pk):
+def match_new(request):
     univ = request.user.profile.univ
-    Stores = Profile.objects.filter(name=univ)
+    Stores = Store.objects.filter(name=univ)
     # categories = Category.objects.get()
     stores = Store.objects.all()
     if request.method == "POST":
@@ -92,6 +91,21 @@ def main(request):
 #             'header': ('Please choose any excel file ' +
 #                        'from your cloned repository:')
 #         })
+
+def test_cat(request):
+    cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
+    current_user = request.user
+    profile = Profile.objects.get(user=current_user)
+    stores_univ = Store.objects.filter(univ_id=profile.univ)
+
+    data = {
+        'cat_list': cat_list,
+        # 'stores_univ': [store for store in stores_univ],
+        'stores_univ': stores_univ
+    }
+    return render(request, 'core/test_cat.html', data)
+
+
 def test(request):
     stores = Store.objects.all()
     data = {
