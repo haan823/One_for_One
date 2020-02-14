@@ -67,18 +67,23 @@
         <div id="contacts">
             <ul>
                 {% for user in allowed_users %}
-                    <li class="contact">
-                        <div class="wrap">
-                            <span class="contact-status online"></span>
-                            <img src="https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png" alt=""/>
-                            <div class="meta">
-                                <p class="name">{{ user.username }}</p>
+                    {% if user != room.Posting_id.user_id %}
+                        <li class="contact">
+                            <div class="wrap">
+                                <span class="contact-status online"></span>
+                                <img src="https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png"
+                                     alt=""/>
+                                <div class="meta">
+                                    <p class="name">{{ user.username }}</p>
+                                </div>
                             </div>
-                        </div>
-                        <button type="button" class="btn-danger user_out" name={{ user.pk }}>
-                            <span>OUT</span>
-                        </button>
-                    </li>
+                            {% if now_user == room.Posting_id.user_id %}
+                                <button style = "margin:3px;" type="button" class="btn-danger user_out" name={{ user.pk }}>
+                                    <span style="font-size: 1em">OUT</span>
+                                </button>
+                            {% endif %}
+                        </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>
@@ -175,7 +180,7 @@
 
     function createMessage(data) {
         var author = data['author'];
-        var timestamp = data['']
+        {#var timestamp = data['timestamp'];#}
         var message_room_id = data['room_id'];
         var msgListTag = document.createElement('li');
         var imgTag = document.createElement('img');
@@ -191,6 +196,7 @@
             msgListTag.appendChild(imgTag);
             msgListTag.appendChild(pTag);
             document.querySelector('#chat-log').appendChild(msgListTag);
+            $(".messages").animate({ scrollTop: $(document).height() }, "fast");
         }
     }
 </script>
@@ -224,23 +230,23 @@
             },
         });
     });
-    {##}
-    {#$(".user_out").click(function () {#}
-    {#    var user_pk= $(this).attr('name');#}
-    {#    var pk = {{ room.pk }}#}
-    {#    $.ajax({#}
-    {#        type: "GET",#}
-    {#        url: "{% url 'chat:delete_contact' room.pk%}",#}
-    {#        data: {'pk':pk, 'user_pk': user_pk},#}
-    {#        success: function () {#}
-    {#            alert("해당 사용자를 퇴장시켰습니다.");#}
-    {#        },#}
-    {#        error: function (request, status, error) {#}
-    {#            alert(error + "Posting 게시자에 의해 퇴장처리된 채팅방입니다.")#}
-    {#        },#}
-    {#    });#}
-    {#});#}
+
+    $(".user_out").click(function () {
+        var user_pk = $(this).attr('name');
+        var room_pk = {{ room.pk }};
+        $.ajax({
+            type: "GET",
+            url: "{% url 'chat:delete_contact' pk=room.pk  %}",
+            data: {'pk': room_pk, 'user_pk': user_pk},
+            success: function () {
+                alert("해당 사용자를 퇴장시켰습니다.");
+
+            },
+            error: function (request, status, error) {
+                alert(error + "Posting 게시자에 의해 퇴장처리된 채팅방입니다.");
+            },
+        });
+    });
 </script>
 </body>
-
 </html>

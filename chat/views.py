@@ -22,12 +22,13 @@ def room(request, pk):
     if room.now_number == room.Posting_id.max_num:
         raise PermissionDenied
     if request.user not in allowed_users:
-        raise Exception
+        raise PermissionDenied
     return render(request, 'chat/room.html', {
         'room': room,
         'posting': posting,
         'username': mark_safe(json.dumps(request.user.username)),
-        'allowed_users': allowed_users
+        'allowed_users': allowed_users,
+        'now_user': request.user
     })
 
 
@@ -84,8 +85,8 @@ def Delete_chatting(request, pk):
     return redirect('core:home', room.pk)
 
 
-def Delete_contact(request, pk, user_pk):
+def Delete_contact(request, pk):
+    user_pk = request.GET['user_pk']
     contact = Contact.objects.filter(room_id=pk).get(allowed_user=user_pk)
-    print(contact)
     contact.delete()
-    return redirect('chat:room', pk)
+    return render(request, 'chat/room.html')

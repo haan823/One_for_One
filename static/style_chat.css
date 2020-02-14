@@ -5,7 +5,7 @@ body {
     min-height: 100vh;
     background: white;
     font-family: "proxima-nova", "Source Sans Pro", sans-serif;
-    font-size: 1em;
+    font-size: 1.2em;
     letter-spacing: 0.1px;
     color: #32465a;
     text-rendering: optimizeLegibility;
@@ -420,10 +420,9 @@ body {
 #frame #sidepanel #contacts ul li.contact {
     position: relative;
     padding: 10px 0 15px 0;
-    font-size: 0.9em;
+    font-size: 1em;
     cursor: pointer;
 }
-
 @media screen and (max-width: 735px) {
     #frame #sidepanel #contacts ul li.contact {
         padding: 6px 0 46px 8px;

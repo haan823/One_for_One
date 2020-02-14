@@ -18,8 +18,6 @@ class ChatConsumer(WebsocketConsumer):
         self.send_message(content)
 
     def new_message(self, data):
-        print(type(data['room_id']))
-        print(data)
         room = data['room_id']
         author = data['from']
         author_user = User.objects.filter(username=author)[0]
