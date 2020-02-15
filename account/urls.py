@@ -12,5 +12,6 @@ urlpatterns = [
     path('signup/<int:pk>/', signup, name='signup'),
     path('active/<token>', user_active, name='user_active'),
     path('signup/<int:pk>/send_sms', send_sms),
-    path('test', test,)
+    path('signup/<int:pk>/auth_check', auth_check),
+    path('test', test, )
 ]
