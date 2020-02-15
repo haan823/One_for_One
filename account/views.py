@@ -167,3 +167,13 @@ def send_sms(request, pk):
 
 def test(request):
     return render(request, 'test3.html', {'count': 6})
+
+
+def auth_check(request, pk):
+    user_authsms = AuthSms.objects.get(phone_number=request.POST['user_phone_number'])
+    if int(request.POST['user_auth_number']) == int(user_authsms.auth_number):
+        print(request.POST['user_auth_number'])
+        print(user_authsms.auth_number)
+        return render(request, 'test3.html')
+    else:
+        return None
