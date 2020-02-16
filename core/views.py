@@ -1,7 +1,9 @@
+import json
+
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
-
 
 from django.forms import forms
 from django.shortcuts import render
@@ -30,12 +32,12 @@ def home(request, pk):
         }
         return render(request, 'core/home.html', data)
     else:
-        stores = Store.objects.filter(univ_id = pk)
+        stores = Store.objects.filter(univ_id=pk)
         univ = Univ.objects.get(pk=pk)
         univs = Univ.objects.all()
         postings = []
         for store in stores:
-            postings2 = Posting.objects.filter(store_id = store.id)
+            postings2 = Posting.objects.filter(store_id=store.id)
             for posting in postings2:
                 postings.append(posting)
         data = {
@@ -45,7 +47,6 @@ def home(request, pk):
             'categories': ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점'],
         }
         return render(request, 'core/home.html', data)
-
 
 
 def match_new(request, pk):
@@ -60,14 +61,13 @@ def match_new(request, pk):
     return render(request, 'core/match_new.html')
 
 
-
 def choice_cat(request, pk):
     # cats = Category.objects.all()
     if request.method == 'POST':
         pass
     else:
         data = {
-           # 'cats':cats,
+            # 'cats':cats,
         }
     return render(request, 'core/choice_cat.html', data)
 
@@ -75,9 +75,9 @@ def choice_cat(request, pk):
 def choice_store(request):
     return render(request, 'core/choice_store.html')
 
+
 def choice_page(request):
     return render(request, 'core/store_choice.html')
-
 
 
 def match_fin(request):
@@ -86,6 +86,7 @@ def match_fin(request):
 
 def mypage(request):
     return render(request, 'core/mypage.html')
+
 
 def store_choice(request):
     return render(request, 'core/store_choice.html')
@@ -106,6 +107,24 @@ def main(request):
     return render(request, 'core/main.html', data)
 
 
+def search(request):
+    return render(request, 'core/search.html')
+
+
+def search_store(request):
+    kwd = request.POST.get('kwd', None)
+    data = {
+        'content': list()
+    }
+    if kwd:
+        postings = Posting.objects.filter(menu__icontains=kwd)
+        for posting in postings:
+            data['content'].append({
+                'menu': posting.menu,
+                'price': posting.price,
+                'max_num': posting.max_num
+            })
+    return HttpResponse(json.dumps(data), content_type="application/json")
 
 # class UploadFileForm(forms.Form):
 #     file = forms.FileField()
