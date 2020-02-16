@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
+
 from django.forms import forms
 from django.shortcuts import render
 from core.models import Store, Posting
@@ -12,23 +13,38 @@ from account.models import Univ, Profile
 
 
 def home(request, pk):
-    current_user = request.user
-    profile = Profile.objects.get(user=current_user.id)
-    univ = profile.univ
-    contacts = Contact.objects.filter(allowed_user=current_user)
-    rooms = Room.objects.all()
-    # categories = Category.objects.filter(univ_id=univ)
-    postings = Posting.objects.filter(user_id=current_user.id)
-    data = {
-        'postings': postings,
-        'current_user': current_user.id,
-        'univ': univ,
-        'profile': profile,
-        'contacts': contacts,
-        'rooms': rooms
-        #'categories': categories,
-    }
-    return render(request, 'core/home.html', data)
+    if request.user.is_authenticated:
+        current_user = request.user
+        profile = Profile.objects.get(user=current_user)
+        univ = profile.univ
+        stores = Store.objects.filter(univ_id=pk)
+        postings = []
+        for store in stores:
+            postings += Posting.objects.filter(store_id=store.id)
+        data = {
+            'postings': postings,
+            'current_user': current_user.id,
+            'univ': univ,
+            'profile': profile,
+            'categories': ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점'],
+        }
+        return render(request, 'core/home.html', data)
+    else:
+        stores = Store.objects.filter(univ_id = pk)
+        univ = Univ.objects.get(pk=pk)
+        univs = Univ.objects.all()
+        postings = []
+        for store in stores:
+            postings2 = Posting.objects.filter(store_id = store.id)
+            for posting in postings2:
+                postings.append(posting)
+        data = {
+            'postings': postings,
+            'univ': univ,
+            'univs': univs,
+            'categories': ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점'],
+        }
+        return render(request, 'core/home.html', data)
 
 
 
@@ -42,6 +58,7 @@ def match_new(request, pk):
     else:
         pass
     return render(request, 'core/match_new.html')
+
 
 
 def choice_cat(request, pk):
@@ -58,6 +75,10 @@ def choice_cat(request, pk):
 def choice_store(request):
     return render(request, 'core/choice_store.html')
 
+def choice_page(request):
+    return render(request, 'core/store_choice.html')
+
+
 
 def match_fin(request):
     return render(request, 'core/match_fin.html')
@@ -66,12 +87,24 @@ def match_fin(request):
 def mypage(request):
     return render(request, 'core/mypage.html')
 
+def store_choice(request):
+    return render(request, 'core/store_choice.html')
+
+
 def main(request):
-    univs = Univ.objects.all()
-    data = {
-        'univs': univs
-    }
+    if request.user.is_authenticated:
+        current_user = request.user
+        profile = Profile.objects.get(user=current_user)
+        data = {
+            'profile': profile
+        }
+    else:
+        univs = Univ.objects.all()
+        data = {
+            'univs': univs
+        }
     return render(request, 'core/main.html', data)
+
 
 
 # class UploadFileForm(forms.Form):

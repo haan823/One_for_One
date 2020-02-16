@@ -14,6 +14,7 @@ from django.views import View
 # from core.models import Category
 from .models import Profile, Univ, AuthSms
 
+
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
@@ -46,6 +47,7 @@ def goto_signup(request):
 
 
 def signup(request, pk):
+    univs = Univ.objects.all()
     univ = Univ.objects.get(pk=pk)
     if request.method == "POST":
 
@@ -86,6 +88,7 @@ def signup(request, pk):
 
         profiles = Profile.objects.all()
         data = {
+            'univs': univs,
             'univ': univ,
             'email_domain': UNIV_DOMAIN_MAPPING.get(univ.name),
 
@@ -105,6 +108,17 @@ def signup(request, pk):
 
 
 def login(request):
+    if request.user.is_authenticated:
+        current_user = request.user
+        profile = Profile.objects.get(user=current_user)
+        data = {
+            'profile': profile
+        }
+    else:
+        univs = Univ.objects.all()
+        data = {
+            'univs': univs
+        }
     if request.method == "POST":
         username = request.POST["id"]
         password = request.POST["password"]
@@ -115,10 +129,8 @@ def login(request):
             univ = profile.univ
             auth.login(request, user)
             return redirect(reverse('core:home', args=[univ.id]))
-        else:
-            return render(request, 'login.html', {'error': 'username or password is incorrect'})
     else:
-        return render(request, 'login.html')
+        return render(request, 'login.html', data)
 
 
 def logout(request):

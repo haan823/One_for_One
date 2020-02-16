@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>One_for_One</title>
+    <title>저기요</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'base.css' %}">
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -35,6 +35,7 @@
 
 </head>
 <body id="page-top">
+
 <a class="menu-toggle rounded" href="#">
     <i class="fas fa-bars"></i>
 </a>
@@ -45,40 +46,30 @@
                 <a style="color:white;">{{ user.username }}</a>
                 <a href="{% url 'account:logout' %}">로그아웃</a>
             {% else %}
-                <a href="{% url 'account:login' %}">로그인</a>
-                <a href="{% url 'account:goto_signup' %}">회원가입</a>
+                <a class="js-scroll-trigger" href="#page-top">로그인 없이 둘러보기</a>
             {% endif %}
         </li>
-        <li class="sidebar-nav-item">
-            <a class="js-scroll-trigger" href="{% url 'core:home' univ.id %}">home</a>
-        </li>
-        <li class="sidebar-nav-item">
-            <div style="color:white; text-align:center;">현재 참여중인 Posting 목록</div>
-        </li>
-        {% for contact in contacts %}
-            {% for room in rooms %}
-                {% if room.pk == contact.room_id.pk %}
-                    <li class="sidebar-nav-item">
-                        <a class="js-scroll-trigger" href="{% url 'chat:room' room.pk %}">
-                            <div>메뉴: {{ room.Posting_id.menu }}</div>
-                            <div>가게: {{ room.Posting_id.store_id.title }}</div>
-                        </a>
-                    </li>
-                {% endif %}
+        {% if user.is_active %}
+            <li class="sidebar-nav-item">
+                <a class="js-scroll-trigger" href="{% url 'core:home' profile.univ.id %}">포스팅 보기</a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a class="js-scroll-trigger" href="">My page</a>
+            </li>
+        {% else %}
+            {% for univ in univs %}
+                <li class="sidebar-nav-item">
+                    <a class="js-scroll-trigger" href="{% url 'core:home' univ.id %}">{{ univ.name }}</a>
+                </li>
             {% endfor %}
-        {% endfor %}
+        {% endif %}
 
 
-        {#        {% for univ in univs %}#}
-        {#            <li class="sidebar-nav-item">#}
-        {#                <a class="js-scroll-trigger" href="#page-top">{{ univ.name }}</a>#}
-        {#            </li>#}
-        {#        {% endfor %}#}
     </ul>
 </nav>
 
 <header class="masthead d-flex">
-    <div class="container text-center my-auto">
+    <div class="container">
         {% block content %}
         {% endblock %}
     </div>
