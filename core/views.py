@@ -14,9 +14,10 @@ def home(request, pk):
         current_user = request.user
         profile = Profile.objects.get(user=current_user)
         univ = profile.univ
-        postings = Posting.objects.filter(user_id=current_user.id)
-        stores = Store.objects.filter(univ_id = pk)
-
+        stores = Store.objects.filter(univ_id=pk)
+        postings = []
+        for store in stores:
+            postings += Posting.objects.filter(store_id=store.id)
         data = {
             'postings': postings,
             'current_user': current_user.id,

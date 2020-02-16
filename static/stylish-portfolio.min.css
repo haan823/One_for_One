@@ -45,7 +45,9 @@
     color: white;
 
 }
-
+.nav > .nav-item2 > a:first-child:hover {
+    color: blue;
+}
 .nav > .nav-item2 > a:hover {
     color: red;
 }
