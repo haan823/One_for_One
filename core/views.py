@@ -8,7 +8,7 @@ from django.shortcuts import render
 from core.models import Store, Posting
 
 from chat.models import Room, Contact
-from core.models import Category, Store
+from core.models import Store
 from account.models import Univ, Profile
 
 
