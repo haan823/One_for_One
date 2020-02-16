@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>저기요</title>
+    <title>One_for_One</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'base.css' %}">
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -35,7 +35,6 @@
 
 </head>
 <body id="page-top">
-
 <a class="menu-toggle rounded" href="#">
     <i class="fas fa-bars"></i>
 </a>
@@ -43,33 +42,28 @@
     <ul class="sidebar-nav">
         <li class="sidebar-brand">
             {% if user.is_active %}
-                <a style="color:white;">{{ user.username }}</a>
+                <a>{{ user.username }}</a>
                 <a href="{% url 'account:logout' %}">로그아웃</a>
             {% else %}
-                <a class="js-scroll-trigger" href="#page-top">로그인 없이 둘러보기</a>
+                <a href="{% url 'account:login' %}">로그인</a>
+                <a href="{% url 'account:goto_signup' %}">회원가입</a>
             {% endif %}
         </li>
-        {% if user.is_active %}
-            <li class="sidebar-nav-item">
-                <a class="js-scroll-trigger" href="{% url 'core:home' profile.univ.id %}">포스팅 보기</a>
-            </li>
-            <li class="sidebar-nav-item">
-                <a class="js-scroll-trigger" href="">My page</a>
-            </li>
-        {% else %}
-            {% for univ in univs %}
-                <li class="sidebar-nav-item">
-                    <a class="js-scroll-trigger" href="{% url 'core:home' univ.id %}">{{ univ.name }}</a>
-                </li>
-            {% endfor %}
-        {% endif %}
+        <li class="sidebar-nav-item">
+            <a class="js-scroll-trigger" href="{% url 'core:home' univ.id %}">home</a>
+        </li>
 
+        {#        {% for univ in univs %}#}
+        {#            <li class="sidebar-nav-item">#}
+        {#                <a class="js-scroll-trigger" href="#page-top">{{ univ.name }}</a>#}
+        {#            </li>#}
+        {#        {% endfor %}#}
 
     </ul>
 </nav>
 
 <header class="masthead d-flex">
-    <div class="container">
+    <div class="container text-center my-auto">
         {% block content %}
         {% endblock %}
     </div>
