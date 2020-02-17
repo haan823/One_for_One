@@ -23,13 +23,22 @@ def scroll_down():
             break
         last_height = new_height
 
-
 univ_addr_list = [
     # '서울특별시 마포구 상수동 와우산로 94',
     # '서울특별시 관악구 신림동 산 56-1 서울대학교',
     # '경기도 수원시 장안구 율천동 서부로 2066',
-    # '서울특별시 서대문구 대현동 11-1 이화여자대학교',
-    '서울특별시 동대문구 이문로 107',
+    #'서울특별시 서대문구 대현동 11-1 이화여자대학교',
+    # '서울특별시 동대문구 이문로 107',
+    # '경기도 수원시 영통구 광교산로 154-42',
+    # '서울특별시 성북구 안암로 145',
+    '서울특별시 성동구 사근동 110 한양대학교',
+    #'서울특별시 동작구 흑석동 211-32 중앙대학교',
+    #'경기도 용인시 처인구 모현읍 외대로 81',
+    # '서울특별시 용산구 청파로47길 100',
+    # '서울특별시 성북구 보문로 34다길 2',
+    # '서울특별시 광진구 능동로 209',
+    # '경기도 용인시 기흥구 덕영대로 1732',
+    # '경기도 성남시 수정구 성남대로 1342',
 ]
 
 x = "서울대"
@@ -167,12 +176,12 @@ for univ_addr in univ_addr_list:
 
                 except:
                     print(1)
-                    wb.save('./data/yogiyo_한국외대_new.xlsx')
+                    wb.save('./data/yogiyo_한양대_new_1(다시).xlsx')
                     print(2)
                     break
         except:
             print(3)
-            wb.save('./data/yogiyo_한국외대_new.xlsx')
+            wb.save('./data/yogiyo_한양대_new_1(다시).xlsx')
             print(4)
             sys.exit()
-wb.save('./data/yogiyo_한국외대_new.xlsx')
+wb.save('./data/yogiyo_한양대_new_1(다시).xlsx')

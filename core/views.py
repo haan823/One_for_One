@@ -7,7 +7,7 @@ from django.shortcuts import render
 from core.models import Store, Posting
 
 from chat.models import Room, Contact
-from core.models import Category, Store
+from core.models import Store, Posting
 from account.models import Univ, Profile
 
 
@@ -15,7 +15,7 @@ def home(request, pk):
     current_user = request.user
     profile = Profile.objects.get(user=current_user.id)
     univ = profile.univ
-    contacts = Contact.objects.filter(allowed_user=current_user)
+    contacts = Contact.objects.filter(allowed_user=profile)
     rooms = Room.objects.all()
     # categories = Category.objects.filter(univ_id=univ)
     postings = Posting.objects.filter(user_id=current_user.id)
@@ -63,8 +63,16 @@ def match_fin(request):
     return render(request, 'core/match_fin.html')
 
 
-def mypage(request):
-    return render(request, 'core/mypage.html')
+def mypage(request, pk):
+    postings = Posting.objects.filter(user_id=request.user)
+    now_postings = postings.filter(finished=True)
+    end_postings = postings.filter(finished=False)
+    data = {
+        'now_postings':now_postings,
+        'end_postings':end_postings,
+        #'level':level,
+    }
+    return render(request, 'core/mypage.html', data)
 
 def main(request):
     univs = Univ.objects.all()

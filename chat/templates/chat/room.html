@@ -10,8 +10,7 @@
     } catch (e) {
     }</script>
     <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
-    <link rel='stylesheet prefetch'
-          href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -67,7 +66,7 @@
         <div id="contacts">
             <ul>
                 {% for user in allowed_users %}
-                    {% if user != room.Posting_id.user_id %}
+                    {% if user != now_user %}
                         <li class="contact">
                             <div class="wrap">
                                 <span class="contact-status online"></span>
@@ -77,8 +76,8 @@
                                     <p class="name">{{ user.username }}</p>
                                 </div>
                             </div>
-                            {% if now_user == room.Posting_id.user_id %}
-                                <button style = "margin:3px;" type="button" class="btn-danger user_out" name={{ user.pk }}>
+                            {% if now_user == room.Posting_id.user_id and room.Posting_id.finished != true %}
+                                <button style="margin:3px;" type="button" class="btn-danger user_out" name={{ user.pk }}>
                                     <span style="font-size: 1em">OUT</span>
                                 </button>
                             {% endif %}
@@ -92,9 +91,9 @@
                 <i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>
                 <span>매칭 완료</span>
             </button>
-            <button type="button" class="re_match" name="{{ room.pk }}">
+            <button type="button" class="re_match" name="{{ room.pk }}" onclick="location.href='javascript:review_popup()'">
                 <i class="fa fas fa-check" aria-hidden="true"></i>
-                <span>추가 매칭 신청</span>
+                <span>평가하고 나가기</span>
             </button>
         </div>
     </div>
@@ -182,6 +181,8 @@
         var author = data['author'];
         {#var timestamp = data['timestamp'];#}
         var message_room_id = data['room_id'];
+        var author_name = document.createElement('div');
+        author_name.textContent = data['author'];
         var msgListTag = document.createElement('li');
         var imgTag = document.createElement('img');
         var pTag = document.createElement('p');
@@ -194,11 +195,16 @@
                 msgListTag.className = 'replies';
             }
             msgListTag.appendChild(imgTag);
+            msgListTag.appendChild(author_name);
+            if (msgListTag.className == 'sent') {
+                msgListTag.appendChild(document.createElement('br'));
+            }
             msgListTag.appendChild(pTag);
             document.querySelector('#chat-log').appendChild(msgListTag);
-            $(".messages").animate({ scrollTop: $(document).height() }, "fast");
+            $(".messages").animate({scrollTop: $(document).height()}, "fast");
         }
     }
+
 </script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
@@ -213,20 +219,6 @@
             },
             error: function (request, status, error) {
                 alert("이미 매칭완료 처리되었습니다.");
-            },
-        });
-    });
-    $(".re_match").click(function () {
-        var pk = $(this).attr('name');
-        $.ajax({
-            type: "GET",
-            url: "{% url 'chat:re_match' room.pk%}",
-            data: {'pk': pk},
-            success: function () {
-                alert("포스팅을 재업로드 했습니다.");
-            },
-            error: function (request, status, error) {
-                alert("이미 재업로드 되었습니다.")
             },
         });
     });
@@ -247,6 +239,14 @@
             },
         });
     });
+
+    function review_popup(){
+            var url = "{% url "chat:review" room.pk%}";
+            var name = "review";
+            var option = "width = 500, height = 300, top = 200, left = 400, location = no ";
+            window.name = "room";
+            window.open(url, name, option);
+    }
 </script>
 </body>
 </html>

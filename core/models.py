@@ -39,6 +39,7 @@ class Posting(models.Model):
     finished = models.BooleanField(default=False)
 
 
+
 class Tag(models.Model):
     posting_id = models.ForeignKey(Posting, on_delete=models.CASCADE, related_name='tag')
     content = models.CharField(max_length=20)

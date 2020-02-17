@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
+from account.models import Profile
 from core.models import Posting
 
 
@@ -17,10 +18,11 @@ class Room(models.Model):
 
 class Contact(models.Model):
     room_id = models.ForeignKey(Room, on_delete=models.CASCADE)
-    allowed_user = models.ForeignKey(User, related_name='allowed_user', on_delete=models.CASCADE)
+    allowed_user = models.ForeignKey(Profile, related_name='allowed_user', on_delete=models.CASCADE)
+    finished = models.BooleanField(default= False)
 
     def __str__(self):
-        return self.allowed_user.username + str(self.room_id.pk)
+        return self.allowed_user.user.username + str(self.room_id.pk)
 
 
 class Message(models.Model):
