@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% load static %}
+    <div class="category-list" style="display: inline">
+        {% for cat in cat_list %}
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" style="border: 1px solid black">
+                {% if cat == '치킨' %}
+                    <a href="{% url 'core:match_detail' %}"><img src="{% static 'img/치킨.jpg' %}" width="100px" height="100px" alt=""></a>
+                {% elif cat == '피자양식' %}
+                    <img src="{% static 'img/피자양식.jpg' %}" width="100px" height="100px" alt="">
+                {% elif cat == '중국집' %}
+                    <img src="{% static 'img/중국집.jpg' %}" width="100px" height="100px" alt="">
+                {% elif cat == '한식' %}
+                    <img src="{% static 'img/한식.jpg' %}" width="100px" height="100px" alt="">
+                {% elif cat == '일식돈까스' %}
+                    <img src="{% static 'img/일식돈까스.jpg' %}" width="100px" height="100px" alt="">
+                {% elif cat == '족발보쌈' %}
+                    <img src="{% static 'img/족발보쌈.jpg' %}" width="100px" height="100px" alt="">
+                {% elif cat == '야식' %}
+                    <img src="{% static 'img/야식.jpg' %}" width="100px" height="100px" alt="">
+                {% elif cat == '분식' %}
+                    <img src="{% static 'img/분식.jpg' %}" width="100px" height="100px" alt="">
+                {% elif cat == '카페디저트' %}
+                    <img src="{% static 'img/카페디저트.jpeg' %}" width="100px" height="100px" alt="">
+                {% elif cat == '편의점' %}
+                    <img src="{% static 'img/편의점.jpg' %}" width="100px" height="100px" alt="">
+                {% endif %}
+
+                <a href="">{{ cat }}</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

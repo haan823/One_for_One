@@ -13,7 +13,10 @@ from django.views import View
 
 # from core.models import Category
 from .models import Profile, Univ, AuthSms
+<<<<<<< HEAD
 
+=======
+>>>>>>> KBH_crawling
 
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect

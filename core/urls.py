@@ -7,13 +7,21 @@ app_name = 'core'
 urlpatterns = [
     path('', views.main, name='main'),
     path('home/<int:pk>', views.home, name='home'),
-    path('new/<int:pk>/', views.match_new, name='match_new'),
-    path('cat/<int:pk>/', views.choice_cat, name='choice_cat'),
-    path('cat/<int:pk>/store/', views.choice_store, name='choice_store'),
+    path('new/', views.match_new, name='match_new'),
+    # path('cat/<int:pk>/', views.choice_cat, name='choice_cat'),
+    # path('cat/<int:pk>/store/', views.choice_store, name='choice_store'),
     path('new/fin/', views.match_fin, name='match_fin'),
     path('mypage/', views.mypage, name='mypage'),
+<<<<<<< HEAD
     path('search/', views.search, name='search'),
     path('search_store/', views.search_store, name='search_store')
     # path('polls/', views.upload, name='upload'),
     # path('import/', views.simple_upload, name='simple_upload')
 ]
+=======
+    path('new/cat/', views.choice_cat, name='choice_cat'),
+    path('new/detail/', views.choice_detail, name='choice_detail'),
+    # path('new/choice/', views.test_choice, name='test_choice'),
+    path('new/test/', views.new_test, name='new_test'),
+]
+>>>>>>> KBH_crawling

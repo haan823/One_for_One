@@ -32,6 +32,8 @@
 
     <!-- Main Stylesheet File -->
     <link href="{% static 'Rapid/css/style.css' %}" rel="stylesheet">
+    {% block extra_head %}
+        {% endblock %}
 
     {% block extra_head %}
     {% endblock %}
@@ -52,6 +54,7 @@
                 <a class="js-scroll-trigger" href="#page-top">로그인 없이 둘러보기</a>
             {% endif %}
         </li>
+<<<<<<< HEAD
         {% if user.is_active %}
             <li class="sidebar-nav-item">
                 <a class="js-scroll-trigger" href="{% url 'core:home' profile.univ.id %}">포스팅 보기</a>
@@ -66,6 +69,11 @@
                 </li>
             {% endfor %}
         {% endif %}
+=======
+{#        <li class="sidebar-nav-item">#}
+{#            <a class="js-scroll-trigger" href="{% url 'core:home' univ.id %}">home</a>#}
+{#        </li>#}
+>>>>>>> KBH_crawling
 
 
     </ul>
