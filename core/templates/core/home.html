@@ -27,6 +27,89 @@
 
                 </header>
 
+                <div>
+                    <div style="border: 1px solid black">
+                        <div id="wrapper" class="wrapper">
+                            <input type="text" id="search" name="search" autocomplete="off">
+                        </div>
+                        <div class="list-group" id="result" class="result" style="border:1px solid black"></div>
+
+                        <div id="search_button">검색</div>
+                    </div>
+                </div>
+
+
+                <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+                <script>
+                    function complete(kwd) {
+                        $('#search').val(kwd);
+                        {#$('#wrapper').append('<input type="hidden" class="id" name="id" value="' + id + '">')#}
+                    }
+
+                    function delay(callback, ms) {
+                        var timer = 0;
+                        return function () {
+                            var context = this, args = arguments;
+                            clearTimeout(timer);
+                            timer = setTimeout(function () {
+                                callback.apply(context, args);
+                            }, ms || 0);
+                        };
+                    }
+
+                    {#$('#search_button').innerHTML = '<div data-filter=".filter-' + 'qwerty'+ '" id="search_button">검색</div>';#}
+                    {#'<div data-filter=".filter-' + 'qwerty'+ '" id="search_button">검색</div>';#}
+                    $(document).ready(function () {
+                        $('html').click(function (e) {
+                            if (!$(e.target).hasClass("result")) {
+                                $('#result').html('');
+                            }
+                        })
+
+                        $('#search').keyup(delay(function () {
+                            $('#result').html('');
+                            var searchField = $('#search').val();
+                            console.log(searchField)
+                            block = document.getElementById('search_button');
+                            block.innerHTML =  '<ul id="portfolio-flters">'  + '<li data-filter=".filter-' + searchField + '">검색</li></ul>';
+                            //var expression = new RegExp(searchField, "i");
+                            {#" class="filter-active"#}
+                            $.ajax({
+                                type: "POST",
+                                url: "{% url 'core:search_store' %}",
+                                data: {'kwd': searchField, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                                dataType: "json",
+                                async: true,
+                                success: function (response) {
+                                    $.each(response, function (key, value) {
+                                        var now = new Date()
+                                        console.log(now, key)
+                                        console.log(now, value)
+                                        if (!value.length) {
+                                            $('#result').append('<div class="list_group_item">검색 결과가 없습니다.</div>');
+                                        } else {
+                                            for (var i in value) {
+                                                console.log(now, i, value[i]['name'])
+                                                $('#result').append('<div class="list_group_item">' +
+                                                    '<button onclick="javascript:complete(\'' + value[i]['menu'] + '\'' + ')" style = "color:white">' +
+                                                    value[i]['menu'] + '</button></div>');
+                                            }
+                                        }
+                                    });
+
+                                }
+                            })
+
+                        }, 300));
+
+
+                    })
+
+
+                </script>
+
+
                 <div class="row">
                     <div class="col-lg-12">
                         <ul id="portfolio-flters">
@@ -41,10 +124,8 @@
                 </div>
 
                 <div class="row portfolio-container">
-
-
                     {% for posting in postings %}
-                        <div class="col-lg-4 col-md-6 portfolio-item filter-{{ posting.store_id.cat_name }}">
+                        <div class="col-lg-4 col-md-6 portfolio-item filter-{{ posting.store_id.cat_name }} filter-{{ searchField }}">
                             <div class="portfolio-wrap">
                                 <img src="{{ posting.store_id.logo }}" class="img-fluid" alt="" style="width: 100%;">
                                 <div class="portfolio-info" style="height:200px;">

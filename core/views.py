@@ -7,7 +7,7 @@ from django.urls import reverse
 
 from django.forms import forms
 from django.shortcuts import render
-from core.models import Store, Posting
+from core.models import Store, Posting, Tag
 
 from chat.models import Room, Contact
 from core.models import Store
@@ -23,12 +23,16 @@ def home(request, pk):
         postings = []
         for store in stores:
             postings += Posting.objects.filter(store_id=store.id)
+        tags = []
+        for posting in postings:
+            tags += Tag.objects.filter(posting_id=posting)
         data = {
             'postings': postings,
             'current_user': current_user.id,
             'univ': univ,
             'profile': profile,
             'categories': ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점'],
+            'tags': tags
         }
         return render(request, 'core/home.html', data)
     else:
@@ -40,11 +44,15 @@ def home(request, pk):
             postings2 = Posting.objects.filter(store_id=store.id)
             for posting in postings2:
                 postings.append(posting)
+        tags=[]
+        for posting in postings:
+            tags += Tag.objects.filter(posting_id=posting.id)
         data = {
             'postings': postings,
             'univ': univ,
             'univs': univs,
             'categories': ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점'],
+            'tags': tags
         }
         return render(request, 'core/home.html', data)
 
