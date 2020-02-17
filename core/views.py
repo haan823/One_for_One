@@ -58,16 +58,6 @@ def match_new(request):
     return render(request, 'core/match_new.html')
 
 
-<<<<<<< HEAD
-def choice_cat(request, pk):
-    # cats = Category.objects.all()
-    if request.method == 'POST':
-        pass
-    else:
-        data = {
-            # 'cats':cats,
-        }
-=======
 def choice_cat(request):
     cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
     current_user = request.user
@@ -78,7 +68,6 @@ def choice_cat(request):
         'cat_list': cat_list,
         'stores': stores,
     }
->>>>>>> KBH_crawling
     return render(request, 'core/choice_cat.html', data)
 
 
@@ -107,13 +96,7 @@ def mypage(request):
     return render(request, 'core/mypage.html')
 
 
-<<<<<<< HEAD
-def store_choice(request):
-    return render(request, 'core/store_choice.html')
 
-
-=======
->>>>>>> KBH_crawling
 def main(request):
     if request.user.is_authenticated:
         current_user = request.user
@@ -148,31 +131,6 @@ def search_store(request):
             })
     return HttpResponse(json.dumps(data), content_type="application/json")
 
-# class UploadFileForm(forms.Form):
-#     file = forms.FileField()
-#
-#
-# # Create your views here.
-# def upload(request):
-#     if request.method == "POST":
-#         form = UploadFileForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             filehandle = request.FILES['file']
-#             return excel.make_response(filehandle.get_sheet(), "xlsx",
-#                                        file_name="download")
-#     else:
-#         form = UploadFileForm()
-#     return render(
-#         request,
-#         'upload_form.html',
-#         {
-#             'form': form,
-#             'title': 'Excel file upload and download example',
-#             'header': ('Please choose any excel file ' +
-#                        'from your cloned repository:')
-#         })
-<<<<<<< HEAD
-=======
 
 def test_cat(request):
     cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
@@ -226,4 +184,3 @@ def new_test(request):
         'stores_univ': stores_univ,
     }
     return render(request, 'core/new_test.html', data)
->>>>>>> KBH_crawling

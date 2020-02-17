@@ -68,18 +68,10 @@ for univ_addr in univ_addr_list:
     SCROLL_PAUSE_TIME = 0.5
     body = driver.find_element_by_css_selector('body')
 
-<<<<<<< HEAD
-    for i in range(6, 10):
-        try:
-            # index = ['상세페이지URL', '로고URL', '상호명', '별점', '최소주문금액', '소요시간', '리뷰수']
-            index = ['store_url', 'logo', 'title', 'star', 'min_price', 'del_time', 'review', 'univ_id', 'cat_name']
-
-=======
     for i in range(5, 10):
         try:
             # index = ['상세페이지URL', '로고URL', '상호명', '별점', '최소주문금액', '소요시간', '리뷰수']
             index = ['store_url', 'logo', 'title', 'star', 'min_price', 'del_time', 'review', 'univ_id', 'cat_name']
->>>>>>> KBH_crawling
             sheet.append(index)
             driver.find_element_by_css_selector(f'div#category ul li:nth-child({i})').click()
             category = driver.find_element_by_css_selector(f'div#category ul li:nth-child({i})').text
@@ -186,23 +178,12 @@ for univ_addr in univ_addr_list:
 
                 except:
                     print(1)
-<<<<<<< HEAD
-                    wb.save('./data/yogiyo_경기대4_new.xlsx')
-=======
                     wb.save('./data/yogiyo_경희대_국제_전반.xlsx')
->>>>>>> KBH_crawling
                     print(2)
                     break
         except:
             print(3)
-<<<<<<< HEAD
-            wb.save('./data/yogiyo_경기대4_new.xlsx')
-            print(4)
-            sys.exit()
-wb.save('./data/yogiyo_경기대4_new.xlsx')
-=======
             wb.save('./data/yogiyo_경희대_국제_전반.xlsx')
             print(4)
             sys.exit()
 wb.save('./data/yogiyo_경희대_국제_전반.xlsx')
->>>>>>> KBH_crawling

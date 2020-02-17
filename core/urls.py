@@ -12,16 +12,10 @@ urlpatterns = [
     # path('cat/<int:pk>/store/', views.choice_store, name='choice_store'),
     path('new/fin/', views.match_fin, name='match_fin'),
     path('mypage/', views.mypage, name='mypage'),
-<<<<<<< HEAD
     path('search/', views.search, name='search'),
-    path('search_store/', views.search_store, name='search_store')
-    # path('polls/', views.upload, name='upload'),
-    # path('import/', views.simple_upload, name='simple_upload')
-]
-=======
+    path('search_store/', views.search_store, name='search_store'),
     path('new/cat/', views.choice_cat, name='choice_cat'),
     path('new/detail/', views.choice_detail, name='choice_detail'),
     # path('new/choice/', views.test_choice, name='test_choice'),
     path('new/test/', views.new_test, name='new_test'),
 ]
->>>>>>> KBH_crawling

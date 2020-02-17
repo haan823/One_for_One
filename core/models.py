@@ -20,11 +20,7 @@ class Store(models.Model):
 
 
 class Posting(models.Model):
-<<<<<<< HEAD
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
-=======
-    # user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
->>>>>>> KBH_crawling
     store_id = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='posting')
     menu = models.CharField(max_length=255)
     price = models.IntegerField()
