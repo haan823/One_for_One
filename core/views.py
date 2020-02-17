@@ -44,15 +44,26 @@ def home(request, pk):
             postings2 = Posting.objects.filter(store_id=store.id)
             for posting in postings2:
                 postings.append(posting)
-        tags=[]
+        tag_dic={}
         for posting in postings:
+            tags = []
             tags += Tag.objects.filter(posting_id=posting.id)
+            tag_dic[posting] = tags
+        print(tag_dic)
+        all_tags = set(Tag.objects.all())
+        tags_list = []
+        for all_tag in all_tags:
+            tags_list += all_tag.content
+        rm_dup_tags = list(set(tags_list))
+        print(rm_dup_tags)
+        print(all_tags)
         data = {
             'postings': postings,
             'univ': univ,
             'univs': univs,
             'categories': ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점'],
-            'tags': tags
+            'tag_dic': tag_dic,
+            'rm_dup_tags': rm_dup_tags,
         }
         return render(request, 'core/home.html', data)
 

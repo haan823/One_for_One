@@ -36,7 +36,7 @@ class Posting(models.Model):
     price = models.IntegerField()
     max_num = models.IntegerField()
     timer = models.DateTimeField(auto_now_add=False, blank=True, null=True)
-    finished = models.BooleanField(default=False)
+
 
 
 class Tag(models.Model):
