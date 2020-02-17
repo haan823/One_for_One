@@ -1,67 +1,7 @@
-# import string
-# import requests
-# import json
-# import os
-#
-# from random import random
-#
-# from django.core.exceptions import ObjectDoesNotExist
-# from django.http import HttpResponse
-#
-# from sms.models import OFO_user
-#
-#
-# class SMSManager:
-#     # todo: accesskey랑 발신번호 및 시크릿 키 초기화 필요
-#     serviceId = "ncp:sms:kr:258123171330:oneforone"
-#     access_key = "nyfwSNQgWpo8zxTFHW5S"
-#     secret_key = "a5cc3ea4f2c1479a9aa1e3342d7addbe"
-#     _from = "One_For_One"
-#     url = "https://api-sens.ncloud.com/v1/sms/services/{}/messages".format(serviceId)
-#     headers = {
-#         'Content-Type': 'application/json; charset=utf-8',
-#         'x-ncp-auth-key': {access_key},
-#         'x-ncp-service-secret': {secret_key},
-#     }
-#
-#     def __init__(self, user):
-#         self.user = user
-#         self.confirm_key = ""
-#         self.body = {
-#             "type": "SMS",
-#             "countryCode": "82",
-#             "from": self._from,
-#             "to": [],
-#             "subject": "",
-#             "content": ""
-#         }
-#
-#     def set_matching_content(self):
-#         self.body['content'] = "1:1 배달매칭이 성공했습니다. OneForOne 웹사이트를 방문해주세요."
-#
-#     # def send_sms(self):
-#     #     if self.user:
-#     #         self.body['to'].append(self.user.phone)
-#     #     res = requests.post(self.url, headers=self.headers,
-#     #                         data=json.dumps(self.body, ensure_ascii=False).encode('utf-8'))
-#     #     return res
-#
-#
-# def send_matching_sms(user):
-#     sms_manager = SMSManager(user)
-#     # sms_manager.__init__(user)
-#     print(user)
-#     sms_manager.set_matching_content()
-#     sms_manager.body['to'].append(sms_manager.user.phone)
-#     requests.post(sms_manager.url, headers=sms_manager.headers,
-#                   data=json.dumps(sms_manager.body, ensure_ascii=False).encode('utf-8'))
-#     return HttpResponse(202)
-import json
 from random import randint
 
 import requests
-from django.http import JsonResponse
-from django.shortcuts import render
+
 from django.views import View
 
 from account.models import AuthSms
@@ -90,7 +30,7 @@ class AuthSmsSendView(View):
             'to': [
                 f'{phone_number}',
             ],
-            'content': f'인증번호 [{auth_number}]'
+            'content': f'OneforOne 서비스의 인증번호는 [{auth_number}]입니다.'
         }
 
         requests.post(SMS_URL, headers=headers, json=data)

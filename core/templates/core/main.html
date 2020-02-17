@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>저기요</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'stylish-portfolio.min.css' %}">
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -12,31 +12,75 @@
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic"
           rel="stylesheet" type="text/css">
     <link href="{% static 'vendor/simple-line-icons/css/simple-line-icons.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.12.0/css/all.css">
+    <!-- ... -->
 
 </head>
 <body id="page-top">
-<a class="menu-toggle rounded" href="#">
-    <i class="fas fa-bars"></i>
-</a>
+<ul class="nav">
+    <li class="nav-item">
+        <a class="nav-link" href="#">저기요</a>
+    </li>
+    <li class="nav-item2">
+        <a class="nav-link" href="#">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+    </li>
+    <li class="nav-item2">
+        <a class="nav-link" href="#">
+            <i class="fab fa-instagram"></i>
+        </a>
+    </li>
+    <li class="nav-item2">
+        <a class="nav-link" href="#">
+            <i class="fab fa-youtube"></i>
+        </a>
+    </li>
+    <li>
+        <a class="menu-toggle rounded" href="#">
+            <i class="fas fa-bars"></i>
+        </a>
+    </li>
+</ul>
+
 <nav id="sidebar-wrapper">
     <ul class="sidebar-nav">
         <li class="sidebar-brand">
-            <a class="js-scroll-trigger" href="#page-top">우리 학교 둘러보기</a>
+            {% if user.is_active %}
+                <a>{{ user.username }}</a>
+                <a href="{% url 'account:logout' %}">로그아웃</a>
+            {% else %}
+                <a class="js-scroll-trigger" href="#page-top">로그인 없이 둘러보기</a>
+            {% endif %}
         </li>
-        {% for univ in univs %}
+        {% if user.is_active %}
             <li class="sidebar-nav-item">
-                <a class="js-scroll-trigger" href="#page-top">{{ univ.name }}</a>
+                <a class="js-scroll-trigger" href="{% url 'core:home' profile.univ.id %}">포스팅 보기</a>
             </li>
-        {% endfor %}
+            <li class="sidebar-nav-item">
+                <a class="js-scroll-trigger" href="">My page</a>
+            </li>
+        {% else %}
+            {% for univ in univs %}
+                <li class="sidebar-nav-item">
+                    <a class="js-scroll-trigger" href="{% url 'core:home' univ.id %}">{{ univ.name }}</a>
+                </li>
+            {% endfor %}
+        {% endif %}
+
 
     </ul>
 </nav>
 <header class="masthead d-flex">
+
     <div class="container text-center my-auto">
-        <h1 class="mb-1">One for One</h1>
+        <h1 class="mb-1">저기요</h1>
         <h3 class="mb-5">
             <em>1인 배달 매칭 서비스</em>
         </h3>
+        {% if user.is_active %}
+
+        {% endif %}
         <a class="btn btn-primary btn-xl js-scroll-trigger" href="{% url 'account:login' %}">로그인</a>
         <a class="btn btn-primary btn-xl js-scroll-trigger" href="{% url 'account:goto_signup' %}">회원가입</a>
     </div>

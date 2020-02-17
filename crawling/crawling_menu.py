@@ -30,15 +30,15 @@ univ_addr_list = [
     # '경기도 수원시 장안구 율천동 서부로 2066',
     # '서울특별시 서대문구 대현동 11-1 이화여자대학교',
     # '서울특별시 동대문구 이문로 107',
-    # '경기도 수원시 영통구 광교산로 154-42',
+     '경기도 수원시 영통구 광교산로 154-42',
     # '서울특별시 성북구 안암로 145',
     # '서울특별시 성동구 왕십리로 222',
-    # '서울특별시 동작구 흑석로 84',
+    # '서울특별시 동작구 흑석동 211-32 중앙대학교',
     # '경기도 용인시 처인구 모현읍 외대로 81',
     # '서울특별시 용산구 청파로47길 100',
     # '서울특별시 성북구 보문로 34다길 2',
     # '서울특별시 광진구 능동로 209',
-    '경기도 용인시 기흥구 서천동 1 경희대학교국제캠퍼스',
+    # '경기도 용인시 기흥구 덕영대로 1732',
     # '경기도 성남시 수정구 성남대로 1342',
 ]
 
@@ -50,7 +50,7 @@ sheet = wb.active
 sheet.title = f"요기요_{x}_new"
 options = Options()
 
-driver = webdriver.Chrome(executable_path="C:\dev\chromedriver", chrome_options=options)
+driver = webdriver.Chrome(executable_path="C:\\Users\KSH\dev\chromedriver", chrome_options=options)
 driver.get("https://www.yogiyo.co.kr/mobile/#/")
 driver.set_window_size(1600, 1000)
 
