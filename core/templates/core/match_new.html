@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
-    newnew
-    <form action="" class="matching" method="POST">
-        {% csrf_token %}
-        <div style="display: flex; justify-content: space-between;">
-            <div class="wrap-input49 validate-input m-b-16" data-validate="Password is required" style="">
-                <input id='password1' class="input100" type="password" name="password1" placeholder="Password">
-                <span class="focus-input100"></span>
-            </div>
-
-            <div class="wrap-input49 validate-input m-b-16" data-validate="Password is required" style="">
-                <input id='password2' class="input100" type="password" name="password2"
-                       placeholder="Password confirm">
-                <span class="focus-input100"></span>
-            </div>
-        </div>
-    </form>
+    <a href="{% url 'core:choice_cat' %}">가게 선택</a>
+{#    <form action="" class="matching" method="POST">#}
+{#        {% csrf_token %}#}
+{#        <div style="display: flex; justify-content: space-between;">#}
+{#            <div class="wrap-input49 validate-input m-b-16" data-validate="Password is required" style="">#}
+{#                <input id='password1' class="input100" type="password" name="password1" placeholder="Password">#}
+{#                <span class="focus-input100"></span>#}
+{#            </div>#}
+{##}
+{#            <div class="wrap-input49 validate-input m-b-16" data-validate="Password is required" style="">#}
+{#                <input id='password2' class="input100" type="password" name="password2"#}
+{#                       placeholder="Password confirm">#}
+{#                <span class="focus-input100"></span>#}
+{#            </div>#}
+{#        </div>#}
+{#    </form>#}
 {% endblock %}
