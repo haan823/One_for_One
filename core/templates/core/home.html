@@ -32,16 +32,22 @@
                         <div id="wrapper" class="wrapper">
                             <input type="text" id="search" name="search" autocomplete="off">
                         </div>
-                        <div class="list-group" id="result" class="result" style="border:1px solid black"></div>
+                        <div class="list-group" id="result"  style="border:1px solid black"></div>
 
-                        <div id="search_button">검색</div>
+                        <button type="button" id="search_button" onclick="search_tag()" style="color: white;">태그 검색</button>
                     </div>
                 </div>
 
 
                 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 
+                <button type="button" onclick="document.getElementById('searchField').click()" style="color: white"></button>
                 <script>
+                    {#$('#search_button').hide()#}
+                    function search_tag() {
+                        var searchField = $('#search').val();
+                        document.getElementById(searchField).click()
+                    }
                     function complete(kwd) {
                         $('#search').val(kwd);
                         {#$('#wrapper').append('<input type="hidden" class="id" name="id" value="' + id + '">')#}
@@ -62,17 +68,24 @@
                     {#'<div data-filter=".filter-' + 'qwerty'+ '" id="search_button">검색</div>';#}
                     $(document).ready(function () {
                         $('html').click(function (e) {
-                            if (!$(e.target).hasClass("result")) {
+                            if (!$(e.target).hasClass("list_group_item") && (!$(e.target).hasClass("tag_list_item"))) {
                                 $('#result').html('');
+                                $('#search_button').hide();
+                            }
+                            else if ($(e.target).hasClass("tag_list_item")) {
+                                $('#result').html('');
+                                $('#search_button').show();
+                            }
+                            else {
+                                $('#search_button').show()
                             }
                         })
 
                         $('#search').keyup(delay(function () {
                             $('#result').html('');
                             var searchField = $('#search').val();
-                            console.log(searchField)
-                            block = document.getElementById('search_button');
-                            block.innerHTML = '<ul id="portfolio-flters">' + '<li data-filter=".filter-' + searchField + '">검색</li></ul>';
+                            {#console.log(searchField)#}
+                            {#block = document.getElementById('search_button');#}
                             //var expression = new RegExp(searchField, "i");
                             {#" class="filter-active"#}
                             $.ajax({
@@ -83,21 +96,20 @@
                                 async: true,
                                 success: function (response) {
                                     $.each(response, function (key, value) {
-                                        var now = new Date()
-                                        console.log(now, key)
-                                        console.log(now, value)
+                                        {#var now = new Date()#}
+                                        {#console.log(now, key)#}
+                                        {#console.log(now, value)#}
                                         if (!value.length) {
-                                            $('#result').append('<div class="list_group_item">검색 결과가 없습니다.</div>');
+                                            $('#result').append('<div class="list_group_item">태그 검색 결과가 없습니다.</div>');
                                         } else {
                                             for (var i in value) {
-                                                console.log(now, i, value[i]['name'])
+                                                {#console.log(now, i, value[i]['name'])#}
                                                 $('#result').append('<div class="list_group_item">' +
-                                                    '<button onclick="javascript:complete(\'' + value[i]['menu'] + '\'' + ')" style = "color:white">' +
-                                                    value[i]['menu'] + '</button></div>');
+                                                    '<button class="tag_list_item"onclick="javascript:complete(\'' + value[i] + '\'' + ')" style = "color:white">' +
+                                                    value[i] + '</button></div>');
                                             }
                                         }
                                     });
-
                                 }
                             })
 
@@ -108,20 +120,24 @@
 
 
                 </script>
-
-
-                <div class="row">
+                <div class="row" id="tag_filter_list">
                     <div class="col-lg-12">
                         <ul id="portfolio-flters">
                             <li data-filter="*" class="filter-active">All</li>
 
                             {% for tag in rm_dup_tags %}
-                                <li data-filter=".filter-{{ tag }}">{{ tag }}</li>
+                                <div style="display: inline-block">
+                                <li data-filter=".filter-{{ tag }}" id= "{{ tag }}">{{ tag }}</li>
+                                </div>
                             {% endfor %}
 
                         </ul>
                     </div>
                 </div>
+
+                <script>
+                    {#$('#tag_filter_list').hide()#}
+                </script>
 
                 <div class="row">
                     <div class="col-lg-12">

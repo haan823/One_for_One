@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container text-center my-auto">
+        <h2 class="mb-1" style="color: white">My Page</h2>
+    <br>
+    <br>
+    </div>
+    <div style="display: inline-block">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">username: {{ profile.user.username }}</li>
+            <li class="list-group-item">univ: {{ profile.univ }}</li>
+            <li class="list-group-item">nickname: {{ profile.nickname }}</li>
+        </ul>
+    </div>
+    <br>
+    <br>
+    <div style="display: inline-block">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">내 포스팅들</li>
+        </ul>
+    </div>
+    <div class="wrap">
+        {% for posting in postings %}
+            <div class="card" style="width: 18rem; display: inline-block;">
+                <img src="{{ posting.store_id.logo }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{ posting.menu }}</h5>
+                    <br>
+                    <p class="card-text">store: {{ posting.store_id.title }}</p>
+                    <p class="card-text">가격: {{ posting.price }}</p>
+                    <p class="card-text">최대인원: {{ posting.max_num }}</p>
+                    <a href="#" class="btn btn-primary">채팅방으로</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
