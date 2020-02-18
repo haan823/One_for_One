@@ -68,7 +68,7 @@ for univ_addr in univ_addr_list:
     SCROLL_PAUSE_TIME = 0.5
     body = driver.find_element_by_css_selector('body')
 
-    for i in range(6, 10):
+    for i in range(5, 10):
         try:
             # index = ['상세페이지URL', '로고URL', '상호명', '별점', '최소주문금액', '소요시간', '리뷰수']
             index = ['store_url', 'logo', 'title', 'star', 'min_price', 'del_time', 'review', 'univ_id', 'cat_name']
