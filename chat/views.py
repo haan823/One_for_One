@@ -110,13 +110,11 @@ def update_review(request, pk):
             allowed_user.save()
     if room.now_number>1:
         contact = contacts.get(allowed_user=now_user)
-        print(contact)
         contact.finished = True
         contact.save()
         room.now_number-=1
         room.save()
     elif room.now_number==1:
-        room.delete()
         contacts.delete()
         posting.finished=True
         posting.save()
@@ -130,7 +128,7 @@ def delete_chatting(request, pk):
 
 
 def delete_contact(request, pk):
-    user_pk = request.GET['user_pk']
-    contact = Contact.objects.filter(room_id=pk).get(allowed_user=user_pk)
-    contact.delete()
-    return render(request, 'chat/room.html')
+   user_pk = request.GET['user_pk']
+   contact = Contact.objects.filter(room_id=pk).get(allowed_user=user_pk)
+   contact.delete()
+   return redirect('chat:room', pk)
