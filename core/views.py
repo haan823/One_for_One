@@ -1,10 +1,13 @@
+import json
+
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 
 from django.forms import forms
 from django.shortcuts import render
-from core.models import Store, Posting
+from core.models import Store, Posting, Tag
 
 from chat.models import Room, Contact
 from core.models import Store, Posting
@@ -12,24 +15,67 @@ from account.models import Univ, Profile
 
 
 def home(request, pk):
+    if request.user.is_authenticated:
     current_user = request.user
     profile = Profile.objects.get(user=current_user.id)
     univ = profile.univ
     contacts = Contact.objects.filter(allowed_user=profile)
     rooms = Room.objects.all()
-    # categories = Category.objects.filter(univ_id=univ)
-    postings = Posting.objects.filter(user_id=current_user.id)
-    data = {
-        'postings': postings,
-        'current_user': current_user.id,
-        'univ': univ,
-        'profile': profile,
+        stores = Store.objects.filter(univ_id=pk)
+        postings = []
+        for store in stores:
+            postings2 = Posting.objects.filter(store_id=store.id)
+            for posting in postings2:
+                postings.append(posting)
+        tag_dic = {}
+        for posting in postings:
+            tags = []
+            tags += Tag.objects.filter(posting_id=posting.id)
+            tag_dic[posting] = tags
+        all_tags = set(Tag.objects.all())
+        tags_list = []
+        for all_tag in all_tags:
+            tags_list.append(all_tag.content)
+        rm_dup_tags = list(set(tags_list))
+        data = {
+            'postings': postings,
+            'current_user': current_user.id,
+            'univ': univ,
+            'profile': profile,
+            'categories': ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점'],
+            'tag_dic': tag_dic,
         'contacts': contacts,
         'rooms': rooms
-        #'categories': categories,
     }
-    return render(request, 'core/home.html', data)
-
+        return render(request, 'core/home.html', data)
+    else:
+        stores = Store.objects.filter(univ_id=pk)
+        univ = Univ.objects.get(pk=pk)
+        univs = Univ.objects.all()
+        postings = []
+        for store in stores:
+            postings2 = Posting.objects.filter(store_id=store.id)
+            for posting in postings2:
+                postings.append(posting)
+        tag_dic = {}
+        for posting in postings:
+            tags = []
+            tags += Tag.objects.filter(posting_id=posting.id)
+            tag_dic[posting] = tags
+        all_tags = set(Tag.objects.all())
+        tags_list = []
+        for all_tag in all_tags:
+        rm_dup_tags = list(set(tags_list))
+            tags_list.append(all_tag.content)
+        data = {
+            'postings': postings,
+            'univ': univ,
+            'univs': univs,
+            'categories': ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점'],
+            'tag_dic': tag_dic,
+            'rm_dup_tags': rm_dup_tags,
+        }
+        return render(request, 'core/home.html', data)
 
 
 def match_new(request, pk):
@@ -50,7 +96,7 @@ def choice_cat(request, pk):
         pass
     else:
         data = {
-           # 'cats':cats,
+            # 'cats':cats,
         }
     return render(request, 'core/choice_cat.html', data)
 
@@ -59,28 +105,78 @@ def choice_store(request):
     return render(request, 'core/choice_store.html')
 
 
+def choice_page(request):
+    return render(request, 'core/store_choice.html')
+
+
 def match_fin(request):
     return render(request, 'core/match_fin.html')
 
 
-def mypage(request, pk):
-    postings = Posting.objects.filter(user_id=request.user)
-    now_postings = postings.filter(finished=True)
-    end_postings = postings.filter(finished=False)
-    data = {
-        'now_postings':now_postings,
-        'end_postings':end_postings,
-        #'level':level,
+def my_page(request):
+    current_user = request.user
+    profile = Profile.objects.get(user=current_user)
+    postings = Posting.objects.filter(user_id=current_user)
+    context = {
+        'profile': profile,
+        'postings': postings,
     }
-    return render(request, 'core/mypage.html', data)
+    return render(request, 'core/my_page.html', context)
+
+
+def store_choice(request):
+    return render(request, 'core/store_choice.html')
+
 
 def main(request):
-    univs = Univ.objects.all()
-    data = {
-        'univs': univs
-    }
+    if request.user.is_authenticated:
+        current_user = request.user
+        profile = Profile.objects.get(user=current_user)
+        data = {
+            'profile': profile
+        }
+    else:
+        univs = Univ.objects.all()
+        data = {
+            'univs': univs
+        }
     return render(request, 'core/main.html', data)
 
+
+def search(request):
+    return render(request, 'core/search.html')
+
+
+def search_store(request):
+    kwd = request.POST.get('kwd', None)
+    # data = {
+    #     'content': list()
+    # }
+    data = {}
+
+    if kwd:
+        all_tags = set(Tag.objects.all())
+        tags_list = []
+        for all_tag in all_tags:
+            tags_list.append(all_tag.content)
+        tags = list(set(tags_list))
+        filtered_tags = []
+        for tag in tags:
+            if kwd in tag:
+                print(kwd)
+                print(tag)
+                filtered_tags.append(tag)
+        # postings = Posting.objects.filter(menu__icontains=kwd)
+        # for posting in postings:
+        #     data['content'].append({
+        #         'menu': posting.menu,
+        #         'price': posting.price,
+        #         'max_num': posting.max_num,
+        #         # 'tags': tags
+        #     })
+        data = {'filtered_tags': filtered_tags}
+
+    return HttpResponse(json.dumps(data), content_type="application/json")
 
 # class UploadFileForm(forms.Form):
 #     file = forms.FileField()

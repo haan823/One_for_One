@@ -1,10 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'style_login.css' %}">
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Title</title>#}
+{#    {% load static %}#}
+{#    <link rel="stylesheet" href="{% static 'style_login.css' %}">#}
+{#    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"#}
+{#            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"#}
+{#            crossorigin="anonymous"></script>#}
+{#    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"#}
+{#            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"#}
+{#            crossorigin="anonymous"></script>#}
+{#    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"#}
+{#          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">#}
+{#    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"#}
+{#            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"#}
+{#            crossorigin="anonymous"></script>#}
+{#    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>#}
+{#    <script src="http://code.jquery.com/jquery-3.3.1.min.js"#}
+{#            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>#}
+{#</head>#}
+{#<body>#}
+{##}
+{##}
+{% extends "base.html" %}
+{% block extra_head %}
+{#    <link rel="stylesheet" href="{% static 'style_login.css' %}">#}
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
             integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
             crossorigin="anonymous"></script>
@@ -19,21 +40,23 @@
     <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
     <script src="http://code.jquery.com/jquery-3.3.1.min.js"
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-</head>
-<body>
-<div class="limiter">
-    <div class="container-login100">
-        <div class="wrap-signup100 p-t-50 p-b-90">
-            <form class="login100-form validate-form flex-sb flex-w" action="{% url 'account:signup' univ.id %}"
-                  method="POST">
-                {% csrf_token %}
-                <span class="login100-form-title p-b-51">
+{% endblock %}
+
+
+{% block content %}
+{#    <div class="limiter">#}
+{#		<div class="container-login100">#}
+			<div class="wrap-signup100 p-t-50 p-b-90">
+				<form class="login100-form validate-form flex-sb flex-w" name="signup_form" action="{% url 'account:signup' univ.id %}" method="POST">
+                    {% csrf_token %}
+					<span class="login100-form-title p-b-51">
 						Sign Up
 					</span>
                 <br>
 
                 <div class="wrap-input100 validate-input m-b-16" data-validate="Username is required">
-                    <input id='username' class="input100" type="text" name="username" placeholder="Username" value="{{ de_username }}">
+                    <input id='username' class="input100" type="text" name="username" placeholder="Username"
+                           value="{{ de_username }}">
                     <span class="focus-input100"></span>
                 </div>
                 <br>
@@ -43,12 +66,14 @@
 
                 <div style="display: flex; justify-content: space-between;">
                     <div class="wrap-input49 validate-input m-b-16" data-validate="Password is required" style="">
-                        <input id='password1' class="input100" type="password" name="password1" placeholder="Password" value="{{ de_password1}}">
+                        <input id='password1' class="input100" type="password" name="password1" placeholder="Password"
+                               value="{{ de_password1 }}">
                         <span class="focus-input100"></span>
                     </div>
 
                     <div class="wrap-input49 validate-input m-b-16" data-validate="Password is required" style="">
-                        <input id='password2' class="input100" type="password" name="password2" value="{{ de_password2 }}"
+                        <input id='password2' class="input100" type="password" name="password2"
+                               value="{{ de_password2 }}"
                                placeholder="Password confirm">
                         <span class="focus-input100"></span>
                     </div>
@@ -59,7 +84,8 @@
                 <div class="alert alert-danger" id="password-alert-danger">비밀번호가 일치하지 않습니다.</div>
 
                 <div class="wrap-input100 validate-input m-b-16" data-validate="Nickname is required">
-                    <input id='nickname' class="input100" type="text" name="nickname" placeholder="Nickname" value="{{ de_nickname }}">
+                    <input id='nickname' class="input100" type="text" name="nickname" placeholder="Nickname"
+                           value="{{ de_nickname }}">
                     <span class="focus-input100"></span>
                 </div>
                 <br>
@@ -69,7 +95,8 @@
 
                 <div style="display: flex; justify-content: space-between;">
                     <div class="wrap-input49 validate-input m-b-16" data-validate="Email ID is required">
-                        <input id='email_id' class="input100" type="text" name="email_id" placeholder="Email ID" value="{{ de_email_id }}">
+                        <input id='email_id' class="input100" type="text" name="email_id" placeholder="Email ID"
+                               value="{{ de_email_id }}">
                         <span class="focus-input100"></span>
                     </div>
                     <div class="wrap-input10 validate-input m-b-16">
@@ -89,7 +116,8 @@
                 <div class="alert alert-danger" id="email_id-alert-danger">이미 등록된 이메일입니다.</div>
 
                 <div class="wrap-input100 validate-input m-b-16" data-validate="Phone Number is required">
-                    <input id='phone_number' class="input100" type="text" name="phone_number" value="{{ de_phone_number }}"
+                    <input id='phone_number' class="input100" type="text" name="phone_number" ,
+                           value="{{ de_phone_number }}"
                            placeholder="-없이 '01012345678'과 같이 전화번호를 입력해주세요.">
                     <span class="focus-input100"></span>
                 </div>
@@ -100,36 +128,44 @@
 
                 <button type="button" id="addedKeyword" onclick="sms()">인증번호 전송</button>
                 <div id="imdiv"></div>
+                <div class="wrap-input100 validate-input m-b-16" data-validate="user_auth_number is required" id="auth_div">
+                    <input id='user_auth_number' class="input100" type="text" name="user_auth_number" placeholder="인증번호를 입력해주세요">
+                    <span class="focus-input100"></span>
+                </div>
+                <br>
+                <div class="alert alert-success" id="auth_number-alert-success">올바른 인증번호입니다.</div>
+                <div class="alert alert-danger" id="auth_number-alert-danger">올바르지 않은 인증번호입니다.</div>
+
 
                 <div class="container-login100-form-btn m-t-17">
-                    <button type='submit' class="login100-form-btn">
+                    <button type='button' class="login100-form-btn" onclick="real_submit()">
                         Submit
                     </button>
                 </div>
-                <br>
 
                 <div>
                     {{ message }}
                 </div>
 
                 <script type="text/javascript">
-                    var str = "<div class=\"wrap-input100 validate-input m-b-16\" data-validate=\"user_auth_number is required\">\n" +
-                        "                    <input id='user_auth_number' class=\"input100\" type=\"text\" name=\"user_auth_number\"\n" +
-                        "                           placeholder=\"인증번호를 입력해주세요\">\n" +
-                        "                    <span class=\"focus-input100\"></span>\n" +
-                        "                </div>\n" +
-                        "                <br>"
+                    $(".alert").hide();
+                    $("#auth_div").hide();
 
-                    var list = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+                    var boo1 = false;
+                    var boo2 = false;
+                    var boo3 = false;
+                    var boo4 = false;
+                    var boo5 = false;
+                    var dec_list = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
                     var username_list, nickname_list, phone_number_list, email_id_list;
                     username_list = [
                         {% for i in username_list %}
-                            '{{ i }}'
+                            '{{ i }}',
                         {% endfor %}
                     ];
                     nickname_list = [
                         {% for i in nickname_list %}
-                            '{{ i }}'
+                            '{{ i }}',
                         {% endfor %}
                     ];
                     phone_number_list = [
@@ -143,22 +179,28 @@
                         {% endfor %}
                     ];
 
+                    function real_submit() {
+                        if (!(boo1 && boo2 && boo3 && boo4 && boo5)) {
+                            alert("올바른 형태로 정보를 입력해주세요.")
+                        } else {
+                            document.signup_form.submit()
+                        }
+                    }
+
                     function validation_check(string) {
                         var bool1 = string.slice(0, 3) === '010' && string.length === 11;
-                        var bool2 = true
+                        var bool2 = true;
                         for (var i = 0; i < string.length; i++) {
-                            if (!(string.charAt(i) in list)) {
+                            if (!(string.charAt(i) in dec_list)) {
                                 bool2 = false;
                                 break;
                             }
                         }
-                        return bool1 && bool2
+                        var bool3 = !(phone_number_list.indexOf(string) > -1);
+                        return bool1 && bool2 && bool3
                     }
 
-                    var auth_number;
                     function send() {
-                        var imdiv = document.querySelector('#imdiv');
-                        imdiv.innerHTML = str;
                         var user_phone_number = document.getElementById("phone_number").value;
                         $.ajax({
                             type: "POST",
@@ -168,20 +210,23 @@
                                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                             },
                             success: function () {
-                                alert('입력하신 휴대폰 번호로 인증번호가 전송되었습니다.');}
+                                alert('입력하신 휴대폰 번호로 인증번호가 전송되었습니다.');
+                            }
+
                         })
                     }
 
                     function sms() {
                         var user_phone_number = document.getElementById("phone_number").value;
-                        if (validation_check(user_phone_number)) {
-                            send()
+                        if (!(phone_number_list.indexOf(user_phone_number) > -1) && validation_check(user_phone_number)) {
+                            send();
+                            $("#auth_div").show()
                         } else {
-                            alert('올바른 형식의 휴대폰 번호를 입력해주세요.')
+                            alert('올바른 휴대폰 번호를 입력해주세요.')
                         }
                     }
 
-                    $(".alert").hide();
+
                     $("input").keyup(function () {
                         var pwd1 = $("#password1").val();
                         var pwd2 = $("#password2").val();
@@ -189,6 +234,7 @@
                             if (pwd1 == pwd2) {
                                 $("#password-alert-success").show();
                                 $("#password-alert-danger").hide();
+                                boo2 = true
                             } else {
                                 $("#password-alert-success").hide();
                                 $("#password-alert-danger").show();
@@ -203,6 +249,7 @@
                             } else {
                                 $("#username-alert-success").show();
                                 $("#username-alert-danger").hide();
+                                boo1 = true
                             }
                         }
 
@@ -211,9 +258,11 @@
                             if (nickname_list.indexOf(nickname) > -1) {
                                 $("#nickname-alert-success").hide();
                                 $("#nickname-alert-danger").show();
+
                             } else {
                                 $("#nickname-alert-success").show();
                                 $("#nickname-alert-danger").hide();
+                                boo3 = true
                             }
                         }
 
@@ -222,17 +271,19 @@
                             if (email_id_list.indexOf(email_id) > -1) {
                                 $("#email_id-alert-success").hide();
                                 $("#email_id-alert-danger").show();
+
                             } else {
                                 $("#email_id-alert-success").show();
                                 $("#email_id-alert-danger").hide();
+                                boo4 = true
                             }
                         }
 
                         var phone_number = $("#phone_number").val();
-                        console.log('validation check result:' + validation_check(phone_number));
+                        console.log('phone number validation check result:' + validation_check(phone_number));
 
                         if (phone_number !== "") {
-                            if (phone_number_list.indexOf(phone_number) > -1 || !(validation_check(phone_number))) {
+                            if (!validation_check(phone_number)) {
                                 $("#phone_number-alert-success").hide();
                                 $("#phone_number-alert-danger").show();
 
@@ -241,15 +292,61 @@
                                 $("#phone_number-alert-danger").hide();
                             }
                         }
+
+
                     })
+                function auth_validation_check(string) {
+                    var bool1, bool2;
+                    bool1 = (string.length === 4)
+                    bool2 = true
+                    console.log(bool1)
+                    console.log(typeof (string.length))
+                    console.log()
+                    console.log("string.length:"+string.length)
+                    for (var i = 0; i < string.length; i++) {
+                        if (!(string.charAt(i) in dec_list)) {
+                            bool2=false;
+                            break;
+                        }
+                    }
+                    return bool1 && bool2
+                }
 
+                $("#user_auth_number").keyup( function() {
+                    var user_phone_number = $("#phone_number").val();
+                    var user_auth_number = $("#user_auth_number").val();
+                    if (auth_validation_check(user_auth_number)){
+                        var now = new Date
 
+                        $.ajax({
+                            type: "POST",
+                            url: "auth_check",
+                            data: {
+                                'user_auth_number': user_auth_number,
+                                'user_phone_number': user_phone_number,
+                                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            },
+                            success: function () {
+                                $("#auth_number-alert-success").show();
+                                $("#auth_number-alert-danger").hide();
+                                boo5=true;
+                            }
+                        })
+
+                    }
+                    else {
+                        $("#auth_number-alert-success").hide();
+                        $("#auth_number-alert-danger").show();
+                        boo5=false;
+                    }
+                }
+                )
                 </script>
 
             </form>
         </div>
-    </div>
-</div>
-
-</body>
-</html>
+{% endblock %}
+{#    </div>#}
+{#</div>#}
+{#</body>#}
+{#</html>#}

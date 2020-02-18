@@ -14,6 +14,7 @@ from django.views import View
 # from core.models import Category
 from .models import Profile, Univ, AuthSms
 
+
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
@@ -46,30 +47,9 @@ def goto_signup(request):
 
 
 def signup(request, pk):
+    univs = Univ.objects.all()
     univ = Univ.objects.get(pk=pk)
     if request.method == "POST":
-        user_authsms = AuthSms.objects.get(phone_number=request.POST['phone_number'])
-        if int(request.POST['user_auth_number']) != int(user_authsms.auth_number):
-            UNIV_DOMAIN_MAPPING = {
-                '서울대학교': 'snu.ac.kr',
-                '성균관대학교': 'g.skku.edu',
-                '이화여자대학교': 'ewhain.net',
-                '홍익대학교': 'mail.hongik.ac.kr',
-            }
-            context = {
-                'message': '비밀번호가 일치하지 않습니다.',
-                'pk': pk,
-                'univ': univ,
-                'email_domain': UNIV_DOMAIN_MAPPING.get(univ.name),
-
-                'de_username': request.POST["username"],
-                'de_password1': request.POST["password1"],
-                'de_password2': request.POST["password2"],
-                'de_email_id': request.POST["email_id"],
-                'de_nickname': request.POST["nickname"],
-                'de_phone_number': request.POST['phone_number']
-            }
-            return render(request, 'signup.html', context)
 
         if request.POST["password1"] == request.POST["password2"]:
             email = request.POST['email_id'] + '@' + request.POST['email_domain']
@@ -108,6 +88,7 @@ def signup(request, pk):
 
         profiles = Profile.objects.all()
         data = {
+            'univs': univs,
             'univ': univ,
             'email_domain': UNIV_DOMAIN_MAPPING.get(univ.name),
 
@@ -127,25 +108,34 @@ def signup(request, pk):
 
 
 def login(request):
+    if request.user.is_authenticated:
+        current_user = request.user
+        profile = Profile.objects.get(user=current_user)
+        data = {
+            'profile': profile
+        }
+    else:
+        univs = Univ.objects.all()
+        data = {
+            'univs': univs
+        }
     if request.method == "POST":
         username = request.POST["id"]
         password = request.POST["password"]
         # 해당 user가 있으면 username, 없으면 None
         user = auth.authenticate(request, username=username, password=password)
-        profile = Profile.objects.get(user=user)
-        univ = profile.univ
         if user is not None:
+            profile = Profile.objects.get(user=user)
+            univ = profile.univ
             auth.login(request, user)
             return redirect(reverse('core:home', args=[univ.id]))
-        else:
-            return render(request, 'login.html', {'error': 'username or password is incorrect'})
     else:
-        return render(request, 'login.html')
+        return render(request, 'login.html', data)
 
 
 def logout(request):
     auth.logout(request)
-    return redirect("account:login")
+    return redirect("core:main")
 
 
 def user_active(request, token):
@@ -167,3 +157,13 @@ def send_sms(request, pk):
 
 def test(request):
     return render(request, 'test3.html', {'count': 6})
+
+
+def auth_check(request, pk):
+    user_authsms = AuthSms.objects.get(phone_number=request.POST['user_phone_number'])
+    if int(request.POST['user_auth_number']) == int(user_authsms.auth_number):
+        print(request.POST['user_auth_number'])
+        print(user_authsms.auth_number)
+        return render(request, 'test3.html')
+    else:
+        return None
