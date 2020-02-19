@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'chat',
     'import_export',
     'mathfilters',
+    # 'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -150,3 +151,5 @@ IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 # FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
 #                         "django_excel.TemporaryExcelFileUploadHandler")
+
+# INTERNAL_IPS = ('127.0.0.1')

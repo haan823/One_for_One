@@ -83,6 +83,8 @@ def signup(request, pk):
             '성균관대학교': 'g.skku.edu',
             '이화여자대학교': 'ewhain.net',
             '홍익대학교': 'mail.hongik.ac.kr',
+            '가천대학교': '?!',
+            '고려대학교': 'korea.ac.kr',
         }
 
         profiles = Profile.objects.all()
