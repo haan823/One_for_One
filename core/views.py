@@ -132,12 +132,19 @@ def my_page(request):
         'postings': postings,
         'contacts': contacts,
     }
-    return render(request, 'core/my_page_2.html', context)
+    return render(request, 'core/my_page.html', context)
+
 
 def accept(request, pk):
     contact = Contact.objects.get(pk=pk)
-    contact.accepted=True
-    contact.save()
+    posting = Posting.objects.get(pk=contact.posting_id.pk)
+    if(posting.now_num!=posting.max_num):
+        posting.now_num+=1
+        posting.save()
+        contact.accepted=True
+        contact.save()
+    else:
+        pass
     return redirect('core:my_page')
 
 def refuse(request, pk):

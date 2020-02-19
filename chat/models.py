@@ -9,7 +9,6 @@ from core.models import Posting
 
 class Room(models.Model):
     posting_id = models.OneToOneField(Posting, on_delete=models.CASCADE, primary_key=True)
-    now_number = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(6)], default=1)
     match_finished = models.BooleanField(default=False)
 
     def __str__(self):

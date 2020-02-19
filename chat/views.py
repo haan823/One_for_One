@@ -48,20 +48,6 @@ def create_Room(request, pk):
         contact.save()
     return redirect('core:my_page')
 
-
-# def Enter_Room(request, pk):
-#     room = Room.objects.get(pk=pk)
-#     try:
-#         room.now_number = room.now_number+1
-#     except:
-#         print()
-#     contact = Contact.objects.create(
-#         room_id=room,
-#         allowed_user=request.user
-#     )
-#     contact.save()
-#     return redirect('chat:room', room.pk)
-
 def matching_finished(request, pk):
     posting = Posting.objects.get(pk=pk)
     if posting.finished == True:
