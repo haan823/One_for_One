@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'account',
     'chat',
     'import_export',
+    'mathfilters',
+    # 'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -107,15 +109,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko-kr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -149,3 +151,5 @@ IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 # FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
 #                         "django_excel.TemporaryExcelFileUploadHandler")
+
+# INTERNAL_IPS = ('127.0.0.1')

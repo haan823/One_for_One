@@ -14,7 +14,6 @@ from django.views import View
 # from core.models import Category
 from .models import Profile, Univ, AuthSms
 
-
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
@@ -84,6 +83,8 @@ def signup(request, pk):
             '성균관대학교': 'g.skku.edu',
             '이화여자대학교': 'ewhain.net',
             '홍익대학교': 'mail.hongik.ac.kr',
+            '가천대학교': '?!',
+            '고려대학교': 'korea.ac.kr',
         }
 
         profiles = Profile.objects.all()

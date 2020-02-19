@@ -1,17 +1,21 @@
+import datetime
 import json
 
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, InvalidPage, PageNotAnInteger
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 from django.forms import forms
 from django.shortcuts import render
-from core.models import Store, Posting, Tag
+from core.models import *
 
-from chat.models import Room, Contact
-from core.models import Store, Posting
-from account.models import Univ, Profile
+from chat.models import *
+from core.models import *
+from account.models import *
+
+from core.utils import convert_date_PytoJs
 
 
 def home(request, pk):
@@ -29,9 +33,14 @@ def home(request, pk):
                 postings.append(posting)
         tag_dic = {}
         for posting in postings:
-            tags = []
-            tags += Tag.objects.filter(posting_id=posting.id)
-            tag_dic[posting] = tags
+            due = posting.create_date + datetime.timedelta(minutes=posting.timer)
+            now = datetime.datetime.now()
+            if due > now:
+                tags = []
+                tags += Tag.objects.filter(posting_id=posting.id)
+                posting.create_date_string = convert_date_PytoJs(str(posting.create_date))
+                print(posting.create_date_string)
+                tag_dic[posting] = tags
         all_tags = set(Tag.objects.all())
         tags_list = []
         for all_tag in all_tags:
@@ -60,9 +69,14 @@ def home(request, pk):
                 postings.append(posting)
         tag_dic = {}
         for posting in postings:
-            tags = []
-            tags += Tag.objects.filter(posting_id=posting.id)
-            tag_dic[posting] = tags
+            due = posting.create_date + datetime.timedelta(minutes=posting.timer)
+            now = datetime.datetime.now()
+            if due > now:
+                tags = []
+                tags += Tag.objects.filter(posting_id=posting.id)
+                posting.create_date_string = convert_date_PytoJs(str(posting.create_date))
+                print(posting.create_date_string)
+                tag_dic[posting] = tags
         all_tags = set(Tag.objects.all())
         tags_list = []
         for all_tag in all_tags:
@@ -79,39 +93,95 @@ def home(request, pk):
         return render(request, 'core/home.html', data)
 
 
-def match_new(request, pk):
-    univ = request.user.profile.univ
-    univ_input = Profile.objects.filter(name=univ)
-    # categories = Category.objects.get()
-    stores = Store.objects.all()
+def match_new(request):
+    current_user = request.user
+    profile = Profile.objects.get(user=current_user)
+    univ = profile.univ
+
     if request.method == "POST":
-        pass
-    else:
-        pass
-    return render(request, 'core/match_new.html')
-
-
-def choice_cat(request, pk):
-    # cats = Category.objects.all()
-    if request.method == 'POST':
-        pass
+        menu_name = request.POST['menu_name']
+        print(menu_name)
+        menu_price = request.POST['menu_price']
+        with_num = request.POST['with_num']
+        posting_time = request.POST['posting_time']
+        # on_store = Store.objects.get(title='store_title').id
+        # cat_name = request.POST['cat_name']
+        # store_filter = Store.objects.filter(cat_name=cat_name)
+        # store_title = request.POST['store_name']
+        pk = request.POST['store_pk']
+        store_id = Store.objects.get(pk=pk)
+        print(1)
+        on_posting = Posting.objects.create(
+            user_id=current_user,
+            store_id=store_id,
+            menu=menu_name,
+            price=menu_price,
+            max_num=with_num,
+            timer=posting_time,
+            finished=False
+        )
+        print(2)
+        on_posting.save()
+        return render(request, 'core/match_fin.html', {'profile': profile, 'univ': univ})
     else:
         data = {
-            # 'cats':cats,
+            # 'store': store,
+            'profile': profile,
+            'univ': univ
         }
-    return render(request, 'core/choice_cat.html', data)
+        return render(request, 'core/match_new.html', data)
 
 
-def choice_store(request):
-    return render(request, 'core/choice_store.html')
+def choice_detail(request):
+    cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
+    current_user = request.user
+    profile = Profile.objects.get(user=current_user)
+    stores_univ = Store.objects.filter(univ_id=profile.univ)
+    stores = Store.objects.all()
+    # store_치킨 = Store.objects.filter(cat_name='치킨')
 
+    if request.method == 'POST':
+        stores = Store.objects.all()
+        store_title = request.POST.get('title')
 
-def choice_page(request):
-    return render(request, 'core/store_choice.html')
+        data = {
+            'profile': profile,
+            'cat_list': cat_list,
+            'stores': stores,
+            'stores_univ': stores_univ,
+            'store_title': store_title,
+        }
+        return render(request, 'core/match_new.html', data)
+    else:
+        # paginator = Paginator(stores_univ, 20)
+        # page = request.GET.get('page', 1)
+        # stores_in_page = paginator.get_page(page)
+        # try:
+        #     lines = paginator.page(page)
+        # except PageNotAnInteger:
+        #     lines = paginator.page(1)
+        # except EmptyPage:
+        #     lines = paginator.page(paginator.num_pages)
+        data = {
+            'profile': profile,
+            'cat_list': cat_list,
+            'stores': stores,
+            'stores_univ': stores_univ,
+            # 'stores_in_page': stores_in_page,
+        }
+        return render(request, 'core/choice_detail.html', data)
 
 
 def match_fin(request):
-    return render(request, 'core/match_fin.html')
+    current_user = request.user
+    profile = Profile.objects.get(user=current_user)
+    univ = profile.univ
+    data = {
+        # 'store': store,
+        'profile': profile,
+        'univ': univ
+    }
+    return render(request, 'core/match_fin.html', data)
 
 
 def my_page(request):
@@ -206,26 +276,39 @@ def search_store(request):
 
     return HttpResponse(json.dumps(data), content_type="application/json")
 
-# class UploadFileForm(forms.Form):
-#     file = forms.FileField()
-#
-#
-# # Create your views here.
-# def upload(request):
-#     if request.method == "POST":
-#         form = UploadFileForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             filehandle = request.FILES['file']
-#             return excel.make_response(filehandle.get_sheet(), "xlsx",
-#                                        file_name="download")
-#     else:
-#         form = UploadFileForm()
-#     return render(
-#         request,
-#         'upload_form.html',
-#         {
-#             'form': form,
-#             'title': 'Excel file upload and download example',
-#             'header': ('Please choose any excel file ' +
-#                        'from your cloned repository:')
-#         })
+
+def allProdCat(request, c_slug=None):
+    c_page = None
+    store_list = None
+    if c_slug != None:
+        c_page = get_object_or_404(Store, slug=c_slug)
+        store_list = Store.objects.filter(cat_name=c_page, available=True)
+    else:
+        store_list = Store.objects.all().filter(available=True)
+
+    paginator = Paginator(store_list, 20)
+    try:
+        page = int(request.GET.get('page', '1'))
+    except:
+        page = 1
+
+        try:
+            stores = paginator.page(page)
+        except(EmptyPage, InvalidPage):
+            stores = paginator.page(paginator.num_pages)
+
+        return render(request, 'core/choice_detail.html', {'category': c_page, 'stores': stores})
+
+
+def new_test(request):
+    cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
+    current_user = request.user
+    profile = Profile.objects.get(user=current_user)
+    stores_univ = Store.objects.filter(univ_id=profile.univ)
+    stores = Store.objects.all()
+    data = {
+        'cat_list': cat_list,
+        'stores': stores,
+        'stores_univ': stores_univ
+    }
+    return render(request, 'core/new_test.html', data)
