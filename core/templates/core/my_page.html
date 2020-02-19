@@ -21,19 +21,33 @@
         </ul>
     </div>
     <div class="wrap">
-        {% for posting in postings %}
+        <div>참여중인 포스트</div>
+        {% for posting in now_postings %}
             <div class="card" style="width: 18rem; display: inline-block;">
                 <img src="{{ posting.store_id.logo }}" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">{{ posting.menu }}</h5>
-                    <br>
-                    <p class="card-text">store: {{ posting.store_id.title }}</p>
-                    <p class="card-text">가격: {{ posting.price }}</p>
-                    <p class="card-text">최대인원: {{ posting.max_num }}</p>
+                    <div class="card-text">store: {{ posting.store_id.title }}</div>
+                    <div class="card-text">가격: {{ posting.price }}</div>
+                    <div class="card-text">최대인원: {{ posting.max_num }}</div>
+                    <br/>
+                    <a href="#" class="btn btn-primary">채팅방으로</a>
+                </div>
+            </div>
+        {% endfor %}
+        <div>완료된 포스트</div>
+        {% for posting in end_postings %}
+            <div class="card" style="width: 18rem; display: inline-block;">
+                <img src="{{ posting.store_id.logo }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{ posting.menu }}</h5>
+                    <div class="card-text">store: {{ posting.store_id.title }}</div>
+                    <div class="card-text">가격: {{ posting.price }}</div>
+                    <div class="card-text">최대인원: {{ posting.max_num }}</div>
+                    <br/>
                     <a href="#" class="btn btn-primary">채팅방으로</a>
                 </div>
             </div>
         {% endfor %}
     </div>
-
 {% endblock %}

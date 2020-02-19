@@ -38,6 +38,7 @@ class Posting(models.Model):
     max_num = models.IntegerField(null=True)
     timer = models.IntegerField(blank=True, null=True)
     finished = models.BooleanField(default=False)
+    chat_created = models.BooleanField(default=False)
     create_date = models.DateTimeField(auto_now_add=True, null=True)
 
 

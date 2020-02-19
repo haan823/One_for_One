@@ -16,11 +16,11 @@ from account.models import Univ, Profile
 
 def home(request, pk):
     if request.user.is_authenticated:
-    current_user = request.user
-    profile = Profile.objects.get(user=current_user.id)
-    univ = profile.univ
-    contacts = Contact.objects.filter(allowed_user=profile)
-    rooms = Room.objects.all()
+        current_user = request.user
+        profile = Profile.objects.get(user=current_user.id)
+        univ = profile.univ
+        contacts = Contact.objects.filter(allowed_user=profile)
+        rooms = Room.objects.all()
         stores = Store.objects.filter(univ_id=pk)
         postings = []
         for store in stores:
@@ -38,15 +38,16 @@ def home(request, pk):
             tags_list.append(all_tag.content)
         rm_dup_tags = list(set(tags_list))
         data = {
+            'contacts': contacts,
+            'rooms': rooms,
             'postings': postings,
             'current_user': current_user.id,
             'univ': univ,
             'profile': profile,
             'categories': ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점'],
             'tag_dic': tag_dic,
-        'contacts': contacts,
-        'rooms': rooms
-    }
+            'rm_dup_tags': rm_dup_tags,
+        }
         return render(request, 'core/home.html', data)
     else:
         stores = Store.objects.filter(univ_id=pk)
@@ -65,8 +66,8 @@ def home(request, pk):
         all_tags = set(Tag.objects.all())
         tags_list = []
         for all_tag in all_tags:
-        rm_dup_tags = list(set(tags_list))
             tags_list.append(all_tag.content)
+        rm_dup_tags = list(set(tags_list))
         data = {
             'postings': postings,
             'univ': univ,
@@ -116,13 +117,33 @@ def match_fin(request):
 def my_page(request):
     current_user = request.user
     profile = Profile.objects.get(user=current_user)
-    postings = Posting.objects.filter(user_id=current_user)
+    contacts = Contact.objects.all()
+    user_contacts=contacts.filter(allowed_user=profile)
+    print(user_contacts)
+    postings = []
+    for contact in user_contacts:
+        posting_id = contact.posting_id.pk
+        postings.append(Posting.objects.get(pk=posting_id))
+    print(postings)
     context = {
+        'rooms': Room.objects.all(),
+        'current_user' : current_user,
         'profile': profile,
         'postings': postings,
+        'contacts': contacts,
     }
-    return render(request, 'core/my_page.html', context)
+    return render(request, 'core/my_page_2.html', context)
 
+def accept(request, pk):
+    contact = Contact.objects.get(pk=pk)
+    contact.accepted=True
+    contact.save()
+    return redirect('core:my_page')
+
+def refuse(request, pk):
+    contact = Contact.objects.get(pk=pk)
+    contact.delete()
+    return redirect('core:my_page')
 
 def store_choice(request):
     return render(request, 'core/store_choice.html')
