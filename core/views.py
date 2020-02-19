@@ -17,6 +17,7 @@ from account.models import *
 
 from core.utils import convert_date_PytoJs
 
+
 def home(request, pk):
     if request.user.is_authenticated:
         current_user = request.user
@@ -190,7 +191,6 @@ def my_page(request):
     return render(request, 'core/my_page.html', context)
 
 
-
 def main(request):
     if request.user.is_authenticated:
         current_user = request.user
@@ -257,6 +257,14 @@ def allProdCat(request, c_slug=None):
     except:
         page = 1
 
+        try:
+            stores = paginator.page(page)
+        except(EmptyPage, InvalidPage):
+            stores = paginator.page(paginator.num_pages)
+
+        return render(request, 'core/choice_detail.html', {'category': c_page, 'stores': stores})
+
+
 def new_test(request):
     cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
     current_user = request.user
@@ -269,5 +277,3 @@ def new_test(request):
         'stores_univ': stores_univ
     }
     return render(request, 'core/new_test.html', data)
-
-    return render(request, 'core/choice_detail.html', {'category':c_page, 'stores':stores})
