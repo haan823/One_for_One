@@ -53,7 +53,10 @@
                                     원하는 메뉴 : {{ posting.menu }}<br />
                                     최대 인원 : {{ posting.max_num }}명<br />
                                     가격 : {{ posting.price }}<br />
-                                    배달 예상 시간 : {{ posting.store_id.del_time }}</p>
+                                    배달 예상 시간 : {{ posting.store_id.del_time }}<br />
+                                    {{ posting.menu_change }}<br />
+                                        {{ posting.together }}<br />
+                                    </p>
                                     <div>
                                         <a href="{{ posting.store_id.logo }}"
                                            data-lightbox="portfolio"

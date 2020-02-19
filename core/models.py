@@ -25,19 +25,22 @@ class Posting(models.Model):
     menu = models.CharField(max_length=255, null=True)
     price = models.IntegerField(null=True)
     max_num = models.IntegerField(null=True)
+    now_num = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(6)], default=1)
     timer = models.IntegerField(blank=True, null=True)
     finished = models.BooleanField(default=False)
-    create_date = models.DateTimeField(auto_now_add=True)
+    chat_created = models.BooleanField(default=False)
+    create_date = models.DateTimeField(auto_now_add=True, null=True)
     create_date_string = models.CharField(max_length=255, blank=True, null=True)
-    # tag = models.CharField(max_length=255, null=True)
-    # tag2 = models.CharField(max_length=255, null=True)
-    # tag3 = models.CharField(max_length=255, null=True)
+    menu_change = models.CharField(max_length=255, null=True)
+    together = models.CharField(max_length=255, null=True)
+
     def __str__(self):
         return self.store_id.title
 
     def posting_order(self):
         length = len(Posting.objects.all())
         return Posting.objects.order_by('-create_date').all()[:length]
+
 
 class Tag(models.Model):
     posting_id = models.ForeignKey(Posting, on_delete=models.CASCADE, related_name='tag')

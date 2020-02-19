@@ -66,8 +66,10 @@ def match_new(request):
         # store_filter = Store.objects.filter(cat_name=cat_name)
         # store_title = request.POST['store_name']
         pk = request.POST['store_pk']
+        # menu_change = request.POST['customRadioInline2']
+        # together = request.POST['customRadioInline1']
+        # menu_change = request.POST['customRadioInline2']
         store_id = Store.objects.get(pk=pk)
-        print(1)
         on_posting = Posting.objects.create(
             user_id=current_user,
             store_id=store_id,
@@ -75,7 +77,9 @@ def match_new(request):
             price=menu_price,
             max_num=with_num,
             timer=posting_time,
-            finished=False
+            finished=False,
+            # menu_change=menu_change,
+            # together=together,
         )
         print(2)
         on_posting.save()
