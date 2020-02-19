@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100 p-t-50 p-b-90">
+            <form class="login100-form validate-form flex-sb flex-w" action="{% url 'core:match_new' %}"
+                  method="POST">
+                {% csrf_token %}
+                <span class="login100-form-title p-b-51">
+                        Category
+					</span>
+                <br>
+
+                <div class="form-group">
+                    <select multiple class='form-control' name="category">
+                        {% for cat in cat_list %}
+                            <option value="{{ cat }}" >{{ cat }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <br>
+                <div class="container-login100-form-btn m-t-17">
+                    <button type='submit' class="login100-form-btn">
+                        choice
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

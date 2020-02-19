@@ -85,32 +85,40 @@ def home(request, pk):
         }
         return render(request, 'core/home.html', data)
 
-
-def match_new(request, pk):
-    univ = request.user.profile.univ
-    univ_input = Profile.objects.filter(name=univ)
-    # categories = Category.objects.get()
-    stores = Store.objects.all()
-    if request.method == "POST":
-        pass
-    else:
-        pass
+def match_new(request):
+    # univ = request.user.profile.univ
+    # # stores = Store.objects.filter(name=univ)
+    # if request.method == "POST":
+    #     return render(request, 'core/match_fin.html')
+    # else:
+    #     pass
     return render(request, 'core/match_new.html')
 
 
-def choice_cat(request, pk):
-    # cats = Category.objects.all()
-    if request.method == 'POST':
-        pass
-    else:
-        data = {
-            # 'cats':cats,
-        }
+def choice_cat(request):
+    cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
+    current_user = request.user
+    profile = Profile.objects.get(user=current_user)
+    stores_univ = Store.objects.filter(univ_id=profile.univ)
+    stores = Store.objects.all()
+    data = {
+        'cat_list': cat_list,
+        'stores': stores,
+    }
     return render(request, 'core/choice_cat.html', data)
 
 
-def choice_store(request):
-    return render(request, 'core/choice_store.html')
+def choice_detail(request):
+    cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
+    current_user = request.user
+    profile = Profile.objects.get(user=current_user)
+    stores_univ = Store.objects.filter(univ_id=profile.univ)
+
+    data = {
+        'cat_list': cat_list,
+        'stores_univ': stores_univ
+    }
+    return render(request, 'core/choice_detail.html')
 
 
 def choice_page(request):
@@ -131,9 +139,6 @@ def my_page(request):
     }
     return render(request, 'core/my_page.html', context)
 
-
-def store_choice(request):
-    return render(request, 'core/store_choice.html')
 
 
 def main(request):
@@ -186,26 +191,56 @@ def search_store(request):
 
     return HttpResponse(json.dumps(data), content_type="application/json")
 
-# class UploadFileForm(forms.Form):
-#     file = forms.FileField()
-#
-#
-# # Create your views here.
-# def upload(request):
-#     if request.method == "POST":
-#         form = UploadFileForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             filehandle = request.FILES['file']
-#             return excel.make_response(filehandle.get_sheet(), "xlsx",
-#                                        file_name="download")
-#     else:
-#         form = UploadFileForm()
-#     return render(
-#         request,
-#         'upload_form.html',
-#         {
-#             'form': form,
-#             'title': 'Excel file upload and download example',
-#             'header': ('Please choose any excel file ' +
-#                        'from your cloned repository:')
-#         })
+
+def test_cat(request):
+    cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
+    current_user = request.user
+    profile = Profile.objects.get(user=current_user)
+    stores_univ = Store.objects.filter(univ_id=profile.univ)
+
+    data = {
+        'cat_list': cat_list,
+        # 'stores_univ': [store for store in stores_univ],
+        'stores_univ': stores_univ
+    }
+    return render(request, 'core/test_cat.html', data)
+
+
+def test(request):
+    cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
+    current_user = request.user
+    profile = Profile.objects.get(user=current_user)
+    stores_univ = Store.objects.filter(univ_id=profile.univ)
+    stores = Store.objects.all()
+    data = {
+        'cat_list': cat_list,
+        'stores': stores,
+    }
+    return render(request, 'core/test.html', data)
+
+
+def test_choice(request):
+    if request.method == 'POST':
+        cat = request.POST['cat']
+        return redirect(reverse('core:test_choice', args=[cat]))
+    else:
+        cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
+        img_list = ['치킨.jpg', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
+        data = {
+            'cat_list': cat_list,
+        }
+        return render(request, 'core/test_choice.html', data)
+
+
+def new_test(request):
+    cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
+    current_user = request.user
+    profile = Profile.objects.get(user=current_user)
+    stores_univ = Store.objects.filter(univ_id=profile.univ)
+    stores = Store.objects.all()
+    data = {
+        'cat_list': cat_list,
+        'stores': stores,
+        'stores_univ': stores_univ,
+    }
+    return render(request, 'core/new_test.html', data)

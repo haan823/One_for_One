@@ -5,13 +5,6 @@ from django.db import models
 from account.models import Univ
 
 
-# class Category(models.Model):
-#     cat_name = models.CharField(max_length=255, verbose_name='카테고리명')
-#     univ_cat = models.ManyToManyField(Univ)
-#     # univ_id = models.ForeignKey(Univ, on_delete=models.CASCADE, verbose_name='대학', related_name='category')
-#
-#     def __str__(self):
-#         return self.cat_name
 class Store(models.Model):
     logo = models.URLField()
     title = models.CharField(max_length=255, verbose_name='가게명')
