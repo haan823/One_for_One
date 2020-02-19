@@ -164,7 +164,7 @@
         var messageInputDom = document.getElementById('chat-message-input');
         var message = messageInputDom.value;
         chatSocket.send(JSON.stringify({
-            'room_id': room_id,
+            'room_id': room,
             'command': 'new_message',
             'message': message,
             'from': username
@@ -194,7 +194,6 @@
         var author = data['author'];
         {#var timestamp = data['timestamp'];#}
         var message_room_id = data['room_id'];
-        alert(message_room_id)
         var author_name = document.createElement('div');
         author_name.textContent = data['author'];
         var msgListTag = document.createElement('li');
