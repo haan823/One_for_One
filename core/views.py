@@ -1,7 +1,9 @@
+import json
+
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
-
 
 from django.forms import forms
 from django.shortcuts import render
@@ -75,7 +77,6 @@ def home(request, pk):
         return render(request, 'core/home.html', data)
 
 
-
 def match_new(request, pk):
     univ = request.user.profile.univ
     univ_input = Profile.objects.filter(name=univ)
@@ -88,14 +89,13 @@ def match_new(request, pk):
     return render(request, 'core/match_new.html')
 
 
-
 def choice_cat(request, pk):
     # cats = Category.objects.all()
     if request.method == 'POST':
         pass
     else:
         data = {
-           # 'cats':cats,
+            # 'cats':cats,
         }
     return render(request, 'core/choice_cat.html', data)
 
@@ -103,17 +103,25 @@ def choice_cat(request, pk):
 def choice_store(request):
     return render(request, 'core/choice_store.html')
 
+
 def choice_page(request):
     return render(request, 'core/store_choice.html')
-
 
 
 def match_fin(request):
     return render(request, 'core/match_fin.html')
 
 
-def mypage(request):
-    return render(request, 'core/mypage.html')
+def my_page(request):
+    current_user = request.user
+    profile = Profile.objects.get(user=current_user)
+    postings = Posting.objects.filter(user_id=current_user)
+    context = {
+        'profile': profile,
+        'postings': postings,
+    }
+    return render(request, 'core/my_page.html', context)
+
 
 def store_choice(request):
     return render(request, 'core/store_choice.html')
@@ -134,6 +142,40 @@ def main(request):
     return render(request, 'core/main.html', data)
 
 
+def search(request):
+    return render(request, 'core/search.html')
+
+
+def search_store(request):
+    kwd = request.POST.get('kwd', None)
+    # data = {
+    #     'content': list()
+    # }
+    data = {}
+
+    if kwd:
+        all_tags = set(Tag.objects.all())
+        tags_list = []
+        for all_tag in all_tags:
+            tags_list.append(all_tag.content)
+        tags = list(set(tags_list))
+        filtered_tags = []
+        for tag in tags:
+            if kwd in tag:
+                print(kwd)
+                print(tag)
+                filtered_tags.append(tag)
+        # postings = Posting.objects.filter(menu__icontains=kwd)
+        # for posting in postings:
+        #     data['content'].append({
+        #         'menu': posting.menu,
+        #         'price': posting.price,
+        #         'max_num': posting.max_num,
+        #         # 'tags': tags
+        #     })
+        data = {'filtered_tags': filtered_tags}
+
+    return HttpResponse(json.dumps(data), content_type="application/json")
 
 # class UploadFileForm(forms.Form):
 #     file = forms.FileField()

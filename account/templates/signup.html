@@ -23,10 +23,29 @@
 {#<body>#}
 {##}
 {##}
-{#	<div class="limiter">#}
-{#		<div class="container-login100">#}
 {% extends "base.html" %}
+{% block extra_head %}
+{#    <link rel="stylesheet" href="{% static 'style_login.css' %}">#}
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+{% endblock %}
+
+
 {% block content %}
+{#    <div class="limiter">#}
+{#		<div class="container-login100">#}
 			<div class="wrap-signup100 p-t-50 p-b-90">
 				<form class="login100-form validate-form flex-sb flex-w" action="{% url 'account:signup' univ.id %}" method="POST">
                     {% csrf_token %}
@@ -117,7 +136,6 @@
                 <div class="alert alert-success" id="auth_number-alert-success">올바른 인증번호입니다.</div>
                 <div class="alert alert-danger" id="auth_number-alert-danger">올바르지 않은 인증번호입니다.</div>
 
-                
 
                 <div class="container-login100-form-btn m-t-17">
                     <button type='button' class="login100-form-btn" onclick="real_submit()">
@@ -130,6 +148,8 @@
                 </div>
 
                 <script type="text/javascript">
+                    $(".alert").hide();
+                    $("#auth_div").hide();
 
                     var boo1 = false;
                     var boo2 = false;
@@ -181,8 +201,6 @@
                     }
 
                     function send() {
-                        $("#auth_number-alert-success").hide();
-                        $("#auth_number-alert-danger").hide();
                         var user_phone_number = document.getElementById("phone_number").value;
                         $.ajax({
                             type: "POST",
@@ -208,8 +226,7 @@
                         }
                     }
 
-                    $(".alert").hide();
-                    $("#auth_div").hide();
+
                     $("input").keyup(function () {
                         var pwd1 = $("#password1").val();
                         var pwd2 = $("#password2").val();

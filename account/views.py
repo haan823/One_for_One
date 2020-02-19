@@ -50,28 +50,6 @@ def signup(request, pk):
     univs = Univ.objects.all()
     univ = Univ.objects.get(pk=pk)
     if request.method == "POST":
-        user_authsms = AuthSms.objects.get(phone_number=request.POST['phone_number'])
-        if int(request.POST['user_auth_number']) != int(user_authsms.auth_number):
-            UNIV_DOMAIN_MAPPING = {
-                '서울대학교': 'snu.ac.kr',
-                '성균관대학교': 'g.skku.edu',
-                '이화여자대학교': 'ewhain.net',
-                '홍익대학교': 'mail.hongik.ac.kr',
-            }
-            context = {
-                'message': '비밀번호가 일치하지 않습니다.',
-                'pk': pk,
-                'univ': univ,
-                'email_domain': UNIV_DOMAIN_MAPPING.get(univ.name),
-
-                'de_username': request.POST["username"],
-                'de_password1': request.POST["password1"],
-                'de_password2': request.POST["password2"],
-                'de_email_id': request.POST["email_id"],
-                'de_nickname': request.POST["nickname"],
-                'de_phone_number': request.POST['phone_number']
-            }
-            return render(request, 'signup.html', context)
 
         if request.POST["password1"] == request.POST["password2"]:
             email = request.POST['email_id'] + '@' + request.POST['email_domain']
@@ -146,9 +124,9 @@ def login(request):
         password = request.POST["password"]
         # 해당 user가 있으면 username, 없으면 None
         user = auth.authenticate(request, username=username, password=password)
-        profile = Profile.objects.get(user=user)
-        univ = profile.univ
         if user is not None:
+            profile = Profile.objects.get(user=user)
+            univ = profile.univ
             auth.login(request, user)
             return redirect(reverse('core:home', args=[univ.id]))
     else:

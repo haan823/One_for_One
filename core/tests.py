@@ -1,3 +1,6 @@
 from django.test import TestCase
+from core.models import *
 
-# Create your tests here.
+posting = Posting.objects.first()
+
+posting.tag.filter(content='야식')

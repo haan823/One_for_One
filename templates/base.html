@@ -34,6 +34,9 @@
     <link href="{% static 'Rapid/css/style.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.12.0/css/all.css">
 
+    {% block extra_head %}
+    {% endblock %}
+
 </head>
 <body id="page-top">
 
@@ -90,7 +93,7 @@
                 <a class="js-scroll-trigger" href="{% url 'core:home' profile.univ.id %}">포스팅 보기</a>
             </li>
             <li class="sidebar-nav-item">
-                <a class="js-scroll-trigger" href="">My page</a>
+                <a class="js-scroll-trigger" href="{% url 'core:my_page' %}">My page</a>
             </li>
         {% else %}
             {% for univ in univs %}
