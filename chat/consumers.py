@@ -3,7 +3,7 @@ from asgiref.sync import async_to_sync
 from django.shortcuts import redirect, render
 from channels.generic.websocket import WebsocketConsumer
 import json
-from .models import Message, Contact, Room
+from .models import Message, Contact
 
 User = get_user_model()
 
@@ -28,7 +28,7 @@ class ChatConsumer(WebsocketConsumer):
 
 
     def new_message(self, data):
-        room = Room.objects.get(pk = data['room_id'])
+        room = data['room_id']
         author = data['from']
         author_user = User.objects.filter(username=author)[0]
         message = Message.objects.create(
