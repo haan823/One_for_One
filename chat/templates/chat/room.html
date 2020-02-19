@@ -67,7 +67,7 @@
         <div id="contacts">
             <ul>
                 {% for user in allowed_users %}
-                    {% if user != room.Posting_id.user_id %}
+                    {% if user != now_user %}
                         <li class="contact">
                             <div class="wrap">
                                 <span class="contact-status online"></span>
@@ -77,8 +77,8 @@
                                     <p class="name">{{ user.username }}</p>
                                 </div>
                             </div>
-                            {% if now_user == room.Posting_id.user_id %}
-                                <button style = "margin:3px;" type="button" class="btn-danger user_out" name={{ user.pk }}>
+                            {% if now_user == room.Posting_id.user_id and room.Posting_id.finished != true %}
+                                <button style="margin:3px;" type="button" id="user_out" class="btn-danger user_out" name={{ user.pk }}>
                                     <span style="font-size: 1em">OUT</span>
                                 </button>
                             {% endif %}
@@ -92,9 +92,9 @@
                 <i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>
                 <span>매칭 완료</span>
             </button>
-            <button type="button" class="re_match" name="{{ room.pk }}">
+            <button type="button" class="re_match" name="{{ room.pk }}" onclick="location.href='javascript:review_popup()'">
                 <i class="fa fas fa-check" aria-hidden="true"></i>
-                <span>추가 매칭 신청</span>
+                <span>평가하고 나가기</span>
             </button>
         </div>
     </div>
@@ -110,13 +110,12 @@
         </div>
         <div class="messages">
             <ul id="chat-log">
-
             </ul>
         </div>
         <div class="message-input">
             <div class="wrap">
                 <input id="chat-message-input" type="text" placeholder="Write your message..."/>
-                <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+{#                <i class="fa fa-paperclip attachment" aria-hidden="true"></i>#}
                 <button id="chat-message-submit" class="submit">
                     <i class="fa fa-paper-plane" aria-hidden="true"></i>
                 </button>
@@ -170,18 +169,33 @@
             'message': message,
             'from': username
         }));
-
         messageInputDom.value = '';
     };
 
+    {#document.querySelector('#user_out').onclick = function (e) {#}
+    {#    var user_pk = $(this).attr('name');#}
+    {#    var room_pk = {{ room.pk }};#}
+    {#    console.log(user_pk);#}
+    {##}
+    {#    chatSocket.send(JSON.stringify({#}
+    {#        'room_id': room_pk,#}
+    {#        'command': 'delete_contact',#}
+    {#        'user_pk': user_pk#}
+    {#    }));#}
+    {#    alert("사용자를 퇴장시켰습니다.");#}
+    {#    window.location.href = "{% url 'chat:room' room.pk %}";#}
+
     function fetchMessages() {
         chatSocket.send(JSON.stringify({'command': 'fetch_messages'}));
+        $(".messages").animate({scrollTop: $(document).height()*10}, "fast");
     }
 
     function createMessage(data) {
         var author = data['author'];
         {#var timestamp = data['timestamp'];#}
         var message_room_id = data['room_id'];
+        var author_name = document.createElement('div');
+        author_name.textContent = data['author'];
         var msgListTag = document.createElement('li');
         var imgTag = document.createElement('img');
         var pTag = document.createElement('p');
@@ -194,11 +208,16 @@
                 msgListTag.className = 'replies';
             }
             msgListTag.appendChild(imgTag);
+            msgListTag.appendChild(author_name);
+            if (msgListTag.className == 'sent') {
+                msgListTag.appendChild(document.createElement('br'));
+            }
             msgListTag.appendChild(pTag);
             document.querySelector('#chat-log').appendChild(msgListTag);
-            $(".messages").animate({ scrollTop: $(document).height() }, "fast");
+            $(".messages").animate({scrollTop: $(document).height()*10}, "fast");
         }
     }
+    alert(document.height());
 </script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
@@ -216,20 +235,6 @@
             },
         });
     });
-    $(".re_match").click(function () {
-        var pk = $(this).attr('name');
-        $.ajax({
-            type: "GET",
-            url: "{% url 'chat:re_match' room.pk%}",
-            data: {'pk': pk},
-            success: function () {
-                alert("포스팅을 재업로드 했습니다.");
-            },
-            error: function (request, status, error) {
-                alert("이미 재업로드 되었습니다.")
-            },
-        });
-    });
 
     $(".user_out").click(function () {
         var user_pk = $(this).attr('name');
@@ -240,13 +245,22 @@
             data: {'pk': room_pk, 'user_pk': user_pk},
             success: function () {
                 alert("해당 사용자를 퇴장시켰습니다.");
-
+                window.location.href = "{% url 'chat:room' room.pk %}";
             },
             error: function (request, status, error) {
                 alert(error + "Posting 게시자에 의해 퇴장처리된 채팅방입니다.");
             },
         });
     });
+
+    function review_popup() {
+        var url = "{% url "chat:review" room.pk%}";
+        var name = "review";
+        var option = "width = 500, height = 300, top = 200, left = 400, location = no ";
+        window.name = "room";
+        window.open(url, name, option);
+    }
+
 </script>
 </body>
 </html>

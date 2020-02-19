@@ -1,21 +1,31 @@
 from django.contrib.auth import get_user_model
 from asgiref.sync import async_to_sync
+from django.shortcuts import redirect, render
 from channels.generic.websocket import WebsocketConsumer
 import json
-from .models import Message
+from .models import Message, Contact
 
 User = get_user_model()
 
 
 class ChatConsumer(WebsocketConsumer):
 
+    def delete_contact(self,data):
+        room = data['room_id']
+        user_pk = data['user_pk']
+        contact = Contact.objects.filter(room_id=room).get(allowed_user=user_pk)
+        contact.delete()
+
+
     def fetch_messages(self, data):
         messages = Message.last_10_messages()
         content = {
             'command': 'messages',
-            'messages': self.messages_to_json(messages)
+            'messages': self.messages_to_json(messages),
+            'length': len(messages)
         }
         self.send_message(content)
+
 
     def new_message(self, data):
         room = data['room_id']
@@ -47,7 +57,8 @@ class ChatConsumer(WebsocketConsumer):
 
     commands = {
         'fetch_messages': fetch_messages,
-        'new_message': new_message
+        'new_message': new_message,
+        'delete_contact':delete_contact
     }
 
     def connect(self):

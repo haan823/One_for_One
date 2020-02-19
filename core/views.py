@@ -21,8 +21,10 @@ from core.utils import convert_date_PytoJs
 def home(request, pk):
     if request.user.is_authenticated:
         current_user = request.user
-        profile = Profile.objects.get(user=current_user)
+        profile = Profile.objects.get(user=current_user.id)
         univ = profile.univ
+        contacts = Contact.objects.filter(allowed_user=profile)
+        rooms = Room.objects.all()
         stores = Store.objects.filter(univ_id=pk)
         postings = []
         for store in stores:
@@ -45,6 +47,8 @@ def home(request, pk):
             tags_list.append(all_tag.content)
         rm_dup_tags = list(set(tags_list))
         data = {
+            'contacts': contacts,
+            'rooms': rooms,
             'postings': postings,
             'current_user': current_user.id,
             'univ': univ,
@@ -183,12 +187,43 @@ def match_fin(request):
 def my_page(request):
     current_user = request.user
     profile = Profile.objects.get(user=current_user)
-    postings = Posting.objects.filter(user_id=current_user)
+    contacts = Contact.objects.all()
+    user_contacts=contacts.filter(allowed_user=profile)
+    print(user_contacts)
+    postings = []
+    for contact in user_contacts:
+        posting_id = contact.posting_id.pk
+        postings.append(Posting.objects.get(pk=posting_id))
+    print(postings)
     context = {
+        'rooms': Room.objects.all(),
+        'current_user' : current_user,
         'profile': profile,
         'postings': postings,
+        'contacts': contacts,
     }
     return render(request, 'core/my_page.html', context)
+
+
+def accept(request, pk):
+    contact = Contact.objects.get(pk=pk)
+    posting = Posting.objects.get(pk=contact.posting_id.pk)
+    if(posting.now_num!=posting.max_num):
+        posting.now_num+=1
+        posting.save()
+        contact.accepted=True
+        contact.save()
+    else:
+        pass
+    return redirect('core:my_page')
+
+def refuse(request, pk):
+    contact = Contact.objects.get(pk=pk)
+    contact.delete()
+    return redirect('core:my_page')
+
+def store_choice(request):
+    return render(request, 'core/store_choice.html')
 
 
 def main(request):

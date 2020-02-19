@@ -5,6 +5,7 @@ from django.utils.safestring import mark_safe
 from django.contrib.auth.models import User
 import json
 
+from account.models import Profile
 from chat.models import Room, Contact
 from core.models import Posting
 
@@ -15,12 +16,13 @@ def index(request):
 
 @login_required
 def room(request, pk):
+    now_user = Profile.objects.get(user=request.user)
     room = Room.objects.get(pk=pk)
     posting = Posting.objects.get(pk=pk)
-    contacts = Contact.objects.filter(room_id=pk)
-    allowed_users = [contact.allowed_user for contact in contacts]
-    if room.now_number == room.Posting_id.max_num:
-        raise PermissionDenied
+    contacts = Contact.objects.filter(posting_id=pk)
+    allowed_users = [contact.allowed_user.user for contact in contacts if contact.finished==False]
+    # if room.now_number  room.Posting_id.max_num:
+    #     raise PermissionDenied
     if request.user not in allowed_users:
         raise PermissionDenied
     return render(request, 'chat/room.html', {
@@ -32,34 +34,21 @@ def room(request, pk):
     })
 
 
-def Create_Room(request, pk):
+def create_Room(request, pk):
     posting = Posting.objects.get(pk=pk)
+    posting.chat_created = True
+    posting.save()
     room = Room.objects.create(
-        Posting_id=posting,
+        posting_id=posting,
     )
     room.save()
-    contact = Contact.objects.create(
-        room_id=room,
-        allowed_user=request.user
-    )
-    contact.save()
-    return redirect('chat:room', room.pk)
+    contacts = Contact.objects.filter(posting_id = posting)
+    for contact in contacts:
+        contact.accepted = True
+        contact.save()
+    return redirect('core:my_page')
 
-
-# def Enter_Room(request, pk):
-#     room = Room.objects.get(pk=pk)
-#     try:
-#         room.now_number = room.now_number+1
-#     except:
-#         print()
-#     contact = Contact.objects.create(
-#         room_id=room,
-#         allowed_user=request.user
-#     )
-#     contact.save()
-#     return redirect('chat:room', room.pk)
-
-def Matching_finished(request, pk):
+def matching_finished(request, pk):
     posting = Posting.objects.get(pk=pk)
     if posting.finished == True:
         raise Exception
@@ -69,7 +58,7 @@ def Matching_finished(request, pk):
     return redirect('chat:room', posting.pk)
 
 
-def Re_match(request, pk):
+def re_match(request, pk):
     posting = Posting.objects.get(pk=pk)
     if posting.finished == False:
         raise Exception
@@ -79,14 +68,53 @@ def Re_match(request, pk):
     return redirect('chat:room', posting.pk)
 
 
-def Delete_chatting(request, pk):
+def review(request, pk):
+    now_user = Profile.objects.get(pk=request.user.pk)
+    posting = Posting.objects.get(pk=pk)
+    contacts = Contact.objects.filter(room_id=pk)
+    allowed_users = [contact.allowed_user.user for contact in contacts]
+    return render(request, 'chat/review.html', {
+        'now_user': now_user,
+        'posting': posting,
+        'allowed_users': allowed_users
+    })
+
+def update_review(request, pk):
+    now_user = Profile.objects.get(pk=request.user.pk)
+    posting = Posting.objects.get(pk=pk)
+    room = Room.objects.get(pk=pk)
+    contacts = Contact.objects.filter(room_id=pk)
+    allowed_users = [contact.allowed_user for contact in contacts]
+    for allowed_user in allowed_users:
+        allowed_user_pk= str(allowed_user.pk)
+        get_review = request.GET.get(allowed_user_pk)
+        if get_review == 'good':
+            allowed_user.good_review +=1
+            allowed_user.save()
+        elif get_review == 'bad':
+            allowed_user.bad_review +=1
+            allowed_user.save()
+    if room.now_number>1:
+        contact = contacts.get(allowed_user=now_user)
+        contact.finished = True
+        contact.save()
+        room.now_number-=1
+        room.save()
+    elif room.now_number==1:
+        contacts.delete()
+        posting.finished=True
+        posting.save()
+    return render(request, 'chat/update_review.html')
+
+
+def delete_chatting(request, pk):
     room = Room.objects.get(pk=pk)
     room.delete()
     return redirect('core:home', room.pk)
 
 
-def Delete_contact(request, pk):
-    user_pk = request.GET['user_pk']
-    contact = Contact.objects.filter(room_id=pk).get(allowed_user=user_pk)
-    contact.delete()
-    return render(request, 'chat/room.html')
+def delete_contact(request, pk):
+   user_pk = request.GET['user_pk']
+   contact = Contact.objects.filter(room_id=pk).get(allowed_user=user_pk)
+   contact.delete()
+   return redirect('chat:room', pk)

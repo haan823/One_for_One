@@ -18,6 +18,10 @@ class Profile(models.Model):
     good_review = models.IntegerField(default=0)
     bad_review = models.IntegerField(default=0)
 
+    def __str__(self):
+        return self.user.username
+
+
 class AuthSms(models.Model):
     phone_number = models.CharField(max_length=20, primary_key=True)
     auth_number = models.IntegerField()
