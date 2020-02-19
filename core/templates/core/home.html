@@ -27,18 +27,6 @@
 
                 </header>
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <ul id="portfolio-flters">
-                            <li data-filter="*" class="filter-active">All</li>
-
-                            {% for tag in rm_dup_tags %}
-                                <li data-filter=".filter-{{ tag }}">{{ tag }}</li>
-                            {% endfor %}
-
-                        </ul>
-                    </div>
-                </div>
 
                 <div class="row">
                     <div class="col-lg-12">
@@ -53,9 +41,131 @@
                     </div>
                 </div>
 
-            <div class="row portfolio-container">
+
+                <div class="row portfolio-container">
+                    {% for category in categories %}
+                        <div class="col-lg-4 col-md-6 portfolio-item filter-{{ category }}">
+                            <div class="col-lg-12">
+                                <ul id="portfolio-flters">
+                                    <li data-filter="*" class="filter-active">All</li>
+
+                                    {% for tag in rm_dup_tags %}
+                                        <div style="display: inline-block">
+                                            <li data-filter=".filter-{{ category }}-{{ tag }}"
+                                                id="{{ category }}-{{ tag }}">{{ category }}-{{ tag }}</li>
+                                        </div>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+                </div>
+
+
+                <div class="row portfolio-container">
+                    {% for category in categories %}
+                        <div class="portfolio-item filter-{{ category }}">
+                            <div style="border: 1px solid black">
+                                <div id="wrapper" class="wrapper">
+                                    <input type="text" id="search" name="search" value='{{ category }}'autocomplete="off">
+                                </div>
+                                <div class="list-group" id="result" style="border:1px solid black"></div>
+
+                                <button type="button" id="search_button" onclick="search_tag()" style="color: white;">태그
+                                    검색
+                                </button>
+                            </div>
+                        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+                <button type="button" onclick="document.getElementById('searchField').click()"
+                        style="color: white"></button>
+                <script>
+                    {#$('#search_button').hide()#}
+                    function search_tag() {
+                        var searchField = $('#search').val();
+                        document.getElementById(searchField).click()
+                    }
+                    function complete(kwd) {
+                        $('#search').val(kwd);
+                        {#$('#wrapper').append('<input type="hidden" class="id" name="id" value="' + id + '">')#}
+                    }
+                    function delay(callback, ms) {
+                        var timer = 0;
+                        return function () {
+                            var context = this, args = arguments;
+                            clearTimeout(timer);
+                            timer = setTimeout(function () {
+                                callback.apply(context, args);
+                            }, ms || 0);
+                        };
+                    }
+                    {#$('#search_button').innerHTML = '<div data-filter=".filter-' + 'qwerty'+ '" id="search_button">검색</div>';#}
+                    {#'<div data-filter=".filter-' + 'qwerty'+ '" id="search_button">검색</div>';#}
+                    $(document).ready(function () {
+                        $('html').click(function (e) {
+                            if (!$(e.target).hasClass("list_group_item") && (!$(e.target).hasClass("tag_list_item"))) {
+                                $('#result').html('');
+                                $('#search_button').hide();
+                            }
+                            else if ($(e.target).hasClass("tag_list_item")) {
+                                $('#result').html('');
+                                $('#search_button').show();
+                            }
+                            else {
+                                $('#search_button').show()
+                            }
+                        })
+                        $('#search').keyup(delay(function () {
+                            $('#result').html('');
+                            var searchField = $('#search').val();
+                            {#console.log(searchField)#}
+                            {#block = document.getElementById('search_button');#}
+                            //var expression = new RegExp(searchField, "i");
+                            {#" class="filter-active"#}
+                            $.ajax({
+                                type: "POST",
+                                url: "{% url 'core:search_store' %}",
+                                data: {'kwd': searchField, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                                dataType: "json",
+                                async: true,
+                                success: function (response) {
+                                    $.each(response, function (key, value) {
+                                        {#var now = new Date()#}
+                                        {#console.log(now, key)#}
+                                        {#console.log(now, value)#}
+                                        if (!value.length) {
+                                            $('#result').append('<div class="list_group_item">태그 검색 결과가 없습니다.</div>');
+                                        } else {
+                                            for (var i in value) {
+                                                {#console.log(now, i, value[i]['name'])#}
+                                                $('#result').append('<div class="list_group_item">' +
+                                                    '<button class="tag_list_item"onclick="javascript:complete(\'' + value[i] + '\'' + ')" style = "color:white">' +
+                                                    value[i] + '</button></div>');
+                                            }
+                                        }
+                                    });
+                                }
+                            })
+                        }, 300));
+                    })
+
+
+                </script>
+                <script>
+                    {#$('#tag_filter_list').hide()#}
+
+
+                </script>
+                        </div>
+                    {% endfor %}
+                </div>
+
+
+
+
+                <div class="row portfolio-container">
                     {% for key, values in tag_dic.items %}
-                        <div class="col-lg-4 col-md-6 portfolio-item filter-{{ key.store_id.cat_name }} {% for value in values %}filter-{{ value.content }} {% endfor %}">
+                        <div class="col-lg-4 col-md-6 portfolio-item filter-{{ key.store_id.cat_name }} {% for value in values %}filter-{{ key.store_id.cat_name }}-{{ value.content }} {% endfor %}">
                             <div class="portfolio-wrap">
                                 <img src="{{ key.store_id.logo }}" class="img-fluid" alt="" style="width: 100%;">
                                 <div class="portfolio-info" style="height:200px;">
@@ -63,7 +173,7 @@
                                     <p>{{ key.store_id }}</p>
 
                                     {% for value in values %}
-                                    <p>{{ value.content }}</p>
+                                        <p>{{ value.content }}</p>
                                     {% endfor %}
                                     <div>
                                         <a href="{{ key.store_id.logo }}"
@@ -75,17 +185,12 @@
                                     </div>
                                 </div>
                             </div>
-                        <div style="color: white;">
-                            <p>게시자: {{ key.user_id }}</p>
-                            <p>음식점: {{ key.store_id }}</p>
-                        </div>
                         </div>
                     {% endfor %}
                 </div>
             </div>
 
 
-            </div>
         </section><!-- #portfolio -->
     </main>
 
