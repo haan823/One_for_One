@@ -32,11 +32,13 @@ class Store(models.Model):
 class Posting(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     store_id = models.ForeignKey(Store, on_delete=models.CASCADE, related_name='posting')
-    menu = models.CharField(max_length=255)
-    price = models.IntegerField()
-    max_num = models.IntegerField()
-    timer = models.DateTimeField(auto_now_add=False, blank=True, null=True)
-    # finished = models.BooleanField(default=False)
+    menu = models.CharField(max_length=255, null=True)
+    price = models.IntegerField(null=True)
+    max_num = models.IntegerField(null=True)
+    timer = models.IntegerField(blank=True, null=True)
+    finished = models.BooleanField(default=False)
+    create_date = models.DateTimeField(auto_now_add=True, null=True)
+    create_date_string = models.CharField(max_length=255, blank=True, null=True)
 
 
 class Tag(models.Model):

@@ -15,7 +15,8 @@ class Profile(models.Model):
     nickname = models.TextField(max_length=10)
     univ = models.ForeignKey(Univ, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=20, default='01000000000')
-
+    good_review = models.IntegerField(default=0)
+    bad_review = models.IntegerField(default=0)
 
 class AuthSms(models.Model):
     phone_number = models.CharField(max_length=20, primary_key=True)
