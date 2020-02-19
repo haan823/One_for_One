@@ -54,7 +54,7 @@ def home(request, pk):
             postings2 = Posting.objects.filter(store_id=store.id)
             for posting in postings2:
                 postings.append(posting)
-        tag_dic={}
+        tag_dic = {}
         for posting in postings:
             tags = []
             tags += Tag.objects.filter(posting_id=posting.id)
