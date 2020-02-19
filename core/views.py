@@ -88,12 +88,14 @@ def match_new(request):
         }
         return render(request, 'core/match_new.html', data)
 
+
 def choice_detail(request):
     cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
     current_user = request.user
     profile = Profile.objects.get(user=current_user)
     stores_univ = Store.objects.filter(univ_id=profile.univ)
     stores = Store.objects.all()
+    # store_치킨 = Store.objects.filter(cat_name='치킨')
 
     if request.method == 'POST':
         stores = Store.objects.all()
@@ -108,27 +110,23 @@ def choice_detail(request):
         }
         return render(request, 'core/match_new.html', data)
     else:
-        paginator = Paginator(stores_univ, 20)
-        page = request.GET.get('page', 1)
-        stores_in_page = paginator.get_page(page)
-        try:
-            lines = paginator.page(page)
-        except PageNotAnInteger:
-            lines = paginator.page(1)
-        except EmptyPage:
-            lines = paginator.page(paginator.num_pages)
+        # paginator = Paginator(stores_univ, 20)
+        # page = request.GET.get('page', 1)
+        # stores_in_page = paginator.get_page(page)
+        # try:
+        #     lines = paginator.page(page)
+        # except PageNotAnInteger:
+        #     lines = paginator.page(1)
+        # except EmptyPage:
+        #     lines = paginator.page(paginator.num_pages)
         data = {
             'profile': profile,
             'cat_list': cat_list,
             'stores': stores,
-            'stores_univ': lines,
-            'stores_in_page': stores_in_page,
+            # 'stores_univ': lines,
+            # 'stores_in_page': stores_in_page,
         }
         return render(request, 'core/choice_detail.html', data)
-
-
-def choice_page(request):
-    return render(request, 'core/store_choice.html')
 
 
 def match_fin(request):
@@ -181,61 +179,6 @@ def search_store(request):
                 'max_num': posting.max_num
             })
     return HttpResponse(json.dumps(data), content_type="application/json")
-
-
-# def test_cat(request):
-#     cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
-#     current_user = request.user
-#     profile = Profile.objects.get(user=current_user)
-#     stores_univ = Store.objects.filter(univ_id=profile.univ)
-#
-#     data = {
-#         'cat_list': cat_list,
-#         # 'stores_univ': [store for store in stores_univ],
-#         'stores_univ': stores_univ
-#     }
-#     return render(request, 'core/test_cat.html', data)
-#
-#
-# def test(request):
-#     cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
-#     current_user = request.user
-#     profile = Profile.objects.get(user=current_user)
-#     stores_univ = Store.objects.filter(univ_id=profile.univ)
-#     stores = Store.objects.all()
-#     data = {
-#         'cat_list': cat_list,
-#         'stores': stores,
-#     }
-#     return render(request, 'core/test.html', data)
-#
-#
-# def test_choice(request):
-#     if request.method == 'POST':
-#         cat = request.POST['cat']
-#         return redirect(reverse('core:test_choice', args=[cat]))
-#     else:
-#         cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
-#         img_list = ['치킨.jpg', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
-#         data = {
-#             'cat_list': cat_list,
-#         }
-#         return render(request, 'core/test_choice.html', data)
-
-
-# def new_test(request):
-#     cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
-#     current_user = request.user
-#     profile = Profile.objects.get(user=current_user)
-#     stores_univ = Store.objects.filter(univ_id=profile.univ)
-#     stores = Store.objects.all()
-#     data = {
-#         'profile': profile,
-#         'cat_list': cat_list,
-#         'stores': stores,
-#         'stores_univ': stores_univ,
-#     }
-#     return render(request, 'core/new_test.html', data)
 
 
 def allProdCat(request, c_slug=None):

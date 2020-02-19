@@ -60,42 +60,6 @@
 
 {% block content %}
     <div class="tabs">
-        {#            <input type="radio" name="tabs" id="tabone" checked="checked">#}
-        {#            <label for="tabone">전체</label>#}
-        {#            <div class="tab">#}
-        {#                {% for s in stores_univ %}#}
-        {#                    <form id="childForm" action="{% url 'core:match_new' %}" method="POST">#}
-        {#                        {% csrf_token %}#}
-        {#                        <div class="card mb-3" style="max-width: 540px; border: 2px solid black; text-align: center">#}
-        {#                            <div class="row no-gutters">#}
-        {#                                <div class="col-md-4">#}
-        {#                                    <input type="image" id='cInput3' src="{{ s.logo }}" width="100px" , height="100px" , alt=""#}
-        {#                                                 style="padding-top: 20px;">#}
-        {#                                    <img id="logo" , src="{{ s.logo }}" width="100px" , height="100px" , alt=""#}
-        {#                                         style="padding-top: 20px;">#}
-        {#                                </div>#}
-        {#                                <div class="col-md-8">#}
-        {#                                    <div class="card-body">#}
-        {#                                        <input type="text" id="cInput1" value="{{ s.title }}">#}
-        {#                                        <h5 id="title" class="card-title">{{ s.title }}</h5>#}
-        {#                                        <p id="star" class="card-text">#}
-        {#                                            {{ s.star }}</p>#}
-        {#                                        <p id="min_price" class="card-text">{{ s.min_price }}</p>#}
-        {#                                        <input type="text" id="cInput2" value="{{ s.del_time }}">#}
-        {#                                        <p id="del_time" class="card-text">{{ s.del_time }}</p>#}
-        {#                                        <p id="store_url" class="card-text"><small class="text-muted">#}
-        {#                                            <a href="#"#}
-        {#                                               onClick="window.open('{{ s.store_url }}', '네이버1', 'width=1200, height=1200, toolbar=yes, menubar=yes, scrollbars=yes, resizable=yes'); return false;">페이지로#}
-        {#                                                이동</a></small></p>#}
-        {#                                        <p class="card-text"><small class="text-muted">#}
-        {#                                            <input type="button" value="선택" onclick="setParentText();"></small></p>#}
-        {#                                    </div>#}
-        {#                                </div>#}
-        {#                            </div>#}
-        {#                        </div>#}
-        {#                    </form>#}
-        {#                {% endfor %}#}
-        {#            </div>#}
         {% for cat in cat_list %}
             {% if cat == '치킨' %}
                 <input type="radio" name="tabs" id="{{ cat }}" checked="checked">
@@ -144,30 +108,52 @@
                     </form>
                 {% endfor %}
             </div>
+{#            {% if stores_univ.has_other_pages %}#}
+{#                <ul class="pagination">#}
+{#                    {% if stores_univ.has_previous %}#}
+{#                        <li><a href="?page={{ stores_univ.previous_page_number }}">&laquo;</a></li>#}
+{#                    {% else %}#}
+{#                        <li class="disabled"><span>&laquo;</span></li>#}
+{#                    {% endif %}#}
+{##}
+{#                    {% for i in stores_univ.paginator.page_range %}#}
+{#                        {% if stores_univ.number == i %}#}
+{#                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>#}
+{#                        {% else %}#}
+{#                            <li><a href="?page={{ i }}">{{ i }}</a></li>#}
+{#                        {% endif %}#}
+{#                    {% endfor %}#}
+{#                    {% if stores_univ.has_next %}#}
+{#                        <li><a href="?page{{ samelines.next_page_number }}">&raquo;</a></li>#}
+{#                    {% else %}#}
+{#                        <li class="disabled"><span>&raquo;</span></li>#}
+{#                    {% endif %}#}
+{#                </ul>#}
+{#            {% endif %}#}
         {% endfor %}
         {#            <input type="radio" name="tabs" id="tabback" style="background-color: palevioletred">#}
         {#            <label for="tabone"><a href="{% url 'core:match_new' %}">뒤로 가기</a></label>#}
     </div>
-    {% if stores_univ.has_other_pages %}
-        <ul class="pagination">
-            {% if stores_univ.has_previous %}
-                <li><a href="?page={{ stores_univ.previous_page_number }}">&laquo;</a></li>
-            {% else %}
-                <li class="disabled"><span>&laquo;</span></li>
-            {% endif %}
-
-            {% for i in stores_univ.paginator.page_range %}
-                {% if stores_univ.number == i %}
-                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-                {% else %}
-                    <li><a href="?page={{ i }}">{{ i }}</a></li>
-                {% endif %}
-            {% endfor %}
-            {% if stores_univ.has_next %}
-                <li><a href="?page{{ samelines.next_page_number }}">&raquo;</a></li>
-            {% else %}
-                <li class="disabled"><span>&raquo;</span></li>
-            {% endif %}
-        </ul>
-    {% endif %}
+    {#    {% if stores_univ.has_other_pages %}#}
+    {#        <ul class="pagination">#}
+    {#            {% if stores_univ.has_previous %}#}
+    {#                <li><a href="?page={{ stores_univ.previous_page_number }}">&laquo;</a></li>#}
+    {#            {% else %}#}
+    {#                <li class="disabled"><span>&laquo;</span></li>#}
+    {#            {% endif %}#}
+    {##}
+    {#            {% for i in stores_univ.paginator.page_range %}#}
+    {#                {% if stores_univ.number == i %}#}
+    {#                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>#}
+    {#                {% else %}#}
+    {#                    <li><a href="?page={{ i }}">{{ i }}</a></li>#}
+    {#                {% endif %}#}
+    {#            {% endfor %}#}
+    {#            {% if stores_univ.has_next %}#}
+    {#                <li><a href="?page{{ samelines.next_page_number }}">&raquo;</a></li>#}
+    {#            {% else %}#}
+    {#                <li class="disabled"><span>&raquo;</span></li>#}
+    {#            {% endif %}#}
+    {#        </ul>#}
+    {#    {% endif %}#}
 {% endblock %}
