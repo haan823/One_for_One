@@ -32,6 +32,7 @@
 
     <!-- Main Stylesheet File -->
     <link href="{% static 'Rapid/css/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.12.0/css/all.css">
 
     {% block extra_head %}
     {% endblock %}
@@ -39,18 +40,53 @@
 </head>
 <body id="page-top">
 
-<a class="menu-toggle rounded" href="#">
-    <i class="fas fa-bars"></i>
-</a>
+{#<a class="menu-toggle rounded" href="#">#}
+{#    <i class="fas fa-bars"></i>#}
+{#</a>#}
+<ul class="nav">
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'core:main' %}">
+            <img src="{% static 'img/logo.png' %}" alt="저기요" style="width: 100px;">
+        </a>
+    </li>
+    <li class="nav-item2">
+        <a id='1' class="nav-link" href="#">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+    </li>
+    <li class="nav-item2">
+        <a id='2' class="nav-link" href="#">
+            <i class="fab fa-instagram"></i>
+        </a>
+    </li>
+    <li class="nav-item2">
+        <a id='3' class="nav-link" href="#">
+            <i class="fab fa-youtube"></i>
+        </a>
+    </li>
+    {% if user.is_active %}
+        <li class="nav-item2">
+            <a id='nav_logout' class="nav-link" href="{% url 'account:logout' %}">LOG OUT</a>
+        </li>
+    {% else %}
+        <li class="nav-item2">
+            <a id='nav_login' class="nav-link" href="{% url 'account:login' %}">LOG IN</a>
+        </li>
+        <li class="nav-item2">
+            <a id='nav_signup' class="nav-link" href="{% url 'account:goto_signup' %}">SIGN UP</a>
+        </li>
+    {% endif %}
+    <li>
+        <a class="menu-toggle rounded" href="#">
+            <i class="fas fa-bars"></i>
+        </a>
+    </li>
+</ul>
+
 <nav id="sidebar-wrapper">
     <ul class="sidebar-nav">
         <li class="sidebar-brand">
-            {% if user.is_active %}
-                <a style="color:white;">{{ user.username }}</a>
-                <a href="{% url 'account:logout' %}">로그아웃</a>
-            {% else %}
-                <a class="js-scroll-trigger" href="#page-top">로그인 없이 둘러보기</a>
-            {% endif %}
+
         </li>
         {% if user.is_active %}
             <li class="sidebar-nav-item">
@@ -72,6 +108,7 @@
 </nav>
 
 <header class="masthead d-flex">
+
     <div class="container">
         {% block content %}
         {% endblock %}

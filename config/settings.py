@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'account',
     'chat',
     'import_export',
+    'mathfilters',
 ]
 
 MIDDLEWARE = [
