@@ -1,3 +1,4 @@
+import datetime
 import json
 
 from django.contrib.auth.models import User
@@ -12,7 +13,7 @@ from core.models import Store, Posting, Tag
 from chat.models import Room, Contact
 from core.models import Store
 from account.models import Univ, Profile
-
+from core.utils import convert_date_PytoJs
 
 def home(request, pk):
     if request.user.is_authenticated:
@@ -27,9 +28,14 @@ def home(request, pk):
                 postings.append(posting)
         tag_dic = {}
         for posting in postings:
-            tags = []
-            tags += Tag.objects.filter(posting_id=posting.id)
-            tag_dic[posting] = tags
+            due = posting.create_date + datetime.timedelta(minutes=posting.timer)
+            now = datetime.datetime.now()
+            if due > now:
+                tags = []
+                tags += Tag.objects.filter(posting_id=posting.id)
+                posting.create_date_string = convert_date_PytoJs(str(posting.create_date))
+                print(posting.create_date_string)
+                tag_dic[posting] = tags
         all_tags = set(Tag.objects.all())
         tags_list = []
         for all_tag in all_tags:
@@ -56,9 +62,14 @@ def home(request, pk):
                 postings.append(posting)
         tag_dic = {}
         for posting in postings:
-            tags = []
-            tags += Tag.objects.filter(posting_id=posting.id)
-            tag_dic[posting] = tags
+            due = posting.create_date + datetime.timedelta(minutes=posting.timer)
+            now = datetime.datetime.now()
+            if due > now:
+                tags = []
+                tags += Tag.objects.filter(posting_id=posting.id)
+                posting.create_date_string = convert_date_PytoJs(str(posting.create_date))
+                print(posting.create_date_string)
+                tag_dic[posting] = tags
         all_tags = set(Tag.objects.all())
         tags_list = []
         for all_tag in all_tags:

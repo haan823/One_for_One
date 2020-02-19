@@ -39,6 +39,7 @@ class Posting(models.Model):
     timer = models.IntegerField(blank=True, null=True)
     finished = models.BooleanField(default=False)
     create_date = models.DateTimeField(auto_now_add=True, null=True)
+    create_date_string = models.CharField(max_length=255, blank=True, null=True)
 
 
 class Tag(models.Model):

@@ -1,6 +1,12 @@
 from django.test import TestCase
 from core.models import *
 
-posting = Posting.objects.first()
+# posting = Posting.objects.last()
+#
+# cds = str(posting.create_date)
+#
+# print(cds)
 
-posting.tag.filter(content='야식')
+import datetime
+
+datetime.timedelta(minutes=30)
