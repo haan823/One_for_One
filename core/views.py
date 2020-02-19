@@ -123,7 +123,7 @@ def choice_detail(request):
             'profile': profile,
             'cat_list': cat_list,
             'stores': stores,
-            # 'stores_univ': lines,
+            'stores_univ': stores_univ,
             # 'stores_in_page': stores_in_page,
         }
         return render(request, 'core/choice_detail.html', data)
