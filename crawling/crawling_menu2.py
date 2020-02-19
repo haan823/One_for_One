@@ -37,8 +37,8 @@ univ_addr_list = [
     # '경기도 용인시 처인구 모현읍 외대로 81',
     # '서울특별시 용산구 청파로47길 100',
     # '서울특별시 성북구 보문로 34다길 2',
-    # '서울특별시 광진구 능동로 209',
-    '경기도 용인시 기흥구 덕영대로 1732',
+    '서울특별시 광진구 능동로 209',
+    # '경기도 용인시 기흥구 덕영대로 1732',
     # '경기도 성남시 수정구 성남대로 1342',
 ]
 
@@ -69,7 +69,7 @@ for univ_addr in univ_addr_list:
     body = driver.find_element_by_css_selector('body')
 
 
-    for i in range(10, 15):
+    for i in range(11, 15):
         try:
             # index = ['상세페이지URL', '로고URL', '상호명', '별점', '최소주문금액', '소요시간', '리뷰수']
             index = ['store_url', 'logo', 'title', 'star', 'min_price', 'del_time', 'review', 'univ_id', 'cat_name']
@@ -179,12 +179,12 @@ for univ_addr in univ_addr_list:
 
                 except:
                     print(1)
-                    wb.save('./data/yogiyo_경희대_new.xlsx')
+                    wb.save('./data/yogiyo_세종대_후반2.xlsx')
                     print(2)
                     break
         except:
             print(3)
-            wb.save('./data/yogiyo_경희대_new.xlsx')
+            wb.save('./data/yogiyo_세종대_후반2.xlsx')
             print(4)
             sys.exit()
-wb.save('./data/yogiyo_경희대_new.xlsx')
+wb.save('./data/yogiyo_세종대_후반2.xlsx')
