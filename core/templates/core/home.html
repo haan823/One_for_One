@@ -156,9 +156,13 @@
 
 
 
+
+
                             </script>
                             <script>
                     {#$('#tag_filter_list').hide()#}
+
+
 
 
 
@@ -170,6 +174,15 @@
                     {% endfor %}
                 </div>
 
+                <script>
+                    function addMinutes(date, minutes) {
+                        return new Date(date.getTime() + minutes * 60000);
+                    }
+
+
+
+
+                </script>
 
                 <div class="row portfolio-container">
                     {% for key, values in tag_dic.items %}
@@ -190,6 +203,7 @@
                                                 class="ion ion-eye"></i></a>
                                         <a href="#" class="link-details" title="More Details"><i
                                                 class="ion ion-android-open"></i></a>
+                                        <div id="clock_{{ key.pk }}" style="color: white"></div>
                                     </div>
                                 </div>
                             </div>
@@ -205,9 +219,46 @@
                                 {% with answer=key.user_id.profile.good_review|add:key.user_id.profile.bad_review %}
                                     <p>만족도: {{ key.user_id.profile.good_review|div:answer }}</p>
                                 {% endwith %}
-                            <p>최소 배달 금액: {{ key.store_id.min_price }}</p>
+                                <p>최소 배달 금액: {{ key.store_id.min_price }}</p>
                             </div>
                         </div>
+
+                        <script>
+
+                            // Set the date we're counting down to
+                            console.log('hello')
+                            {#console.log(countDownDate);#}
+                            {#console.log(due_date);#}
+                            // Update the count down every 1 second
+                            var x = setInterval(function () {
+                                var now = new Date().getTime();
+                                var create_date_{{ key.pk }} = '{{ key.create_date_string }}'
+                                var create_date_{{ key.pk }}_js = new Date(create_date_{{ key.pk }});
+                                var due_date_{{ key.pk }} = addMinutes(create_date_{{ key.pk }}_js, {{ key.timer }})
+                                {#console.log(due_date_{{ key.pk }})#}
+                                // Get today's date and time
+                                // Find the distance between now and the count down date
+                                var distance = due_date_{{ key.pk }} - now;
+                                console.log('distance: ' + distance)
+                                // Time calculations for days, hours, minutes and seconds
+                                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+
+                                // Output the result in an element with id="demo"
+                                document.getElementById("clock_{{ key.pk }}").innerHTML = "<p>" + hours + "h "
+                                    + minutes + "m " + seconds + "s" + "</p>";
+
+                                // If the count down is over, write some text
+                                if (distance < 0) {
+                                    clearInterval(x);
+                                    document.getElementById("clock_{{ key.pk }}").innerHTML = "<p>expired</p>";
+                                }
+                            }, 1000);
+
+                        </script>
+
                     {% endfor %}
                 </div>
             </div>
