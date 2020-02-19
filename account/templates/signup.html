@@ -47,7 +47,7 @@
 {#    <div class="limiter">#}
 {#		<div class="container-login100">#}
 			<div class="wrap-signup100 p-t-50 p-b-90">
-				<form class="login100-form validate-form flex-sb flex-w" action="{% url 'account:signup' univ.id %}" method="POST">
+				<form class="login100-form validate-form flex-sb flex-w" name="signup_form" action="{% url 'account:signup' univ.id %}" method="POST">
                     {% csrf_token %}
 					<span class="login100-form-title p-b-51">
 						Sign Up
@@ -136,7 +136,6 @@
                 <div class="alert alert-success" id="auth_number-alert-success">올바른 인증번호입니다.</div>
                 <div class="alert alert-danger" id="auth_number-alert-danger">올바르지 않은 인증번호입니다.</div>
 
-                
 
                 <div class="container-login100-form-btn m-t-17">
                     <button type='button' class="login100-form-btn" onclick="real_submit()">

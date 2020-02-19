@@ -58,7 +58,7 @@
                 <a class="js-scroll-trigger" href="{% url 'core:home' profile.univ.id %}">포스팅 보기</a>
             </li>
             <li class="sidebar-nav-item">
-                <a class="js-scroll-trigger" href="">My page</a>
+                <a class="js-scroll-trigger" href="{% url 'core:my_page' %}">My page</a>
             </li>
         {% else %}
             {% for univ in univs %}
