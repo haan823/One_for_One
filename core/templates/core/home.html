@@ -28,7 +28,6 @@
                     <h3 class="section-title">{{ univ }}에서 올라온 포스팅이에요</h3>
 
                 </header>
-                <a class='btn btn-secondary' href="{% url 'core:match_new' %}">새로운 포스팅</a>
                 <div class="row">
                     <div class="col-lg-12">
                         <ul id="portfolio-flters">
@@ -183,15 +182,15 @@
                                                 {% endwith %}
                                             </span><br>
                                         {% else %}
-                                            <span>-</span><br>
+                                            <span style="color: grey;"><i class="fas fa-star"></i></span><br>
                                         {% endif %}
                                     {% endwith %}
                                 </div>
                                 <img src="{{ key.store_id.logo }}" class="img-fluid" alt="" style="width: 100%;">
                                 <div class="portfolio-info" style="height: 70%;">
-                                    <div style="display: flex;">
-                                        <a class='btn btn-secondary' style='align-content: center;' href="">매칭 신청</a><br>
-                                        <a class="btn btn-secondary" style='align-content: center; cursor: pointer;'onclick="window.open('{{ key.store_id.store_url }}', 'childForm', 'width=1200, height=1200, resizable = no, scrollbars = no');">가게 상세 정보</a>
+                                    <div style="">
+                                        <a class='btn btn-secondary' style='' href="">매칭 신청</a><br><br>
+                                        <a class="btn btn-secondary" style='cursor: pointer;'onclick="window.open('{{ key.store_id.store_url }}', 'childForm', 'width=1200, height=1200, resizable = no, scrollbars = no');">가게 상세 정보</a>
                                     </div>
                                 </div>
                                 <div style="color: white; background-color: rgb(0, 0, 0, 0.5)">
