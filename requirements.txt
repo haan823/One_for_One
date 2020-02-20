@@ -43,10 +43,8 @@ pyexcel-webio==0.1.4
 pyexcel-xlsx==0.5.8
 PyHamcrest==2.0.0
 pyOpenSSL==19.1.0
-pypiwin32==223
 python-dateutil==2.8.1
 pytz==2019.3
-pywin32==227
 PyYAML==5.3
 requests==2.22.0
 selenium==3.141.0
