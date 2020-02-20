@@ -53,10 +53,7 @@
                     {% endfor %}
                 </div>
                 <script>
-                    {#$("#CAT").hide()#}
-                    function say_hello(){
-                        console.log("hi hello")
-                    }
+                    $("#CAT").hide()
                 </script>
 
 
@@ -65,12 +62,13 @@
                         <div class="portfolio-item filter-{{ category }}" id="search_box_{{ category }}" style="">
                             <div style="border: 1px solid black">
                                 <div id="wrapper" class="wrapper">
-                                    <input type="text" id="search" name="search" value='{{ category }}'
+                                    <input type="text" id="search_{{ category }}" name="search_{{ category }}"
+                                           value='{{ category }}'
                                            autocomplete="off">
                                 </div>
                                 <div class="list-group" id="result" style="border:1px solid black"></div>
 
-                                <button type="button" id="search_button" onclick="search_tag()" style="color: white;">
+                                <button type="button" id="search_button" onclick="search_tag_{{ category }}()" style="color: white;">
                                     태그 검색
                                 </button>
                             </div>
@@ -79,6 +77,67 @@
                                     style="color: white"></button>
 
                         </div>
+                        <script>
+                            {#$('#search_button').hide()#}
+
+                            function search_tag_{{ category }}() {
+                                var searchField = document.getElementById("search_{{ category }}").val();
+                                {#document.getElementById(searchField).click()#}
+                            }
+
+                            function complete_{{ category }}(kwd) {
+                                $('#search_{{ category }}').val(kwd);
+                            }
+
+                            function delay(callback, ms) {
+                                var timer = 0;
+                                return function () {
+                                    var context = this, args = arguments;
+                                    clearTimeout(timer);
+                                    timer = setTimeout(function () {
+                                        callback.apply(context, args);
+                                    }, ms || 0);
+                                };
+                            }
+
+                            $(document).ready(function () {
+                                $('html').click(function (e) {
+                                    if (!$(e.target).hasClass("list_group_item") && (!$(e.target).hasClass("tag_list_item"))) {
+                                        $('#result').html('');
+                                        $('#search_button').hide();
+                                    } else if ($(e.target).hasClass("tag_list_item")) {
+                                        $('#result').html('');
+                                        $('#search_button').show();
+                                    } else {
+                                        $('#search_button').show()
+                                    }
+                                })
+                                $('#search').keyup(delay(function () {
+                                    $('#result').html('');
+                                    var searchField = $('#search').val();
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "{% url 'core:search_store' %}",
+                                        data: {'kwd': searchField, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                                        dataType: "json",
+                                        async: true,
+                                        success: function (response) {
+                                            $.each(response, function (key, value) {
+                                                if (!value.length) {
+                                                    $('#result').append('<div class="list_group_item">태그 검색 결과가 없습니다.</div>');
+                                                } else {
+                                                    for (var i in value) {
+                                                        $('#result').append('<div class="list_group_item">' +
+                                                            '<button class="tag_list_item"onclick="javascript:complete_{{ category }}(\'' + value[i] + '\'' + ')" style = "color:white">' +
+                                                            value[i] + '</button></div>');
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    })
+                                }, 300));
+                            })
+                        </script>
                     {% endfor %}
                     <script>
                         var list_object = $("#filter_all")
@@ -93,69 +152,7 @@
                             {% endfor %}
                         }
                     </script>
-                    <script>
-                        {#$('#search_button').hide()#}
 
-                        function search_tag() {
-                            var searchField = $('#search').val();
-                            document.getElementById(searchField).click()
-                        }
-
-                        function complete(kwd) {
-                            $('#search').val(kwd);
-                        }
-
-                        function delay(callback, ms) {
-                            var timer = 0;
-                            return function () {
-                                var context = this, args = arguments;
-                                clearTimeout(timer);
-                                timer = setTimeout(function () {
-                                    callback.apply(context, args);
-                                }, ms || 0);
-                            };
-                        }
-
-                        $(document).ready(function () {
-                            $('html').click(function (e) {
-                                if (!$(e.target).hasClass("list_group_item") && (!$(e.target).hasClass("tag_list_item"))) {
-                                    $('#result').html('');
-                                    $('#search_button').hide();
-                                } else if ($(e.target).hasClass("tag_list_item")) {
-                                    $('#result').html('');
-                                    $('#search_button').show();
-                                } else {
-                                    $('#search_button').show()
-                                }
-                            })
-                            $('#search').keyup(delay(function () {
-                                $('#result').html('');
-                                var searchField = $('#search').val();
-                                $.ajax({
-                                    type: "POST",
-                                    url: "{% url 'core:search_store' %}",
-                                    data: {'kwd': searchField, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
-                                    dataType: "json",
-                                    async: true,
-                                    success: function (response) {
-                                        $.each(response, function (key, value) {
-                                            if (!value.length) {
-                                                $('#result').append('<div class="list_group_item">태그 검색 결과가 없습니다.</div>');
-                                            } else {
-                                                for (var i in value) {
-                                                    $('#result').append('<div class="list_group_item">' +
-                                                        '<button class="tag_list_item"onclick="javascript:complete(\'' + value[i] + '\'' + ')" style = "color:white">' +
-                                                        value[i] + '</button></div>');
-                                                }
-                                            }
-                                        });
-                                    }
-                                })
-                            }, 300));
-                        })
-
-
-                    </script>
                 </div>
 
                 <script>
