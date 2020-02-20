@@ -261,8 +261,8 @@ def search_store(request):
         filtered_tags = []
         for tag in tags:
             if kwd in tag:
-                print(kwd)
-                print(tag)
+                # print(kwd)
+                # print(tag)
                 filtered_tags.append(tag)
         # postings = Posting.objects.filter(menu__icontains=kwd)
         # for posting in postings:

@@ -130,6 +130,8 @@ def login(request):
             univ = profile.univ
             auth.login(request, user)
             return redirect(reverse('core:home', args=[univ.id]))
+        else:
+            return render(request, 'login.html', {'error': '없는 아이디이거나 비밀번호가 일치하지 않습니다.'})
     else:
         return render(request, 'login.html', data)
 
