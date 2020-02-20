@@ -1,0 +1,266 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet'
+          type='text/css'>
+    <script src="https://use.typekit.net/hoy3lrg.js"></script>
+    <script>try {
+        Typekit.load({async: true});
+    } catch (e) {
+    }</script>
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
+    <link rel='stylesheet prefetch'
+          href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="{% static 'style_chat.css' %}"/>
+</head>
+
+<body>
+<div id="frame">
+    <div id="sidepanel">
+        <div id="profile">
+            <div class="wrap">
+                <img id="profile-img" src="https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png"
+                     class="online" alt=""/>
+                <p>{{ username }}</p>
+                <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
+                <div id="status-options">
+                    <ul>
+                        <li id="status-online" class="active"><span class="status-circle"></span>
+                            <p>Online</p></li>
+                        <li id="status-away"><span class="status-circle"></span>
+                            <p>Away</p></li>
+                        <li id="status-busy"><span class="status-circle"></span>
+                            <p>Busy</p></li>
+                        <li id="status-offline"><span class="status-circle"></span>
+                            <p>Offline</p></li>
+                    </ul>
+                </div>
+                <div id="expanded">
+                    <div id="ex_content">
+                        <label for="store">가게명</label>
+                        <input name="store" type="text" value="{{ posting.store_id.title }}" disabled
+                               style="text-align: center"/>
+                    </div>
+                    <div id="ex_content">
+                        <label for="menu">메뉴</label>
+                        <input name="menu" type="text" value="{{ posting.menu }}" disabled style="text-align: center"/>
+                    </div>
+                    <div id="ex_content">
+                        <label for="price">가격</label>
+                        <input name="menu" type="text" value="{{ posting.price }}" disabled style="text-align: center"/>
+                    </div>
+                    <div id="ex_content">
+                        <label for="now_num">참여인원</label>
+                        <input name="now_num" type="text" value="{{ room.now_number }}" disabled
+                               style="text-align: center"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="contacts">
+            <ul>
+                {% for user in allowed_users %}
+                    {% if user != now_user %}
+                        <li class="contact">
+                            <div class="wrap">
+                                <span class="contact-status online"></span>
+                                <img src="https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png"
+                                     alt=""/>
+                                <div class="meta">
+                                    <p class="name">{{ user.username }}</p>
+                                </div>
+                            </div>
+                            {% if now_user == room.Posting_id.user_id and room.Posting_id.finished != true %}
+                                <button style="margin:3px;" type="button" id="user_out" class="btn-danger user_out" name={{ user.pk }}>
+                                    <span style="font-size: 1em">OUT</span>
+                                </button>
+                            {% endif %}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="bottom-bar">
+            <button type="button" class="match-finished" name="{{ room.pk }}">
+                <i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>
+                <span>매칭 완료</span>
+            </button>
+            <button type="button" class="re_match" name="{{ room.pk }}" onclick="location.href='javascript:review_popup()'">
+                <i class="fa fas fa-check" aria-hidden="true"></i>
+                <span>평가하고 나가기</span>
+            </button>
+        </div>
+    </div>
+    <div class="content">
+        <div class="contact-profile">
+            <img src="https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png" alt=""/>
+            <p>{{ username }}</p>
+            <div class="social-media">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                <i class="fa fa-instagram" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div class="messages">
+            <ul id="chat-log">
+            </ul>
+        </div>
+        <div class="message-input">
+            <div class="wrap">
+                <input id="chat-message-input" type="text" placeholder="Write your message..."/>
+{#                <i class="fa fa-paperclip attachment" aria-hidden="true"></i>#}
+                <button id="chat-message-submit" class="submit">
+                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'main.js' %}"></script>
+<script src="{% static 'reconnecting-websocket.js' %}"></script>
+<script>
+    var room = {{ room }};
+    var room_id = {{ room.pk }};
+    var username = {{ username }};
+
+    var chatSocket = new ReconnectingWebSocket(
+        'ws://' + window.location.host +
+        '/ws/chat/' + room_id + '/');
+
+    chatSocket.onopen = function (e) {
+        fetchMessages();
+    };
+
+    chatSocket.onmessage = function (e) {
+        var data = JSON.parse(e.data);
+        if (data['command'] === 'messages') {
+            for (let i = data['messages'].length - 1; i >= 0; i--) {
+                createMessage(data['messages'][i]);
+            }
+        } else if (data['command'] === 'new_message') {
+            createMessage(data['message']);
+        }
+    };
+
+    chatSocket.onclose = function (e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+    document.querySelector('#chat-message-input').onkeyup = function (e) {
+        if (e.keyCode === 13) {  // enter, return
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
+
+    document.querySelector('#chat-message-submit').onclick = function (e) {
+        var messageInputDom = document.getElementById('chat-message-input');
+        var message = messageInputDom.value;
+        chatSocket.send(JSON.stringify({
+            'room_id': room,
+            'command': 'new_message',
+            'message': message,
+            'from': username
+        }));
+        messageInputDom.value = '';
+    };
+
+    {#document.querySelector('#user_out').onclick = function (e) {#}
+    {#    var user_pk = $(this).attr('name');#}
+    {#    var room_pk = {{ room.pk }};#}
+    {#    console.log(user_pk);#}
+    {##}
+    {#    chatSocket.send(JSON.stringify({#}
+    {#        'room_id': room_pk,#}
+    {#        'command': 'delete_contact',#}
+    {#        'user_pk': user_pk#}
+    {#    }));#}
+    {#    alert("사용자를 퇴장시켰습니다.");#}
+    {#    window.location.href = "{% url 'chat:room' room.pk %}";#}
+
+    function fetchMessages() {
+        chatSocket.send(JSON.stringify({'command': 'fetch_messages'}));
+        $(".messages").animate({scrollTop: $(document).height()*10}, "fast");
+    }
+
+    function createMessage(data) {
+        var author = data['author'];
+        {#var timestamp = data['timestamp'];#}
+        var message_room_id = data['room_id'];
+        var author_name = document.createElement('div');
+        author_name.textContent = data['author'];
+        var msgListTag = document.createElement('li');
+        var imgTag = document.createElement('img');
+        var pTag = document.createElement('p');
+        pTag.textContent = data.content;
+        imgTag.src = 'https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png';
+        if (message_room_id === room_id) {
+            if (author === username) {
+                msgListTag.className = 'sent';
+            } else {
+                msgListTag.className = 'replies';
+            }
+            msgListTag.appendChild(imgTag);
+            msgListTag.appendChild(author_name);
+            if (msgListTag.className == 'sent') {
+                msgListTag.appendChild(document.createElement('br'));
+            }
+            msgListTag.appendChild(pTag);
+            document.querySelector('#chat-log').appendChild(msgListTag);
+            $(".messages").animate({scrollTop: $(document).height()*10}, "fast");
+        }
+    }
+    alert(document.height());
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+    $(".match-finished").click(function () {
+        var pk = $(this).attr('name');
+        $.ajax({
+            type: "GET",
+            url: "{% url 'chat:match_finished' room.pk%}",
+            data: {'pk': pk},
+            success: function () {
+                alert("매칭완료처리되었습니다.");
+            },
+            error: function (request, status, error) {
+                alert("이미 매칭완료 처리되었습니다.");
+            },
+        });
+    });
+
+    $(".user_out").click(function () {
+        var user_pk = $(this).attr('name');
+        var room_pk = {{ room.pk }};
+        $.ajax({
+            type: "GET",
+            url: "{% url 'chat:delete_contact' pk=room.pk  %}",
+            data: {'pk': room_pk, 'user_pk': user_pk},
+            success: function () {
+                alert("해당 사용자를 퇴장시켰습니다.");
+                window.location.href = "{% url 'chat:room' room.pk %}";
+            },
+            error: function (request, status, error) {
+                alert(error + "Posting 게시자에 의해 퇴장처리된 채팅방입니다.");
+            },
+        });
+    });
+
+    function review_popup() {
+        var url = "{% url "chat:review" room.pk%}";
+        var name = "review";
+        var option = "width = 500, height = 300, top = 200, left = 400, location = no ";
+        window.name = "room";
+        window.open(url, name, option);
+    }
+
+</script>
+</body>
+</html>

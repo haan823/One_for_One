@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="bg-dark text-white" style="min-height: 80vh;">
+        <div style="padding-top: 200px; text-align:center; border: 1px solid #ffffff;">
+            <h1>포스팅 생성!</h1>
+            <span>
+        <button>
+            <a href="#">채팅방으로</a>
+        </button>
+    </span>
+            <span>
+        <button><a href="{% url 'core:home' univ.id %}">
+            홈으로</a>
+        </button>
+    </span>
+        </div>
+
+    </div>
+{% endblock %}
