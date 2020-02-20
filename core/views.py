@@ -122,6 +122,12 @@ def match_new(request):
         )
         print(2)
         on_posting.save()
+        contact = Contact.objects.create(
+            posting_id = on_posting,
+            allowed_user = Profile.objects.get(user=current_user),
+            accepted = True
+        )
+        contact.save()
         return render(request, 'core/match_fin.html', {'profile': profile, 'univ': univ})
     else:
         data = {

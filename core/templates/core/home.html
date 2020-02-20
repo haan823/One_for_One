@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load mathfilters %}
+{% load core_extras %}
 
 {% block content %}
     {% load static %}
@@ -157,9 +158,37 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                             </script>
                             <script>
                     {#$('#tag_filter_list').hide()#}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -177,6 +206,20 @@
                     function addMinutes(date, minutes) {
                         return new Date(date.getTime() + minutes * 60000);
                     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -207,19 +250,37 @@
                                 </div>
                             </div>
                             <div style="color: white;">
-                                <p>카테고리: {{ key.store_id.cat_name }}</p>
-                                <p>포스팅 id: {{ key }}</p>
+                                {#                                <p>카테고리: {{ key.store_id.cat_name }}</p>#}
+                                <p>{{ key }}</p>
+                                <p>{{ key.store_id.min_price }}</p>
                                 <p>유저 id: {{ key.user_id }}</p>
-                                <p>포스팅 타이머: {{ key.timer }}</p>
-                                <p>포스팅 게시 날짜: {{ key.create_date }}</p>
+                                <p>
+
+                                    {% with answer=key.user_id.profile.good_review|add:key.user_id.profile.bad_review %}
+                                        {% if answer %}
+                                            <p>
+                                                {% with answer2=key.user_id.profile.good_review|mul:5|intdiv:answer %}
+                                                    만족도:
+                                                    {{ answer2 }}
+                                                    {% for i in answer2|range %}
+                                                        <i class="fas fa-star"></i>
+                                                    {% endfor %}
+                                                {% endwith %}
+                                            </p>
+                                        {% else %}
+                                            <p>만족도: 평가가 없습니다.</p>
+                                        {% endif %}
+                                    {% endwith %}
+                                </p>
+
+
+                                {#                                <p>포스팅 타이머: {{ key.timer }}</p>#}
+                                {#                                <p>포스팅 게시 날짜: {{ key.create_date }}</p>#}
+                                {#                                <p>유저 good review: {{ key.user_id.profile.good_review }}</p>#}
+                                {#                                <p>유저 bad review: {{ key.user_id.profile.bad_review }}</p>#}
+                                <p>메뉴 : {{ key.menu }}</p>
                                 <p>태그: {% for value in values %}#{{ value.content }} {% endfor %}</p>
-                                <p>유저 good review: {{ key.user_id.profile.good_review }}</p>
-                                <p>유저 bad review: {{ key.user_id.profile.bad_review }}</p>
-                            <p>메뉴 : {{ key.menu }}</p>
-                                {% with answer=key.user_id.profile.good_review|add:key.user_id.profile.bad_review %}
-                                    <p>만족도: {{ key.user_id.profile.good_review|div:answer }}</p>
-                                {% endwith %}
-                                <p>최소 배달 금액: {{ key.store_id.min_price }}</p>
+
                             </div>
                         </div>
 
@@ -256,6 +317,20 @@
                                     document.getElementById("clock_{{ key.pk }}").innerHTML = "<p>expired</p>";
                                 }
                             }, 1000);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                         </script>
 

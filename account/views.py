@@ -80,7 +80,7 @@ def signup(request, pk):
     else:
         UNIV_DOMAIN_MAPPING = {
             '서울대학교': 'snu.ac.kr',
-            '성균관대학교': 'g.skku.edu',
+            '성균관대학교 자연과학캠퍼스': 'g.skku.edu',
             '이화여자대학교': 'ewhain.net',
             '홍익대학교': 'mail.hongik.ac.kr',
             '가천대학교': '?!',
