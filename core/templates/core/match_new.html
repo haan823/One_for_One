@@ -2,39 +2,28 @@
 {% block extra_head %}
     <meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
     <script language="javascript" type="text/javascript">
-        {#function openWin() {#}
-        {#    window.open("http://www.naver.net", "네이버새창", "width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");#}
-        {#}#}
 
-            var openWin;
+        var openWin;
 
-            function openChild() {
-                // window.name = "부모창 이름";
-                window.name = "parentForm";
-                // window.open("open할 window", "자식창 이름", "팝업창 옵션");
-                openWin = window.open("{% url 'core:choice_detail' %}",
-                    "childForm", "width=1200, height=1200, resizable = no, scrollbars = no");
-            }
+        function openChild() {
+            // window.name = "부모창 이름";
+            window.name = "parentForm";
+            // window.open("open할 window", "자식창 이름", "팝업창 옵션");
+            openWin = window.open("{% url 'core:choice_detail' %}",
+                "childForm", "width=1200, height=1200, resizable = no, scrollbars = no");
+        }
 
-            {#function setChildText() {#}
-            {#    openWin.document.getElementById("cInput1{{ s.id }}").value = document.getElementById("pInput1").value;#}
-            {#    openWin.document.getElementById("cInput2{{ s.id }}").value = document.getElementById("pInput2").value;#}
-            {#    openWin.document.getElementById("cInput3{{ s.id }}").src = document.getElementById("pInput3").src;#}
-            {#    openWin.document.getElementById("cInput4{{ s.id }}").value = document.getElementById("pInput4").value;#}
-            {#}#}
-
-            function showHide() {
-                document.getElementById('pInput3').style.visibility = "visible";
-            }
-
+        function showHide() {
+            document.getElementById('pInput3').style.visibility = "visible";
+        }
     </script>
 {% endblock %}
 
 {% block content %}
     {% load static %}
     <div class="wrap-signup100 p-t-50 p-b-90">
-        <form class="login100-form validate-form flex-sb flex-w" name="signup_form" id="parentForm"
-              action="{% url 'core:match_new' %}" method="POST">
+
+        <form id="parentForm" action="{% url 'core:match_new' %}" method="POST">
             {% csrf_token %}
             <span class="login100-form-title p-b-51">
                 포스팅 생성
@@ -42,24 +31,32 @@
             <br>
 
             <a class="btn btn-secondary" value="가게선택" style='cursor: pointer;' onclick="window.name = 'parentForm';
-                openWin = window.open('{% url 'core:choice_detail' %}', 'childForm', 'width=1200, height=1200, resizable = no, scrollbars = no');">가게
+                    openWin = window.open('{% url 'core:choice_detail' %}', 'childForm', 'width=1200, height=1200, resizable = no, scrollbars = no');">가게
                 선택</a>
             <br><br>
 
             <div class="container store_logo" data-validate="">
                 <div class="form-group" style="color: white">
-                    <input type="image" id="pInput3" name="pInput3" onerror="{% static 'img/logo.png' %}" src="pInput3" readonly alt="">
+                    <input type="image" id="pInput3" name="pInput3" onerror="{% static 'img/logo.png' %}" src="pInput3" style="pointer-events: none" readonly alt="">
                 </div>
             </div>
+
             <div class="container cat_name" style="background-color: black" hidden>
                 <div class="form-group" style="color: white">
-                    <label for="exampleFormControlSelect5">pk</label>
+                    <label for="exampleFormControlSelect3">pk</label>
                     <input type="text" id="pInput4" name="store_pk">
                 </div>
             </div>
+
+            <div class="wrap-input100 validate-input m-b-16">
+                <input class="input100" type="text" id="pInput1" value='가게 이름' name="store_name" readonly>
+                <span class="focus-input100"></span>
+            </div>
+            <br />
+
             <div style="display: flex; justify-content: space-between;">
                 <div class="wrap-input49 validate-input m-b-16">
-                    <input class="input100" type="text" id="pInput1" value='가게 이름' name="store_name" readonly>
+                    <input class="input100" type="text" id="pInput5" value='최소 배달 금액' name="min_price" readonly>
                     <span class="focus-input100"></span>
                 </div>
 
@@ -103,6 +100,12 @@
                     <option>40</option>
                     <option>50</option>
                     <option>60</option>
+                    <option>90</option>
+                    <option>120</option>
+                    <option>150</option>
+                    <option>180</option>
+                    <option>210</option>
+                    <option>240</option>
                 </select>
             </div>
             <br>
@@ -110,37 +113,56 @@
             <div style="margin-bottom: 20px; color: white;">
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="customRadioInline1" name="customRadioInline1"
-                           class="custom-control-input" value="1">
+                           class="custom-control-input" value="a">
                     <label class="custom-control-label" for="customRadioInline1">오늘은 이게 꼭 먹고 싶어요!</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="customRadioInline2" name="customRadioInline1"
-                           class="custom-control-input" value="2">
+                           class="custom-control-input" value="b">
                     <label class="custom-control-label" for="customRadioInline2">다른 메뉴도 좋아요!</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="customRadioInline3" name="customRadioInline1"
-                           class="custom-control-input" value="3" checked>
+                           class="custom-control-input" value="c" checked>
                     <label class="custom-control-label" for="customRadioInline3">상관 없어요!</label>
                 </div>
             </div>
 
-
             <div style="margin-bottom: 20px; color: white;">
                 <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="customRadioInline4" name="customRadioInline2" class="custom-control-input">
+                    <input type="radio" id="customRadioInline4" name="customRadioInline2" class="custom-control-input"
+                           value="a">
                     <label class="custom-control-label" for="customRadioInline4">같이 먹어요!</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="customRadioInline5" name="customRadioInline2" class="custom-control-input">
+                    <input type="radio" id="customRadioInline5" name="customRadioInline2" class="custom-control-input"
+                           value="b">
                     <label class="custom-control-label" for="customRadioInline5">따로 먹어요!</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="customRadioInline6" name="customRadioInline2" class="custom-control-input"
+                           value="c"
                            checked>
                     <label class="custom-control-label" for="customRadioInline6">상관 없어요!</label>
                 </div>
             </div>
+
+
+            <div style="display: flex; justify-content: space-between;">
+                <div class="wrap-input32 validate-input m-b-16 posting_tag1">
+                    <input class="input100" type="text" id="posting_tag1" name="posting_tag1" placeholder="태그 #1">
+                    <span class="focus-input100"></span>
+                </div>
+                <div class="wrap-input32 validate-input m-b-16 posting_tag2">
+                    <input class="input100" type="text" id="posting_tag2" name="posting_tag2" placeholder="태그 #2">
+                    <span class="focus-input100"></span>
+                </div>
+                <div class="wrap-input32 validate-input m-b-16 posting_tag3">
+                    <input class="input100" type="text" id="posting_tag3" name="posting_tag3" placeholder="태그 #3">
+                    <span class="focus-input100"></span>
+                </div>
+            </div>
+            <br/>
 
             <div class="container-login100-form-btn m-t-17">
                 <button type='submit' class="login100-form-btn">
@@ -149,7 +171,5 @@
             </div>
         </form>
     </div>
-
-
 
 {% endblock %}
