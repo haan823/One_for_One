@@ -216,6 +216,8 @@
                                 <p>유저 good review: {{ key.user_id.profile.good_review }}</p>
                                 <p>유저 bad review: {{ key.user_id.profile.bad_review }}</p>
                             <p>메뉴 : {{ key.menu }}</p>
+                            <p>{{ key.menu_change }}</p>
+                            <p>{{ key.together }}</p>
                                 {% with answer=key.user_id.profile.good_review|add:key.user_id.profile.bad_review %}
                                     <p>만족도: {{ key.user_id.profile.good_review|div:answer }}</p>
                                 {% endwith %}

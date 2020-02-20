@@ -1,5 +1,6 @@
 import datetime
 import json
+import math
 
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, InvalidPage, PageNotAnInteger
@@ -100,17 +101,29 @@ def match_new(request):
 
     if request.method == "POST":
         menu_name = request.POST['menu_name']
-        print(menu_name)
         menu_price = request.POST['menu_price']
         with_num = request.POST['with_num']
         posting_time = request.POST['posting_time']
-        # on_store = Store.objects.get(title='store_title').id
-        # cat_name = request.POST['cat_name']
-        # store_filter = Store.objects.filter(cat_name=cat_name)
-        # store_title = request.POST['store_name']
-        pk = request.POST['store_pk']
-        store_id = Store.objects.get(pk=pk)
-        print(1)
+
+        store_pk = request.POST['store_pk']
+        store_id = Store.objects.get(pk=store_pk)
+
+        menu_change = request.POST['customRadioInline1']
+        if menu_change == 'a':
+            menu_change = '오늘은 이게 꼭 먹고 싶어요!'
+        elif menu_change == 'b':
+            menu_change = '다른 메뉴도 좋아요!'
+        elif menu_change == 'c':
+            menu_change = '상관 없어요!'
+
+        together = request.POST['customRadioInline2']
+        if together == 'a':
+            together = '같이 먹어요!'
+        elif together == 'b':
+            together = '따로 먹어요!'
+        elif together == 'c':
+            together = '상관 없어요!'
+
         on_posting = Posting.objects.create(
             user_id=current_user,
             store_id=store_id,
@@ -118,14 +131,41 @@ def match_new(request):
             price=menu_price,
             max_num=with_num,
             timer=posting_time,
+            menu_change=menu_change,
+            together=together,
             finished=False
         )
-        print(2)
-        on_posting.save()
+
+        posting_tag1 = request.POST['posting_tag1']
+        posting_tag2 = request.POST['posting_tag2']
+        posting_tag3 = request.POST['posting_tag3']
+
+        if posting_tag1 is None:
+            pass
+        else:
+            Tag.objects.create(
+                posting_id=on_posting,
+                content=posting_tag1
+            )
+
+        if posting_tag2 is None:
+            pass
+        else:
+            Tag.objects.create(
+                posting_id=on_posting,
+                content=posting_tag2
+            )
+
+        if posting_tag3 is None:
+            pass
+        else:
+            Tag.objects.create(
+                posting_id=on_posting,
+                content=posting_tag3
+            )
         return render(request, 'core/match_fin.html', {'profile': profile, 'univ': univ})
     else:
         data = {
-            # 'store': store,
             'profile': profile,
             'univ': univ
         }
@@ -153,9 +193,14 @@ def choice_detail(request):
         }
         return render(request, 'core/match_new.html', data)
     else:
-        # paginator = Paginator(stores_univ, 20)
-        # page = request.GET.get('page', 1)
-        # stores_in_page = paginator.get_page(page)
+        paginator = Paginator(stores_univ, 10)
+        page = request.GET.get('page')
+        stores_in_page = paginator.get_page(page)
+        # page_range = 5
+        # current_block = math.ceil(int(page)/page_range)
+        # start_block = (current_block-1) * page_range
+        # end_block = start_block + page_range
+        # p_range = paginator.page_range[start_block:end_block]
         # try:
         #     lines = paginator.page(page)
         # except PageNotAnInteger:
@@ -167,7 +212,8 @@ def choice_detail(request):
             'cat_list': cat_list,
             'stores': stores,
             'stores_univ': stores_univ,
-            # 'stores_in_page': stores_in_page,
+            'stores_in_page': stores_in_page,
+            # 'p_range': p_range
         }
         return render(request, 'core/choice_detail.html', data)
 
@@ -188,7 +234,7 @@ def my_page(request):
     current_user = request.user
     profile = Profile.objects.get(user=current_user)
     contacts = Contact.objects.all()
-    user_contacts=contacts.filter(allowed_user=profile)
+    user_contacts = contacts.filter(allowed_user=profile)
     print(user_contacts)
     postings = []
     for contact in user_contacts:
@@ -197,7 +243,7 @@ def my_page(request):
     print(postings)
     context = {
         'rooms': Room.objects.all(),
-        'current_user' : current_user,
+        'current_user': current_user,
         'profile': profile,
         'postings': postings,
         'contacts': contacts,
@@ -208,19 +254,21 @@ def my_page(request):
 def accept(request, pk):
     contact = Contact.objects.get(pk=pk)
     posting = Posting.objects.get(pk=contact.posting_id.pk)
-    if(posting.now_num!=posting.max_num):
-        posting.now_num+=1
+    if (posting.now_num != posting.max_num):
+        posting.now_num += 1
         posting.save()
-        contact.accepted=True
+        contact.accepted = True
         contact.save()
     else:
         pass
     return redirect('core:my_page')
 
+
 def refuse(request, pk):
     contact = Contact.objects.get(pk=pk)
     contact.delete()
     return redirect('core:my_page')
+
 
 def store_choice(request):
     return render(request, 'core/store_choice.html')
