@@ -27,21 +27,11 @@
                 document.getElementById('pInput3').style.visibility = "visible";
             }
 
-
-
-
-
-
-
-
-
-
-
-
     </script>
 {% endblock %}
 
 {% block content %}
+    {% load static %}
     <div class="wrap-signup100 p-t-50 p-b-90">
         <form class="login100-form validate-form flex-sb flex-w" name="signup_form" id="parentForm"
               action="{% url 'core:match_new' %}" method="POST">
@@ -51,14 +41,14 @@
             </span>
             <br>
 
-            <a class="btn btn-secondary" value="가게선택" onclick="window.name = 'parentForm';
+            <a class="btn btn-secondary" value="가게선택" style='cursor: pointer;' onclick="window.name = 'parentForm';
                 openWin = window.open('{% url 'core:choice_detail' %}', 'childForm', 'width=1200, height=1200, resizable = no, scrollbars = no');">가게
                 선택</a>
             <br><br>
 
             <div class="container store_logo" data-validate="">
                 <div class="form-group" style="color: white">
-                    <input type="image" id="pInput3" name="pInput3" src="pInput3" readonly>
+                    <input type="image" id="pInput3" name="pInput3" onerror="{% static 'img/logo.png' %}" src="pInput3" readonly alt="">
                 </div>
             </div>
             <div class="container cat_name" style="background-color: black" hidden>
@@ -120,17 +110,17 @@
             <div style="margin-bottom: 20px; color: white;">
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="customRadioInline1" name="customRadioInline1"
-                           class="custom-control-input">
+                           class="custom-control-input" value="1">
                     <label class="custom-control-label" for="customRadioInline1">오늘은 이게 꼭 먹고 싶어요!</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="customRadioInline2" name="customRadioInline1"
-                           class="custom-control-input">
+                           class="custom-control-input" value="2">
                     <label class="custom-control-label" for="customRadioInline2">다른 메뉴도 좋아요!</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="customRadioInline3" name="customRadioInline1"
-                           class="custom-control-input" checked>
+                           class="custom-control-input" value="3" checked>
                     <label class="custom-control-label" for="customRadioInline3">상관 없어요!</label>
                 </div>
             </div>
