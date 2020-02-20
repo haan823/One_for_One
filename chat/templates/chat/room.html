@@ -77,20 +77,18 @@
                                     <p class="name">{{ user.username }}</p>
                                 </div>
                             </div>
-                            {% if now_user == room.Posting_id.user_id and room.Posting_id.finished != true %}
-                                <button style="margin:3px;" type="button" id="user_out" class="btn-danger user_out" name={{ user.pk }}>
-                                    <span style="font-size: 1em">OUT</span>
-                                </button>
-                            {% endif %}
+                            <button style="margin:3px;" type="button" id="user_out" class="btn-danger user_out" name={{ user.pk }}>
+                                <span style="font-size: 1em">신고하기</span>
+                            </button>
                         </li>
                     {% endif %}
                 {% endfor %}
             </ul>
         </div>
         <div id="bottom-bar">
-            <button type="button" class="match-finished" name="{{ room.pk }}">
+            <button type="button" class="room-finished" name="{{ room.pk }}">
                 <i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>
-                <span>매칭 완료</span>
+                <span>채팅 끝!!</span>
             </button>
             <button type="button" class="re_match" name="{{ room.pk }}" onclick="location.href='javascript:review_popup()'">
                 <i class="fa fas fa-check" aria-hidden="true"></i>
@@ -220,17 +218,17 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
-    $(".match-finished").click(function () {
+    $(".room-finished").click(function () {
         var pk = $(this).attr('name');
         $.ajax({
             type: "GET",
-            url: "{% url 'chat:match_finished' room.pk%}",
+            url: "{% url 'chat:room_finished' room.pk%}",
             data: {'pk': pk},
             success: function () {
-                alert("매칭완료처리되었습니다.");
+                alert("완료");
             },
             error: function (request, status, error) {
-                alert("이미 매칭완료 처리되었습니다.");
+                alert("이미 처리되었습니다.");
             },
         });
     });
@@ -256,8 +254,12 @@
         var url = "{% url "chat:review" room.pk%}";
         var name = "review";
         var option = "width = 500, height = 300, top = 200, left = 400, location = no ";
-        window.name = "room";
-        window.open(url, name, option);
+        if({{ room.match_finished }}){
+            window.open(url, name, option);
+        }else{
+            alert('포스팅 담당자가 아직 채팅완료를 하지 않았습니다.');
+        }
+
     }
 
 </script>

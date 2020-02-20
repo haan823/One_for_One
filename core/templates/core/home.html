@@ -190,8 +190,10 @@
                                 <img src="{{ key.store_id.logo }}" class="img-fluid" alt="" style="width: 100%;">
                                 <div class="portfolio-info" style="height: 70%;">
                                     <div style="display: flex;">
-                                        <a class='btn btn-secondary' style='align-content: center;' href="">매칭 신청</a><br>
-                                        <a class="btn btn-secondary" style='align-content: center; cursor: pointer;'onclick="window.open('{{ key.store_id.store_url }}', 'childForm', 'width=1200, height=1200, resizable = no, scrollbars = no');">가게 상세 정보</a>
+                                        {% if current_user != key.user_id.pk %}
+                                            <button class='btn btn-secondary match_request' name = "{{ key.pk }}" style='align-content: center;'>매칭 신청</button><br>
+                                        {% endif %}
+                                        <button class="btn btn-secondary" style='align-content: center; cursor: pointer;'onclick="window.open('{{ key.store_id.store_url }}', 'childForm', 'width=1200, height=1200, resizable = no, scrollbars = no');">가게 상세 정보</button>
                                     </div>
                                 </div>
                                 <div style="color: white; background-color: rgb(0, 0, 0, 0.5)">
@@ -240,12 +242,6 @@
                                 }
                             }, 1000);
 
-
-
-
-
-
-
                         </script>
 
                     {% endfor %}
@@ -255,7 +251,31 @@
 
         </section><!-- #portfolio -->
     </main>
-
+    <script>
+        $(".match_request").click(function () {
+            var posting_pk = $(this).attr('name');
+            var contacts_num = {{ contacts_num }};
+            $.ajax({
+                type: "GET",
+                url: "{% url 'core:match_request'%}",
+                data: {'posting_pk': posting_pk, 'contacts_num': contacts_num},
+                success: function () {
+                    alert("매칭신청되었습니다.");
+                    window.location.href="{% url 'core:my_page' %}"
+                },
+                error: function (request, status, error) {
+                    if (contacts_num===3){
+                        alert("참여가능한 포스팅은 최대 3개입니다.");
+                        window.location.reload()
+                    }
+                    else{
+                        alert("이미 신청한 포스팅이거나 최대 신청 가능인원을 초과하였습니다.");
+                        window.location.reload()
+                    }
+                },
+            });
+        });
+    </script>
 {% endblock %}
 
 

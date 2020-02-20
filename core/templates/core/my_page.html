@@ -51,11 +51,10 @@
 {#        {% endfor %}#}
 {#    </div>#}
 {#{% endblock %}#}
+{% extends "base.html" %}
 {% load mathfilters %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% block extra_head %}
     <meta charset="utf-8">
     <!--  This file has been downloaded from https://bootdey.com  -->
     <!--  All snippets are MIT license https://bootdey.com/license -->
@@ -64,9 +63,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'style_mypage.css' %}"/>
-</head>
-<body>
-<div class="container">
+{% endblock %}
+
+{% block content %}
     <div class="row">
         <div class="col-xl-12">
             <div class="card card-lg">
@@ -110,6 +109,8 @@
                                         {% else %}
                                             {% if posting.chat_created == True %}
                                                 <button class="btn btn-sm btn-primary ml-auto enter" onclick="window.open('{% url "chat:room" posting.pk %}','','width=800,height=550')">채팅방 들어가기</button>
+                                            {% else %}
+                                                <button class="btn btn-sm btn-primary ml-auto enter" disabled>매칭 진행중....</button>
                                             {% endif %}
                                         {% endif %}
                                     </div>
@@ -241,7 +242,5 @@
             {#            </div>#}
         </div>
     </div>
-</div>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-</body>
-</html>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+{% endblock %}

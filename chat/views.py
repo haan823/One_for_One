@@ -20,7 +20,7 @@ def room(request, pk):
     room = Room.objects.get(pk=pk)
     posting = Posting.objects.get(pk=pk)
     contacts = Contact.objects.filter(posting_id=pk)
-    allowed_users = [contact.allowed_user.user for contact in contacts if contact.finished==False]
+    allowed_users = [contact.allowed_user.user for contact in contacts if contact.accepted==True]
     # if room.now_number  room.Posting_id.max_num:
     #     raise PermissionDenied
     if request.user not in allowed_users:
@@ -48,14 +48,14 @@ def create_Room(request, pk):
         contact.save()
     return redirect('core:my_page')
 
-def matching_finished(request, pk):
-    posting = Posting.objects.get(pk=pk)
-    if posting.finished == True:
+def room_finished(request, pk):
+    room = Room.objects.get(pk=pk)
+    if room.match_finished== True:
         raise Exception
     else:
-        posting.finished = True
-        posting.save()
-    return redirect('chat:room', posting.pk)
+        room.match_finished = True
+        room.save()
+    return redirect('chat:room', room.pk)
 
 def review(request, pk):
     now_user = Profile.objects.get(pk=request.user.pk)
