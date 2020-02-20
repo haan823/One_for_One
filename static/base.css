@@ -529,7 +529,7 @@ a:active, a:focus, a:hover {
 
 
 .wrap-login100 {
-    width: 390px;
+    width: 60%;
     background: #fff;
     border-radius: 10px;
     position: relative;
@@ -538,8 +538,8 @@ a:active, a:focus, a:hover {
 }
 
 .wrap-signup100 {
-    width: 700px;
-    background: #fff;
+    width: 100%;
+    backgrouwrapnd: #fff;
     border-radius: 10px;
     position: relative;
     background-color: inherit;
@@ -585,7 +585,13 @@ a:active, a:focus, a:hover {
     border: 1px solid transparent;
     border-radius: 3px;
 }
-
+.wrap-input32 {
+    width: 32%;
+    position: relative;
+    background-color: #e6e6e6;
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
 .wrap-input10 {
     width: 10%;
     position: relative;
