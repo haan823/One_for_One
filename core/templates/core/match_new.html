@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% block extra_head %}
+    {% load static %}
     <meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+    <script type="text/javascript" src="../../../static/js/jquery-1.4.min.js"></script>
+    <script src="../../../static/js/jquery.sheepItPlugin.js"></script>
     <script language="javascript" type="text/javascript">
+
         {#function openWin() {#}
         {#    window.open("http://www.naver.net", "네이버새창", "width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");#}
         {#}#}
@@ -23,20 +27,65 @@
             {#    openWin.document.getElementById("cInput4{{ s.id }}").value = document.getElementById("pInput4").value;#}
             {#}#}
 
-            function showHide() {
-                document.getElementById('pInput3').style.visibility = "visible";
-            }
+                function showHide() {
+                    document.getElementById('pInput3').style.visibility = "visible";
+                }
+
+                {#        function attachAddr() {#}
+                {#            const str = `<li>#}
+                {#제목 <input type="text" name="urlTitle" id="urlTitle" maxlength="80" />#}
+                {#          주소 <input type="text" name="url" id="url" maxlength="900" />#}
+                {#<a href="#delete" class="btn ty_3 small" onclick="attach.deleteEmpty(this);">삭제</a>#}
+                {#</li>`;#}
+                {#            $("tag.id").append(str); // JQuery를 이용해서 juso24라는 id값을 가져와서 그곳에 append 시킨다.#}
+                {#        }#}
+
+                $(document).ready(function () {
+
+                    var sheepItForm = $('#sheepItForm').sheepIt({
+                        separator: '',
+                        allowRemoveLast: true,
+                        allowRemoveCurrent: true,
+                        allowRemoveAll: true,
+                        allowAdd: true,
+                        allowAddN: true,
+                        maxFormsCount: 5, // ADD 추가 갯수
+                        minFormsCount: 1,
+                        iniFormsCount: 3,
+                        continuousIndex: true
+                    });
+
+                });
+
+                function trueIn() {
+
+                    var text = "<input type='text' class=\"posting_tag\" name='gocoder[]' value='gc' />";
+                    $('#inHereTrue').append(text);
+                }
+
     </script>
+    <style>
+        a {
+            text-decoration: underline;
+            color: #00F;
+            cursor: pointer;
+        }
+
+        #sheepItForm_controls div, #sheepItForm_controls div input {
+            float: left;
+            margin-right: 10px;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
     <form id="parentForm" action="{% url 'core:match_new' %}" method="POST">
         {% csrf_token %}
-        <div style="background-color: black; padding-bottom: 20px;">
+        <form style="background-color: black; padding-bottom: 20px; color: ">
 
             <div style="padding-left: 20px; padding-top: 40px;">
                 <input type="button" value="가게선택" onclick="window.name = 'parentForm';
-                openWin = window.open('{% url 'core:choice_detail' %}', 'childForm', 'width=1200, height=1200, resizable = no, scrollbars = no');"><br>
+                        openWin = window.open('{% url 'core:choice_detail' %}', 'childForm', 'width=1200, height=1200, resizable = no, scrollbars = no');"><br>
 
                 {#                <a href="#"#}
                 {#                   onClick="window.open('{% url 'core:choice_detail' %}', '네이버', 'width=1200, height=1200, toolbar=no, menubar=no, scrollbars=no, resizable=yes'); return false;">가게선택</a>#}
@@ -45,7 +94,7 @@
                 <div class="form-group" style="color: white">
                     <label for="exampleFormControlSelect1"></label>
                     <input type="image" id="pInput3" name="pInput3" src="pInput3" readonly>
-                                        <img src="{{ s.logo }}" width="100px" height="100px" alt="">
+                    <img src="{{ s.logo }}" width="100px" height="100px" alt="">
                 </div>
             </div>
 
@@ -99,7 +148,8 @@
             <div class="container posting_time" style="background-color: black;">
                 <div class="form-group" style="color: white">
                     <label for="exampleFormControlSelect5">포스팅 유지 시간</label>
-                    <select class="form-control" id="exampleFormControlSelect1" name="posting_time" style="width: 100px;">
+                    <select class="form-control" id="exampleFormControlSelect1" name="posting_time"
+                            style="width: 100px;">
                         <option>10</option>
                         <option>20</option>
                         <option selected>30</option>
@@ -145,12 +195,53 @@
                 </div>
             </div>
 
-            {#            <div class="form-check">#}
-            {#                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">#}
-            {#                <label class="form-check-label" for="defaultCheck2">#}
-            {#                    Disabled checkbox#}
-            {#                </label>#}
+
+{#            <form method='get' action='test_ok.php'>#}
+                <table>
+                    <input type='text' class="posting_tag" name='gocoder[]' value='gocoder'/>
+                    <a href="javascript:trueIn();">추가</a>
+{#                    <input type="submit" value="받아지는 보내기(O)">#}
+                    <div id="inHereTrue"></div>
+                </table>
+{#        </form>#}
+            {#            <div id="sheepItForm">#}
+            {##}
+            {#                <!-- Form template-->#}
+            {#                <div id="sheepItForm_template">#}
+            {#                    <label for="sheepItForm_#index#_phone">Phone <span id="sheepItForm_label"></span></label>#}
+            {#                    <input id="sheepItForm_#index#_phone" name="person[phones][#index#][phone]" type="text" size="15"#}
+            {#                           maxlength="10"/>#}
+            {#                    <a id="sheepItForm_remove_current">삭제#}
+            {#                        <img class="delete" src="resources/images/cross.png" width="16" height="16" border="0">#}
+            {#                    </a>#}
+            {#                </div>#}
+            {#                <!-- /Form template-->#}
+            {##}
+            {#                <!-- No forms template -->#}
+            {#                <div id="sheepItForm_noforms_template">No tags</div>#}
+            {#                <!-- /No forms template-->#}
+            {##}
+            {#                <!-- Controls -->#}
+            {#                <div id="sheepItForm_controls">#}
+            {#                    <div id="sheepItForm_add"><a><span>Add phone</span></a></div>#}
+            {#                    <div id="sheepItForm_remove_last"><a><span>-</span></a></div>#}
+            {#                    <div id="sheepItForm_remove_all"><a><span>Remove all</span></a></div>#}
+            {#                    <div id="sheepItForm_add_n">#}
+            {#                        <input id="sheepItForm_add_n_input" type="text" size="4"/>#}
+            {#                        <div id="sheepItForm_add_n_button"><a><span>Add</span></a></div>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#                <!-- /Controls -->#}
+            {##}
             {#            </div>#}
+            {#            <div class="container posting_tag" id="sheepItForm" style="background-color: black;">#}
+            {#                <div class="form-group" style="color: white">#}
+            {#                    <label for="exampleFormControlSelect6">태그</label>#}
+            {#                    <input type="text" id="sheepItForm_#index#_tag" name="posting_tag">#}
+            {#                    <a href="#" onclick="attachAddr(); return false;" class="btn ty_2 small">추가</a>#}
+            {#                </div>#}
+            {#            </div>#}
+
             <input type="submit" value="생성" style="margin-left: 20px;">
 
         </div>

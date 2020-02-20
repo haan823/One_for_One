@@ -235,8 +235,8 @@
 
 
         <div class="tab">
-        <form id="childForm" action="{% url 'core:match_new' %}" method="POST">
-            {% for s in stores_univ %}
+            <form id="childForm" action="{% url 'core:match_new' %}" method="POST">
+                {% for s in stores_univ %}
 
                     {% csrf_token %}
                     {% if s.cat_name == cat %}
@@ -260,9 +260,11 @@
                                         {#                                                <p id="del_time" class="card-text">{{ s.del_time }}</p>#}
                                         <input type="text" id="cInput4{{ s.id }}" value="{{ s.pk }}" hidden>
                                         <p id="store_url" class="card-text"><small class="text-muted">
-                                            <button onclick="window.open('{{ s.store_url }}', '네이버1', 'width=1200, height=1200, toolbar=yes, menubar=yes, scrollbars=yes, resizable=yes'); return false;">페이지로
-                                            이동</button>
-                                                </small></p>
+                                            <button onclick="window.open('{{ s.store_url }}', '네이버1', 'width=1200, height=1200, toolbar=yes, menubar=yes, scrollbars=yes, resizable=yes'); return false;">
+                                                페이지로
+                                                이동
+                                            </button>
+                                        </small></p>
                                         <p class="card-text"><small class="text-muted">
                                             <input type="button" value="선택"
                                                    onclick="window.close(); setParentText(document.getElementById('cInput1{{ s.id }}').value, document.getElementById('cInput2{{ s.id }}').value, document.getElementById('cInput3{{ s.id }}').src, document.getElementById('cInput4{{ s.id }}').value)"></small>
@@ -272,10 +274,24 @@
                             </div>
                         </div>
                     {% endif %}
+                    {% if stores_in_page.has_previous %}
+                        <a href="?page-1">맨 앞으로</a>
+                        <a href="?page={{ stores_in_page.previous_page_number }}">이전으로</a>
+                    {% endif %}
+                    <span>{{ post.number }}</span>
+                    <span>/</span>
+                    <span>{{ stores_in_page.paginator.num_pages }}</span>
+                    {% if stores_in_page.has_next %}
+                        <a href="?page={{ stores_in_page.next_page_number }}">다음으로</a>
+                        <a href="?page={{ stores_in_page.paginator.num_pages }}">맨 뒤로</a>
+                    {% endif %}
+                {% endfor %}
 
-            {% endfor %}
-        </form>
+            </form>
+
         </div>
+
+
         {#            {% if stores_univ.has_other_pages %}#}
         {#                <ul class="pagination">#}
         {#                    {% if stores_univ.has_previous %}#}

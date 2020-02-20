@@ -97,20 +97,26 @@ def match_new(request):
     current_user = request.user
     profile = Profile.objects.get(user=current_user)
     univ = profile.univ
-
     if request.method == "POST":
         menu_name = request.POST['menu_name']
         print(menu_name)
         menu_price = request.POST['menu_price']
         with_num = request.POST['with_num']
         posting_time = request.POST['posting_time']
+
+        # tag_length = len(gocoder)
+        #
+        # tag_list = []
+        # for i in range(5):
+        #     tag_list.append(request.POST['gocoder[i]'])
+
         # on_store = Store.objects.get(title='store_title').id
         # cat_name = request.POST['cat_name']
         # store_filter = Store.objects.filter(cat_name=cat_name)
         # store_title = request.POST['store_name']
         pk = request.POST['store_pk']
+
         store_id = Store.objects.get(pk=pk)
-        print(1)
         on_posting = Posting.objects.create(
             user_id=current_user,
             store_id=store_id,
@@ -120,7 +126,12 @@ def match_new(request):
             timer=posting_time,
             finished=False
         )
-        print(2)
+        # tag_pk = on_posting.pk
+        # for i in range(5):
+        #     Tag.objects.create(
+        #         posting_id=tag_pk,
+        #         content = tag_list[i]
+        #     )
         on_posting.save()
         return render(request, 'core/match_fin.html', {'profile': profile, 'univ': univ})
     else:
@@ -153,9 +164,9 @@ def choice_detail(request):
         }
         return render(request, 'core/match_new.html', data)
     else:
-        # paginator = Paginator(stores_univ, 20)
-        # page = request.GET.get('page', 1)
-        # stores_in_page = paginator.get_page(page)
+        paginator = Paginator(stores_univ, 10)
+        page = request.GET.get('page')
+        stores_in_page = paginator.get_page(page)
         # try:
         #     lines = paginator.page(page)
         # except PageNotAnInteger:
@@ -167,7 +178,7 @@ def choice_detail(request):
             'cat_list': cat_list,
             'stores': stores,
             'stores_univ': stores_univ,
-            # 'stores_in_page': stores_in_page,
+            'stores_in_page': stores_in_page,
         }
         return render(request, 'core/choice_detail.html', data)
 
