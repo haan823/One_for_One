@@ -71,7 +71,6 @@ def review(request, pk):
 def update_review(request, pk):
     now_user = Profile.objects.get(pk=request.user.pk)
     posting = Posting.objects.get(pk=pk)
-    room = Room.objects.get(pk=pk)
     contacts = Contact.objects.filter(posting_id=pk)
     allowed_users = [contact.allowed_user for contact in contacts]
     for allowed_user in allowed_users:
@@ -84,14 +83,11 @@ def update_review(request, pk):
             allowed_user.bad_review +=1
             allowed_user.save()
     contact = contacts.get(allowed_user=now_user)
-    if posting.now_num>1:
-        contact.finished = True
-        contact.save()
-        posting.now_num-=1
-        room.save()
-    if posting.now_num==1:
-        contact.finished = True
-        contact.save()
+    contact.finished = True
+    contact.save()
+    posting.now_num-=1
+    posting.save()
+    if posting.now_num == 0:
         posting.finished = True
         posting.save()
     return render(request, 'chat/update_review.html')
