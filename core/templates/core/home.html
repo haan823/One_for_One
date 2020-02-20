@@ -200,8 +200,7 @@
                                            data-lightbox="portfolio"
                                            data-title="App 1" class="link-preview" title="Preview"><i
                                                 class="ion ion-eye"></i></a>
-                                        <a href="#" class="link-details" title="More Details"><i
-                                                class="ion ion-android-open"></i></a>
+                                        <a href="{% url 'core:match_request' key.pk %}" class="link-details" title="More Details"><i class="ion ion-android-open">저기요</i></a>
                                         <div id="clock_{{ key.pk }}" style="color: white"></div>
                                     </div>
                                 </div>

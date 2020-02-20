@@ -122,6 +122,12 @@ def match_new(request):
         )
         print(2)
         on_posting.save()
+        contact = Contact.objects.create(
+            posting_id = on_posting,
+            allowed_user = Profile.objects.get(user=current_user),
+            accepted = True
+        )
+        contact.save()
         return render(request, 'core/match_fin.html', {'profile': profile, 'univ': univ})
     else:
         data = {
@@ -189,17 +195,20 @@ def my_page(request):
     profile = Profile.objects.get(user=current_user)
     contacts = Contact.objects.all()
     user_contacts=contacts.filter(allowed_user=profile)
-    print(user_contacts)
-    postings = []
+    now_postings = []
+    end_postings = []
     for contact in user_contacts:
         posting_id = contact.posting_id.pk
-        postings.append(Posting.objects.get(pk=posting_id))
-    print(postings)
+        if contact.finished == True:
+            end_postings.append(Posting.objects.get(pk=posting_id))
+        else:
+            now_postings.append(Posting.objects.get(pk=posting_id))
     context = {
         'rooms': Room.objects.all(),
         'current_user' : current_user,
         'profile': profile,
-        'postings': postings,
+        'now_postings': now_postings,
+        'end_postings': end_postings,
         'contacts': contacts,
     }
     return render(request, 'core/my_page.html', context)
@@ -221,6 +230,23 @@ def refuse(request, pk):
     contact = Contact.objects.get(pk=pk)
     contact.delete()
     return redirect('core:my_page')
+
+
+def delete_posting(request, pk):
+    posting = Posting.objects.get(pk=pk)
+    messages = Message.objects.filter(room_id=posting.pk)
+    messages.delete()
+    posting.delete()
+    return redirect('core:my_page')
+
+def match_request(request, pk):
+    posting = Posting.objects.get(pk=pk)
+    univ_pk = Profile.objects.get(user=request.user).univ.pk
+    Contact.objects.create(
+        posting_id=posting,
+        allowed_user=Profile.objects.get(user=request.user),
+    )
+    return redirect('core:home', univ_pk)
 
 def store_choice(request):
     return render(request, 'core/store_choice.html')

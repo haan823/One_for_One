@@ -35,6 +35,9 @@ class Posting(models.Model):
     chat_created = models.BooleanField(default=False)
     create_date = models.DateTimeField(auto_now_add=True, null=True)
     create_date_string = models.CharField(max_length=255, blank=True, null=True)
+    menu_change = models.CharField(max_length=255, null=True)
+    together = models.CharField(max_length=255, null=True)
+
     def __str__(self):
         return self.store_id.title
 
