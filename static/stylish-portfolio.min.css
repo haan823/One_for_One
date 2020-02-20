@@ -81,7 +81,7 @@
 }
 
 .nav > .nav-item2:nth-child(3) > a:hover {
-    color: mediumpurple;
+    color: rgb(213, 62, 143);
     transition-duration: 0.5s;
 }
 
