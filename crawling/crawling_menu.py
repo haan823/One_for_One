@@ -29,14 +29,14 @@ univ_addr_list = [
     # '경기도 수원시 장안구 율천동 서부로 2066',
     #'서울특별시 서대문구 대현동 11-1 이화여자대학교',
     # '서울특별시 동대문구 이문로 107',
-    # '경기도 수원시 영통구 광교산로 154-42',
+     '경기도 수원시 영통구 광교산로 154-42',
     # '서울특별시 성북구 안암로 145',
     #'서울특별시 성동구 사근동 110 한양대학교',
     #'서울특별시 동작구 흑석동 211-32 중앙대학교',
     #'경기도 용인시 처인구 모현읍 외대로 81',
-    '서울특별시 용산구 청파동2가 53-12 숙명여자대학교',
+    #'서울특별시 용산구 청파동2가 53-12 숙명여자대학교',
     # '서울특별시 성북구 보문로 34다길 2',
-    '서울특별시 광진구 능동로 209',
+    #'서울특별시 광진구 능동로 209',
     # '경기도 용인시 기흥구 덕영대로 1732',
     # '경기도 성남시 수정구 성남대로 1342',
 ]
@@ -49,7 +49,7 @@ sheet = wb.active
 sheet.title = f"요기요_{x}_new"
 options = Options()
 
-driver = webdriver.Chrome(executable_path="C:\dev\chromedriver", chrome_options=options)
+driver = webdriver.Chrome(executable_path="C:\\Users\KSH\dev\chromedriver", chrome_options=options)
 driver.get("https://www.yogiyo.co.kr/mobile/#/")
 driver.set_window_size(1600, 1000)
 
@@ -67,7 +67,7 @@ for univ_addr in univ_addr_list:
     SCROLL_PAUSE_TIME = 0.5
     body = driver.find_element_by_css_selector('body')
 
-    for i in range(5, 10):
+    for i in range(10, 15):
         try:
             # in    dex = ['상세페이지URL', '로고URL', '상호명', '별점', '최소주문금액', '소요시간', '리뷰수']
             index = ['store_url', 'logo', 'title', 'star', 'min_price', 'del_time', 'review', 'univ_id', 'cat_name']
@@ -178,12 +178,12 @@ for univ_addr in univ_addr_list:
 
                 except:
                     print(1)
-                    wb.save('./data/yogiyo_경희대_국제_전반.xlsx')
+                    wb.save('./data/yogiyo_경기대6.xlsx')
                     print(2)
                     break
         except:
             print(3)
-            wb.save('./data/yogiyo_경희대_국제_전반.xlsx')
+            wb.save('./data/yogiyo_경기대6.xlsx')
             print(4)
             sys.exit()
-wb.save('./data/yogiyo_경희대_국제_전반.xlsx')
+wb.save('./data/yogiyo_경기대6.xlsx')

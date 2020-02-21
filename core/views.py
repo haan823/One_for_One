@@ -162,7 +162,7 @@ def match_new(request):
                 posting_id=on_posting,
                 content=posting_tag3
             )
-        return render(request, 'core/match_fin.html', {'profile': profile, 'univ': univ})
+        return redirect(reverse('core:home', args=[univ.id]))
     else:
         data = {
             'profile': profile,
