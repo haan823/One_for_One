@@ -34,10 +34,8 @@
                             <script>
                                 function display() {
                                     console.log('display')
-                                    document.getElementById('tag_div').style.display='block'
+                                    document.getElementById('tag_div').style.display = 'block'
                                 }
-
-
 
 
                             </script>
@@ -78,59 +76,62 @@
                     }
 
 
-
                 </script>
 
                 <div class="row portfolio-container">
                     {% for key, values in tag_dic.items %}
                         {% if key.chat_created != True %}
-                        <div class="col-lg-3 col-md-6 portfolio-item filter-all filter-all{{ key.store_id.cat_name }} filter-{{ key.store_id.cat_name }} filter-all {% for value in values %}filter-{{ key.store_id.cat_name }}-{{ value.content }} filter-{{ value.content }} {% endfor %}">
-                            <div class="portfolio-wrap"
-                                 style="border-radius: 10px; font-size: 1.3rem; text-align: center;">
-                                <div style="background-color: rgb(0, 0, 0, 0.5); color: white;">
-                                    <span>{{ key.user_id }}</span>
-                                    {% with answer=key.user_id.profile.good_review|add:key.user_id.profile.bad_review %}
-                                        {% if answer %}
-                                            <span style="color: yellow;">
+                            <div class="col-lg-3 col-md-6 portfolio-item filter-all filter-all{{ key.store_id.cat_name }} filter-{{ key.store_id.cat_name }} filter-all {% for value in values %}filter-{{ key.store_id.cat_name }}-{{ value.content }} filter-{{ value.content }} {% endfor %}">
+                                <div class="portfolio-wrap"
+                                     style="border-radius: 10px; font-size: 1.3rem; text-align: center;">
+                                    <div style="background-color: rgb(0, 0, 0, 0.5); color: white;">
+                                        <span>{{ key.user_id }}</span>
+                                        {% with answer=key.user_id.profile.good_review|add:key.user_id.profile.bad_review %}
+                                            {% if answer %}
+                                                <span style="color: yellow;">
                                                 {% with answer2=key.user_id.profile.good_review|mul:5|intdiv:answer %}
                                                     {% for i in answer2|range %}
                                                         <i class="fas fa-star"></i>
                                                     {% endfor %}
                                                 {% endwith %}
                                             </span><br>
-                                        {% else %}
-                                            <span style="color: grey;"><i class="fas fa-star"></i></span><br>
-                                        {% endif %}
-                                    {% endwith %}
-                                </div>
-                                <img src="{{ key.store_id.logo }}" class="img-fluid" alt="" style="width: 100%;">
-                                <div class="portfolio-info" style="height: 70%;">
-                                    <div style="">
-                                        {% if user.is_active %}
-                                            {% if current_user != key.user_id.pk %}
-                                                <button class='btn btn-secondary match_request' name = "{{ key.pk }}" style='align-content: center;'>매칭 신청</button><br><br/>
+                                            {% else %}
+                                                <span style="color: grey;"><i class="fas fa-star"></i></span><br>
                                             {% endif %}
-                                        {% endif %}
-                                        <button class="btn btn-secondary" style='cursor: pointer;' onclick="window.open('{{ key.store_id.store_url }}', 'childForm', 'width=1200, height=1200, resizable = no, scrollbars = no');">가게 상세 정보</button>
+                                        {% endwith %}
+                                    </div>
+                                    <img src="{{ key.store_id.logo }}" class="img-fluid" alt="" style="width: 100%;">
+                                    <div class="portfolio-info" style="height: 70%;">
+                                        <div style="">
+                                            {% if user.is_active %}
+                                                {% if current_user != key.user_id.pk %}
+                                                    <button type="button" class='match_request btn btn-secondary'
+                                                            name="{{ key.pk }}" style='align-content: center;'>매칭 신청
+                                                    </button><br><br/>
+                                                {% endif %}
+                                            {% endif %}
+                                            <button class="btn btn-secondary" style='cursor: pointer;'
+                                                    onclick="window.open('{{ key.store_id.store_url }}', 'childForm', 'width=1200, height=1200, resizable = no, scrollbars = no');">
+                                                가게 상세 정보
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div style="color: white; background-color: rgb(0, 0, 0, 0.5)">
+                                        <span>{{ key }}</span><br>
+                                        <span>{{ key.store_id.min_price }}</span><br>
+                                        <span id="clock_{{ key.pk }}" style="color: white"></span><br>
+                                        <span>메뉴 : {{ key.menu }}</span><br>
+                                        {% for value in values %}
+                                            {% if value.content %}
+                                                <span style="color: skyblue;">#{{ value.content }} </span>
+                                            {% endif %}
+                                        {% endfor %}
                                     </div>
                                 </div>
-                                <div style="color: white; background-color: rgb(0, 0, 0, 0.5)">
-                                    <span>{{ key }}</span><br>
-                                    <span>{{ key.store_id.min_price }}</span><br>
-                                    <span id="clock_{{ key.pk }}" style="color: white"></span><br>
-                                    <span>메뉴 : {{ key.menu }}</span><br>
-                                    {% for value in values %}
-                                        {% if value.content %}
-                                            <span style="color: skyblue;">#{{ value.content }} </span>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
                             </div>
-                        </div>
                         {% endif %}
                         <script>
                             // Set the date we're counting down to
-                            console.log('hello')
                             {#console.log(countDownDate);#}
                             {#console.log(due_date);#}
                             // Update the count down every 1 second
@@ -143,7 +144,7 @@
                                 // Get today's date and time
                                 // Find the distance between now and the count down date
                                 var distance = due_date_{{ key.pk }} - now;
-                                console.log('distance: ' + distance)
+                                console.log('distance: ' + distance);
                                 // Time calculations for days, hours, minutes and seconds
                                 var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                                 var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -166,10 +167,9 @@
                     {% endfor %}
                 </div>
             </div>
-
-
         </section><!-- #portfolio -->
     </main>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
     <script>
         $(".match_request").click(function () {
             var posting_pk = $(this).attr('name');
@@ -180,14 +180,13 @@
                 data: {'posting_pk': posting_pk, 'contacts_num': contacts_num},
                 success: function () {
                     alert("매칭신청되었습니다.");
-                    window.location.href="{% url 'core:my_page' %}"
+                    window.location.href = "{% url 'core:my_page' %}"
                 },
                 error: function (request, status, error) {
-                    if (contacts_num===3){
+                    if (contacts_num === 3) {
                         alert("참여가능한 포스팅은 최대 3개입니다.");
                         window.location.reload()
-                    }
-                    else{
+                    } else {
                         alert("이미 신청한 포스팅이거나 최대 신청 가능인원을 초과하였습니다.");
                         window.location.reload()
                     }

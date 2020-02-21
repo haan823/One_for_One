@@ -69,7 +69,7 @@ for univ_addr in univ_addr_list:
     body = driver.find_element_by_css_selector('body')
 
 
-    for i in range(5, 10):
+    for i in range(10, 11):
         try:
             # index = ['상세페이지URL', '로고URL', '상호명', '별점', '최소주문금액', '소요시간', '리뷰수']
             index = ['store_url', 'logo', 'title', 'star', 'min_price', 'del_time', 'review', 'univ_id', 'cat_name']
@@ -103,7 +103,7 @@ for univ_addr in univ_addr_list:
                 con = 120
             else:
                 con = len(containers)
-            for c in range(con):
+            for c in range(31,con):
                 try:
                     time.sleep(1)
 
@@ -179,12 +179,12 @@ for univ_addr in univ_addr_list:
 
                 except:
                     print(1)
-                    wb.save('./data/yogiyo_한국외대_1.xlsx')
+                    wb.save('./data/yogiyo_한국외대_3.xlsx')
                     print(2)
                     break
         except:
             print(3)
-            wb.save('./data/yogiyo_한국외대_1.xlsx')
+            wb.save('./data/yogiyo_한국외대_3.xlsx')
             print(4)
             sys.exit()
-wb.save('./data/yogiyo_한국외대_1.xlsx')
+wb.save('./data/yogiyo_한국외대_3.xlsx')
