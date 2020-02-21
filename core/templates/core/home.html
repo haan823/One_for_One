@@ -29,7 +29,6 @@
                 <button type="button" onclick="document.getElementById('searchField').click()"
                         style="color: white"></button>
                 <script>
-                    {#$('#search_button').hide()#}
                     tags_list = [
                         {% for i in rm_dup_tags %}
                             '{{ i }}',
@@ -43,21 +42,11 @@
 
                     function search_tag() {
                         var searchField = $('#search').val();
-                        if (tags_list.includes(searchField)) {
-                            document.getElementById(searchField).click()
-                        }
-                        else {
-                            console.log(searchField);
-                            document.getElementById(searchField).click();
-
-                        }
-
-
+                        document.getElementById(searchField).click()
                     }
 
                     function complete(kwd) {
                         $('#search').val(kwd);
-                        {#$('#wrapper').append('<input type="hidden" class="id" name="id" value="' + id + '">')#}
                     }
 
                     function delay(callback, ms) {
@@ -71,8 +60,6 @@
                         };
                     }
 
-                    {#$('#search_button').innerHTML = '<div data-filter=".filter-' + 'qwerty'+ '" id="search_button">검색</div>';#}
-                    {#'<div data-filter=".filter-' + 'qwerty'+ '" id="search_button">검색</div>';#}
                     $(document).ready(function () {
                         $('html').click(function (e) {
                             if (!$(e.target).hasClass("list_group_item") && (!$(e.target).hasClass("tag_list_item"))) {
@@ -89,10 +76,6 @@
                         $('#search').keyup(delay(function () {
                                 $('#result').html('');
                                 var searchField = $('#search').val();
-                                {#console.log(searchField)#}
-                                {#block = document.getElementById('search_button');#}
-                                //var expression = new RegExp(searchField, "i");
-                                {#" class="filter-active"#}
                                 $.ajax({
                                     type: "POST",
                                     url: "{% url 'core:search_store' %}",
@@ -168,8 +151,6 @@
                     function addMinutes(date, minutes) {
                         return new Date(date.getTime() + minutes * 60000);
                     }
-
-
                 </script>
 
                 <div class="row portfolio-container">
@@ -250,8 +231,6 @@
             <script>
                 $("#MENU").hide()
             </script>
-
-
 
         </section><!-- #portfolio -->
     </main>
