@@ -10,6 +10,8 @@ from django.urls import reverse
 
 from django.forms import forms
 from django.shortcuts import render
+
+from account.utils import send_alarm_sms
 from core.models import *
 
 from chat.models import *
@@ -92,13 +94,14 @@ def home(request, pk):
                 posting.create_date_string = convert_date_PytoJs(str(posting.create_date))
                 tag_dic[posting] = tags
                 menus.append(posting.menu)
-            else :
+            else:
                 posting.finished = True
                 posting.save()
         all_tags = set(Tag.objects.all())
         tags_list = []
         for all_tag in all_tags:
-            if all_tag.posting_id.create_date + datetime.timedelta(minutes=all_tag.posting_id.timer) > datetime.datetime.now():
+            if all_tag.posting_id.create_date + datetime.timedelta(
+                    minutes=all_tag.posting_id.timer) > datetime.datetime.now():
                 tags_list.append(all_tag.content)
         rm_dup_tags = list(set(tags_list))
         data = {
@@ -118,7 +121,7 @@ def match_new(request):
     profile = Profile.objects.get(user=current_user)
     univ = profile.univ
     contacts = Contact.objects.filter(allowed_user=profile)
-    if len(contacts)>=3:
+    if len(contacts) >= 3:
         data = {
             'profile': profile,
             'univ': univ
@@ -335,7 +338,10 @@ def match_request(request):
         allowed_user=Profile.objects.get(user=request.user),
     )
     # 문자 보내기
-    phone_number = posting.user_id.profile.phone_number;
+    match_phone_number = posting.user_id.profile.phone_number
+    content = ('게시한 포스팅에 ' + request.user.profile.user.username + '님이 매칭 신청을 했습니다!'
+               + ' store: ' + posting.store_id.title + ' 현재 참가자 수: ' + str(posting.now_num))
+    send_alarm_sms(match_phone_number, content)
     return redirect('core:home', univ_pk)
 
 
@@ -519,7 +525,3 @@ def menu_search(request, pk):
                 'menus': menus
             }
             return render(request, 'core/home.html', data)
-
-
-
-

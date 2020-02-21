@@ -51,3 +51,24 @@ class AuthSmsSendView(View):
             ).save()
 
             self.send_sms(phone_number=input_phone_number, auth_number=created_auth_number)
+
+
+def send_alarm_sms(phone_number, content):
+    headers = {
+        'Content-Type': 'application/json; charset=utf-8',
+        'x-ncp-auth-key': f'{SMS_ACCESS_KEY_ID}',
+        'x-ncp-service-secret': f'{SMS_SERVICE_SECRET}',
+    }
+
+    data = {
+        'type': 'SMS',
+        'contentType': 'COMM',
+        'countryCode': '82',
+        'from': f'{SMS_SEND_PHONE_NUMBER}',
+        'to': [
+            f'{phone_number}',
+        ],
+        'content': content
+    }
+    print('남창우 9원 날아감~')
+    requests.post(SMS_URL, headers=headers, json=data)

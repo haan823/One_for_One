@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 import json
 
 from account.models import Profile
+from account.utils import send_alarm_sms
 from chat.models import Room, Contact, Message
 from core.models import Posting
 
@@ -47,8 +48,11 @@ def create_Room(request, pk):
     for contact in contacts:
         contact.accepted = True
         contact.save()
-        # 문자 다 보내기
-        contact.allowed_user.phone_number
+    # 문자 다 보내기
+    for contact in contacts:
+        content = f'<저기요> 채팅방이 개설되었습니다. store: ' + posting.store_id.title
+        send_alarm_sms(contact.allowed_user.phone_number, content)
+        print(content)
     return redirect('core:my_page')
 
 def room_finished(request, pk):
