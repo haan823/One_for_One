@@ -74,7 +74,7 @@ def signup(request, pk):
                                 'url을 클릭하면 인증됩니다.' + 'http://127.0.0.1:8000/account/active/' + user.last_name,
                                 to=[email])
             mail.send()
-            return render(request, 'notify.html')
+            return redirect('core:main')
         else:
             return render(request, 'signup.html', {'message': '비밀번호가 일치하지 않습니다.', 'pk': request.GET.pk})
     else:
