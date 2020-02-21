@@ -24,7 +24,7 @@ SECRET_KEY = '(po@mb)po)=vvd#=51s)qnfdk81$!tcrs59t)1vmqu$jxo6q8z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -125,8 +125,9 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS=[
-    os.path.join(BASE_DIR,'static'),
+    os.path.join(BASE_DIR, 'static'),
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 
 ASGI_APPLICATION = 'config.routing.application'
 
