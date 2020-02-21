@@ -55,8 +55,7 @@ def home(request, pk):
         all_tags = set(Tag.objects.all())
         tags_list = []
         for all_tag in all_tags:
-            if all_tag.posting_id.create_date + datetime.timedelta(
-                    minutes=all_tag.posting_id.timer) > datetime.datetime.now():
+            if not all_tag.posting_id.finished:
                 tags_list.append(all_tag.content)
         rm_dup_tags = list(set(tags_list))
         data = {
@@ -98,11 +97,11 @@ def home(request, pk):
             else:
                 posting.finished = True
                 posting.save()
+                print(posting.finished)
         all_tags = set(Tag.objects.all())
         tags_list = []
         for all_tag in all_tags:
-            if all_tag.posting_id.create_date + datetime.timedelta(
-                    minutes=all_tag.posting_id.timer) > datetime.datetime.now():
+            if not all_tag.posting_id.finished:
                 tags_list.append(all_tag.content)
         rm_dup_tags = list(set(tags_list))
         data = {
@@ -372,7 +371,7 @@ def search_store(request):
         tags_list = []
         menus_filtered = []
         for all_tag in all_tags:
-            if all_tag.posting_id.finished:
+            if not all_tag.posting_id.finished:
                 tags_list.append(all_tag.content)
         tags = list(set(tags_list))
         filtered_tags = []

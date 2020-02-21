@@ -78,6 +78,7 @@
                         $('#search').keyup(delay(function () {
                                 $('#result').html('');
                                 var searchField = $('#search').val();
+                                console.log(searchField)
                                 $.ajax({
                                     type: "POST",
                                     url: "{% url 'core:search_store' %}",
@@ -88,7 +89,7 @@
                                         $.each(response, function (key, value) {
                                             if (key === 'filtered_tags') {
                                                 for (var i in value) {
-                                                    {#console.log(now, i, value[i]['name'])#}
+                                                    console.log(i, value[i]['name'])
                                                     $('#result').append('<div class="list_group_item">' +
                                                         '<button class="tag_list_item"onclick="javascript:complete(\'' + value[i] + '\'' + ')" style = "color:white">' +
                                                         value[i] + '</button></div>');
@@ -104,9 +105,9 @@
                                                 }
                                             }
                                         })
-                                        if ((response['filtered_tags'].length === 0) && (response['menus_filtered'].length === 0)) {
-                                            $('#result').append('<div class="list_group_item">검색 결과가 없습니다.</div>');
-                                        }
+                                        {#if ((response['filtered_tags'].length === 0) && (response['menus_filtered'].length === 0)) {#}
+                                        {#    $('#result').append('<div class="list_group_item">검색 결과가 없습니다.</div>');#}
+                                        //{#}#}
                                     }
                                 })
 
@@ -216,7 +217,7 @@
                                 // Get today's date and time
                                 // Find the distance between now and the count down date
                                 var distance = due_date_{{ key.pk }} - now;
-                                console.log('distance: ' + distance);
+                                {#console.log('distance: ' + distance);#}
                                 // Time calculations for days, hours, minutes and seconds
                                 var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                                 var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
