@@ -93,7 +93,7 @@
         </li>
         {% if user.is_active %}
             <li class="sidebar-nav-item">
-                <a class="js-scroll-trigger" href="{% url 'core:home' request.user.profile.univ_id.pk %}">포스팅 보기</a>
+                <a class="js-scroll-trigger" href="{% url 'core:home' univ.pk %}">포스팅 보기</a>
             </li>
             <li class="sidebar-nav-item">
                 <a class="js-scroll-trigger" href="{% url 'core:my_page' %}">My page</a>
