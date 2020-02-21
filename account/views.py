@@ -158,7 +158,7 @@ def user_active(request, token):
     message = "이메일이 인증되었습니다."
     univ = user.profile.univ_id
     profile = user.profile
-    return render(request, 'signup_complete.html', {'message': message, 'univ':univ, 'profile':profile})
+    return render(request, 'core:home', {'univ': univ, 'profile': profile})
 
 
 def send_sms(request, pk):
