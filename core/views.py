@@ -23,6 +23,7 @@ from core.utils import convert_date_PytoJs
 
 
 def home(request, pk):
+
     if request.user.is_authenticated:
         current_user = request.user
         profile = Profile.objects.get(user=current_user.id)
