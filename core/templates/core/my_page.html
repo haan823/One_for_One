@@ -1,56 +1,3 @@
-{#{% extends 'base.html' %}#}
-{##}
-{#{% block content %}#}
-{#    <div class="container text-center my-auto">#}
-{#        <h2 class="mb-1" style="color: white">My Page</h2>#}
-{#    <br>#}
-{#    <br>#}
-{#    </div>#}
-{#    <div style="display: inline-block">#}
-{#        <ul class="list-group list-group-flush">#}
-{#            <li class="list-group-item">username: {{ profile.user.username }}</li>#}
-{#            <li class="list-group-item">univ: {{ profile.univ }}</li>#}
-{#            <li class="list-group-item">nickname: {{ profile.nickname }}</li>#}
-{#        </ul>#}
-{#    </div>#}
-{#    <br>#}
-{#    <br>#}
-{#    <div style="display: inline-block">#}
-{#        <ul class="list-group list-group-flush">#}
-{#            <li class="list-group-item">내 포스팅들</li>#}
-{#        </ul>#}
-{#    </div>#}
-{#    <div class="wrap">#}
-{#        <div>참여중인 포스트</div>#}
-{#        {% for posting in now_postings %}#}
-{#            <div class="card" style="width: 18rem; display: inline-block;">#}
-{#                <img src="{{ posting.store_id.logo }}" class="card-img-top" alt="...">#}
-{#                <div class="card-body">#}
-{#                    <h5 class="card-title">{{ posting.menu }}</h5>#}
-{#                    <div class="card-text">store: {{ posting.store_id.title }}</div>#}
-{#                    <div class="card-text">가격: {{ posting.price }}</div>#}
-{#                    <div class="card-text">최대인원: {{ posting.max_num }}</div>#}
-{#                    <br/>#}
-{#                    <a href="#" class="btn btn-primary">채팅방으로</a>#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endfor %}#}
-{#        <div>완료된 포스트</div>#}
-{#        {% for posting in end_postings %}#}
-{#            <div class="card" style="width: 18rem; display: inline-block;">#}
-{#                <img src="{{ posting.store_id.logo }}" class="card-img-top" alt="...">#}
-{#                <div class="card-body">#}
-{#                    <h5 class="card-title">{{ posting.menu }}</h5>#}
-{#                    <div class="card-text">store: {{ posting.store_id.title }}</div>#}
-{#                    <div class="card-text">가격: {{ posting.price }}</div>#}
-{#                    <div class="card-text">최대인원: {{ posting.max_num }}</div>#}
-{#                    <br/>#}
-{#                    <a href="#" class="btn btn-primary">채팅방으로</a>#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endfor %}#}
-{#    </div>#}
-{#{% endblock %}#}
 {% extends "base.html" %}
 {% load mathfilters %}
 {% load static %}
@@ -63,9 +10,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'style_mypage.css' %}"/>
+    <link rel="stylesheet" href="{% static 'font.css' %}"/>
 {% endblock %}
 
 {% block content %}
+    <div style=" font-family: BMHANNAPro; font-size:30px; color:white;">{{ current_user.username }}</div><br/>
     <div class="row">
         <div class="col-xl-12">
             <div class="card card-lg">
@@ -147,6 +96,37 @@
                                             {% endif %}
                                         {% endfor %}
                                     {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="card card-lg">
+                <h6 class="card-header">기간만료된 포스트</h6>
+                <div class="card-body">
+                    <div class="user-activity">
+                        {% for posting in expired_postings %}
+                            <div class="media">
+                                <div class="media-img-wrap">
+                                    <div class="avatar avatar-sm">
+                                        <img src="{{ posting.store_id.logo }}" alt="user" class="avatar-img rounded-circle">
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <div class="d-flex align-items-start">
+                                        <div>
+                                            <span class="d-block mb-5">
+                                                <span class="font-weight-500 text-dark text-capitalize">{{ posting.store_id.title }}</span>
+                                                <br/><span class="font-weight-500 text-dark text-capitalize">메뉴: {{ posting.menu }}</span>
+                                            </span>
+                                        </div>
+                                        {% if posting.user_id == current_user %}
+                                            <button class="btn btn-sm btn-primary ml-auto" onclick="window.location.href='{% url "core:delete_posting" posting.pk %}'">
+                                                포스팅 삭제하기
+                                            </button>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         {% endfor %}

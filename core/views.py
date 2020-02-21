@@ -243,20 +243,27 @@ def my_page(request):
     profile = Profile.objects.get(user=current_user)
     contacts = Contact.objects.all()
     user_contacts = contacts.filter(allowed_user=profile)
+    expired_postings = []
     now_postings = []
     end_postings = []
     for contact in user_contacts:
         posting_id = contact.posting_id.pk
-        if contact.finished == True:
-            end_postings.append(Posting.objects.get(pk=posting_id))
+        posting = Posting.objects.get(pk=posting_id)
+        due = posting.create_date + datetime.timedelta(minutes=posting.timer)
+        now = datetime.datetime.now()
+        if due < now:
+            expired_postings.append(posting)
+        elif contact.finished == True:
+            end_postings.append(posting)
         else:
-            now_postings.append(Posting.objects.get(pk=posting_id))
+            now_postings.append(posting)
     context = {
         'rooms': Room.objects.all(),
         'current_user': current_user,
         'profile': profile,
         'now_postings': now_postings,
         'end_postings': end_postings,
+        'expired_postings': expired_postings,
         'contacts': contacts,
     }
     return render(request, 'core/my_page.html', context)

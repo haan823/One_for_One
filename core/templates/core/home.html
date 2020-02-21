@@ -106,8 +106,10 @@
                                 <img src="{{ key.store_id.logo }}" class="img-fluid" alt="" style="width: 100%;">
                                 <div class="portfolio-info" style="height: 70%;">
                                     <div style="">
-                                        {% if current_user != key.user_id.pk %}
-                                            <button class='btn btn-secondary match_request' name = "{{ key.pk }}" style='align-content: center;'>매칭 신청</button><br><br/>
+                                        {% if user.is_active %}
+                                            {% if current_user != key.user_id.pk %}
+                                                <button class='btn btn-secondary match_request' name = "{{ key.pk }}" style='align-content: center;'>매칭 신청</button><br><br/>
+                                            {% endif %}
                                         {% endif %}
                                         <button class="btn btn-secondary" style='cursor: pointer;' onclick="window.open('{{ key.store_id.store_url }}', 'childForm', 'width=1200, height=1200, resizable = no, scrollbars = no');">가게 상세 정보</button>
                                     </div>
