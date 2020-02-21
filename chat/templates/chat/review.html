@@ -85,7 +85,8 @@
     </style>
 </head>
 <body>
-<form class="submit-review" method="GET">
+{% if room.match_finished == True %}
+    <form class="submit-review" method="GET">
     <ul>
         {% for allowed_user in allowed_users %}
             {% if allowed_user != now_user.user %}
@@ -100,12 +101,22 @@
     <br/><br/>
     <input type="submit" class="submit-btn" value="완료" onclick="form.action='{% url 'chat:update_review' posting.pk %}'; parent();">
 </form>
+{% else %}
+    <br/><br/><br/>
+    <ul>
+        <li>
+            <div>아직 포스팅 게시자가 채팅완료처리를 하지 않았습니다.</div><br/><br/>
+            <input type="submit" class="submit-btn" value="확인" onclick="window.close()">
+        </li>
+    </ul>
+{% endif %}
+
 <br/>
 </body>
 <script type="text/javascript">
     function parent() {
         var parent = window.opener;
-        parent.location.href = "{% url 'core:home' now_user.univ.pk %}";
+        parent.close();
     }
 </script>
 </html>

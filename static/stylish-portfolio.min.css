@@ -36,7 +36,6 @@
     width: 100%;
     min-width: 400px;
     display: flex;
-    background-color: black;
 }
 
 .nav > .nav-item2 {
@@ -81,7 +80,7 @@
 }
 
 .nav > .nav-item2:nth-child(3) > a:hover {
-    color: mediumpurple;
+    color: rgb(213, 62, 143);
     transition-duration: 0.5s;
 }
 
@@ -99,12 +98,13 @@
 .masthead {
     font-family: BMHANNAPro;
     position: relative;
-    display: table;
+    display: flex;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
     padding-top: 8rem;
     padding-bottom: 8rem;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/pizza-slices-food.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/767283.jpg');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;

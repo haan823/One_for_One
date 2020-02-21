@@ -74,7 +74,7 @@ def signup(request, pk):
                                 'url을 클릭하면 인증됩니다.' + 'http://52.79.67.35:8000/account/active/' + user.last_name,
                                 to=[email])
             mail.send()
-            return render(request, 'notify.html')
+            return redirect('core:main')
         else:
             return render(request, 'signup.html', {'message': '비밀번호가 일치하지 않습니다.', 'pk': request.GET.pk})
     else:
@@ -90,7 +90,7 @@ def signup(request, pk):
             '한국외국어대학교': 'hufs.ac.kr',
             '한양대학교': 'hanyang.ac.kr',
             '서울대학교': 'snu.ac.kr',
-            '성균관대학교': 'g.skku.edu',
+            '성균관대학교 자연과학캠퍼스': 'g.skku.edu',
             '이화여자대학교': 'ewhain.net',
             '홍익대학교': 'mail.hongik.ac.kr',
             '고려대학교': 'korea.ac.kr',

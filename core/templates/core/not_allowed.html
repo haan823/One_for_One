@@ -3,7 +3,7 @@
 {% block content %}
     <div class="text-white" style=" min-height: 80vh; border: 2px solid #ffffff;">
         <div style="padding-top: 170px; text-align:center;">
-            <h1>포스팅 생성!</h1>
+            <h2>생성가능한 포스팅 개수는 최대 3개입니다.</h2>
             <span>
                 <button>
                     <a style="font-size: 30px;" href="{% url "core:my_page" %}">My page</a>
@@ -11,7 +11,7 @@
             </span>
             <span>
                 <button>
-                    <a style="font-size: 30px;" href="{% url 'core:home' univ.id %}">홈으로</a>
+                    <a style="font-size: 30px;" href="{% url 'core:home' univ.pk %}">홈으로</a>
                 </button>
             </span>
         </div>
