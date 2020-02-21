@@ -1,164 +1,3 @@
-{#{% extends 'base.html' %}#}
-{##}
-{#{% block extra_head %}#}
-{#    <meta charset="UTF-8">#}
-{#    <meta name="viewport"#}
-{#          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">#}
-{#    <meta http-equiv="X-UA-Compatible" content="ie=edge">#}
-{#    <title>Document</title>#}
-{#    <script type="text/javascript">#}
-{#        function setParentText(a, b, c, d) {#}
-{#            opener.document.getElementById("pInput1").value = a#}
-{#            opener.document.getElementById("pInput2").value = b#}
-{#            opener.document.getElementById("pInput3").src = c#}
-{#            opener.document.getElementById("pInput4").value = d#}
-{#        }#}
-{#    </script>#}
-{##}
-{#    <style>#}
-{#        .tabs {#}
-{#            display: flex;#}
-{#            flex-wrap: wrap;#}
-{#        }#}
-{##}
-{#        .tabs label {#}
-{#            width: 50%;#}
-{#            order: 1;#}
-{#            display: block;#}
-{#            padding: 10px 0px;#}
-{#            text-align: center;#}
-{#            cursor: pointer;#}
-{#            background: #838487;#}
-{#            font-weight: bold;#}
-{#            transition: background ease 0.2s;#}
-{#        }#}
-{##}
-{#        /*박스배경*/#}
-{#        .tabs .tab {#}
-{#            order: 99;#}
-{#            flex-grow: 1;#}
-{#            width: 100%;#}
-{#            display: none;#}
-{#            padding: 1rem;#}
-{#            background: #92B6D5;#}
-{#        }#}
-{##}
-{#        .tabs input[type="radio"] {#}
-{#            display: none;#}
-{#        }#}
-{##}
-{#        /*탭 눌렀을때 컬러*/#}
-{#        .tabs input[type="radio"]:checked + label {#}
-{#            background: #92B6D5;#}
-{#        }#}
-{##}
-{#        .tabs input[type="radio"]:checked + label + .tab {#}
-{#            display: block;#}
-{#        }#}
-{#    </style>#}
-{#{% endblock %}#}
-{##}
-{#{% block content %}#}
-{#    <div class="tabs">#}
-{#        {% for cat in cat_list %}#}
-{#            {% if cat == '치킨' %}#}
-{#                <input type="radio" name="tabs" id="{{ cat }}" checked="checked">#}
-{#                <label for="{{ cat }}">{{ cat }}</label>#}
-{#            {% else %}#}
-{#                <input type="radio" name="tabs" id="{{ cat }}">#}
-{#                <label for="{{ cat }}">{{ cat }}</label>#}
-{#            {% endif %}#}
-{##}
-{##}
-{#            <div class="tab">#}
-{#                {% for s in stores_univ %}#}
-{#                    <form id="childForm" action="{% url 'core:match_new' %}" method="POST">#}
-{#                        {% csrf_token %}#}
-{#                        {% if s.cat_name == cat %}#}
-{#                            <div class="card mb-3"#}
-{#                                 style="max-width: 540px; border: 2px solid black; text-align: center">#}
-{#                                <div class="row no-gutters">#}
-{#                                    <div class="col-md-4">#}
-{#                                        <input type="image" id='cInput3{{ s.id }}' src="{{ s.logo }}" width="100px" ,#}
-{#                                               height="100px" , alt=""#}
-{#                                               style="padding-top: 20px;">#}
-{#                                    </div>#}
-{#                                    <div class="col-md-8">#}
-{#                                        <div class="card-body">#}
-{#                                            <input type="text" id="cInput1{{ s.id }}" value="{{ s.title }}">#}
-{#                                            <p id="star" class="card-text">#}
-{#                                                {{ s.star }}</p>#}
-{#                                            <p id="min_price" class="card-text">{{ s.min_price }}</p>#}
-{#                                            <input type="text" id="cInput2{{ s.id }}" value="{{ s.del_time }}">#}
-{#                                                <p id="del_time" class="card-text">{{ s.del_time }}</p>#}
-{#                                            <input type="text" id="cInput4{{ s.id }}" value="{{ s.pk }}" hidden>#}
-{#                                            <p id="store_url" class="card-text"><small class="text-muted"><a#}
-{#                                                    href="#"#}
-{#                                                    onClick="window.open('{{ s.store_url }}', '네이버1', 'width=1200, height=1200, toolbar=yes, menubar=yes, scrollbars=yes, resizable=yes'); return false;">페이지로#}
-{#                                                이동</a></small></p>#}
-{#                                            <p class="card-text"><small class="text-muted">#}
-{#                                                <input type="button" value="선택"#}
-{#                                                       onclick="window.close(); setParentText(document.getElementById('cInput1{{ s.id }}').value, document.getElementById('cInput2{{ s.id }}').value, document.getElementById('cInput3{{ s.id }}').src, document.getElementById('cInput4{{ s.id }}').value)"></small>#}
-{#                                            </p>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        {% endif %}#}
-{#                    </form>#}
-{#                {% endfor %}#}
-{#            </div>#}
-{#            {% if stores_univ.has_other_pages %}#}
-{#                <ul class="pagination">#}
-{#                    {% if stores_univ.has_previous %}#}
-{#                        <li><a href="?page={{ stores_univ.previous_page_number }}">&laquo;</a></li>#}
-{#                    {% else %}#}
-{#                        <li class="disabled"><span>&laquo;</span></li>#}
-{#                    {% endif %}#}
-{##}
-{#                    {% for i in stores_univ.paginator.page_range %}#}
-{#                        {% if stores_univ.number == i %}#}
-{#                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>#}
-{#                        {% else %}#}
-{#                            <li><a href="?page={{ i }}">{{ i }}</a></li>#}
-{#                        {% endif %}#}
-{#                    {% endfor %}#}
-{#                    {% if stores_univ.has_next %}#}
-{#                        <li><a href="?page{{ samelines.next_page_number }}">&raquo;</a></li>#}
-{#                    {% else %}#}
-{#                        <li class="disabled"><span>&raquo;</span></li>#}
-{#                    {% endif %}#}
-{#                </ul>#}
-{#            {% endif %}#}
-{#        {% endfor %}#}
-{#            <input type="radio" name="tabs" id="tabback" style="background-color: palevioletred">#}
-{#            <label for="tabone"><a href="{% url 'core:match_new' %}">뒤로 가기</a></label>#}
-{#    </div>#}
-{#    {% if stores_univ.has_other_pages %}#}
-{#        <ul class="pagination">#}
-{#            {% if stores_univ.has_previous %}#}
-{#                <li><a href="?page={{ stores_univ.previous_page_number }}">&laquo;</a></li>#}
-{#            {% else %}#}
-{#                <li class="disabled"><span>&laquo;</span></li>#}
-{#            {% endif %}#}
-{##}
-{#            {% for i in stores_univ.paginator.page_range %}#}
-{#                {% if stores_univ.number == i %}#}
-{#                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>#}
-{#                {% else %}#}
-{#                    <li><a href="?page={{ i }}">{{ i }}</a></li>#}
-{#                {% endif %}#}
-{#            {% endfor %}#}
-{#            {% if stores_univ.has_next %}#}
-{#                <li><a href="?page{{ samelines.next_page_number }}">&raquo;</a></li>#}
-{#            {% else %}#}
-{#                <li class="disabled"><span>&raquo;</span></li>#}
-{#            {% endif %}#}
-{#        </ul>#}
-{#    {% endif %}#}
-{#{% endblock %}#}
-{##}
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -172,14 +11,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>골라골라</title>
     <script type="text/javascript">
-        function setParentText(a, b, c, d) {
+        function setParentText(a, b, c, d, e) {
             opener.document.getElementById("pInput1").value = a
             opener.document.getElementById("pInput2").value = b
             opener.document.getElementById("pInput3").src = c
             opener.document.getElementById("pInput4").value = d
+            opener.document.getElementById("pInput5").value = e
         }
+
+
     </script>
 
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'font.css' %}">
     <style>
         .tabs {
             display: flex;
@@ -205,7 +49,7 @@
             width: 100%;
             display: none;
             padding: 1rem;
-            background: #92B6D5;
+            background: white;
         }
 
         .tabs input[type="radio"] {
@@ -222,60 +66,98 @@
         }
     </style>
 </head>
-<body>
+    <body style="font-family: BMDOHYEON_ttf">
 <div class="tabs">
     {% for cat in cat_list %}
         {% if cat == '치킨' %}
             <input type="radio" name="tabs" id="{{ cat }}" checked="checked">
-            <label for="{{ cat }}">{{ cat }}</label>
+            <label style='width: 10%;' for="{{ cat }}">{{ cat }}</label>
         {% else %}
             <input type="radio" name="tabs" id="{{ cat }}">
-            <label for="{{ cat }}">{{ cat }}</label>
+            <label style='width: 10%;' for="{{ cat }}">{{ cat }}</label>
         {% endif %}
 
 
-        <div class="tab">
-        <form id="childForm" action="{% url 'core:match_new' %}" method="POST">
-            {% for s in stores_univ %}
-
-                    {% csrf_token %}
-                    {% if s.cat_name == cat %}
-                        <div class="card mb-3"
-                             style="width: 500px; border: 2px solid black; text-align: center; display: inline-block">
-                            <div class="row no-gutters">
-                                <div class="col-md-4">
-                                    <input type="image" id='cInput3{{ s.id }}' src="{{ s.logo }}" width="100px" ,
-                                           height="100px" , alt=""
-                                           style="padding-top: 20px;">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <p id="title" class="card-text">{{ s.title }}</p>
-                                        <input type="text" id="cInput1{{ s.id }}" value="{{ s.title }}" hidden>
-                                        <p id="star" class="card-text">
-                                            {{ s.star }}</p>
-                                        <p id="min_price" class="card-text">{{ s.min_price }}</p>
-                                        <p id="del_time" class="card-text">{{ s.del_time }}</p>
-                                        <input type="text" id="cInput2{{ s.id }}" value="{{ s.del_time }}" hidden>
-                                        {#                                                <p id="del_time" class="card-text">{{ s.del_time }}</p>#}
-                                        <input type="text" id="cInput4{{ s.id }}" value="{{ s.pk }}" hidden>
-                                        <p id="store_url" class="card-text"><small class="text-muted">
-                                            <button onclick="window.open('{{ s.store_url }}', '네이버1', 'width=1200, height=1200, toolbar=yes, menubar=yes, scrollbars=yes, resizable=yes'); return false;">페이지로
-                                            이동</button>
-                                                </small></p>
-                                        <p class="card-text"><small class="text-muted">
-                                            <input type="button" value="선택"
-                                                   onclick="window.close(); setParentText(document.getElementById('cInput1{{ s.id }}').value, document.getElementById('cInput2{{ s.id }}').value, document.getElementById('cInput3{{ s.id }}').src, document.getElementById('cInput4{{ s.id }}').value)"></small>
-                                        </p>
+        <div class="tab" style="width: 100%; margin: 0; padding: 0;">
+            <form id="childForm" action="{% url 'core:match_new' %}" method="POST">
+                <div style="display: flex; flex-wrap: wrap; width: auto; margin: 0 auto;">
+                    {% for s in stores_univ %}
+                        {% csrf_token %}
+                        {% if s.cat_name == cat %}
+                            <div class="card mb-3"
+                                 style="width: 20%; box-sizing: border-box; border: 1px solid black; text-align: center; justify-content: center;">
+                                <div class="row no-gutters">
+                                    <div class="col-md-4">
+                                        <input type="image" id='cInput3{{ s.id }}' src="{{ s.logo }}" width="100px" ,
+                                               height="100px" , alt=""
+                                               style="padding-top: 20px; pointer-events: none">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <p id="title" class="card-text">{{ s.title }}</p>
+                                            <input type="text" id="cInput1{{ s.id }}" value="{{ s.title }}" hidden>
+                                            <p id="star" class="card-text">
+                                                {{ s.star }}</p>
+                                            <p id="min_price" class="card-text">{{ s.min_price }}</p>
+                                            <input type="text" id="cInput5{{ s.id }}" value="{{ s.min_price }}" hidden>
+                                            <p id="min_price" class="card-text">{{ s.del_time }}</p>
+                                            <input type="text" id="cInput2{{ s.id }}" value="{{ s.del_time }}" hidden>
+                                            {#                                                <p id="del_time" class="card-text">{{ s.del_time }}</p>#}
+                                            <input type="text" id="cInput4{{ s.id }}" value="{{ s.pk }}" hidden>
+                                            <p id="store_url" class="card-text"><small class="text-muted">
+                                                <button class='btn btn-secondary' onclick="window.open('{{ s.store_url }}', '네이버1', 'width=1200, height=1200, toolbar=yes, menubar=yes, scrollbars=yes, resizable=yes'); return false;">
+                                                    페이지로
+                                                    이동
+                                                </button>
+                                            </small></p>
+                                            <p class="card-text"><small class="text-muted">
+                                                <input type="button" value="선택"
+                                                       onclick="window.close(); setParentText(document.getElementById('cInput1{{ s.id }}').value, document.getElementById('cInput2{{ s.id }}').value, document.getElementById('cInput3{{ s.id }}').src, document.getElementById('cInput4{{ s.id }}').value, document.getElementById('cInput5{{ s.id }}').value)"></small>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endif %}
+                        {% endif %}
 
-            {% endfor %}
-        </form>
+                    {% endfor %}
+                </div>
+
+                {#                <div class="pagination">#}
+                {#    <span class="step-links">#}
+                {#        {% if contacts.has_previous %}#}
+                {#            <a href="?page=1">&laquo; first</a>#}
+                {#            <a href="?page={{ contacts.previous_page_number }}">previous</a>#}
+                {#        {% endif %}#}
+                {##}
+                {#        {% for i in p_range %}#}
+                {#            <a href="?page={{ i }}" {% if contacts.number == i %}class="active" {% endif %}>{{ i }}</a>#}
+                {#        {% endfor %}#}
+                {##}
+                {#        {% if contacts.has_next %}#}
+                {#            <a href="?page={{ contacts.next_page_number }}">next</a>#}
+                {#            <a href="?page={{ contacts.paginator.num_pages }}">last &raquo;</a>#}
+                {#        {% endif %}#}
+                {#    </span>#}
+                {#                </div>#}
+
+
+                {#                {% if stores_in_page.has_previous %}#}
+                {#                    <a href="?page-1">맨 앞으로</a>#}
+                {#                    <a href="?page={{ stores_in_page.previous_page_number }}">이전으로</a>#}
+                {#                {% endif %}#}
+                {#                <span>{{ post.number }}</span>#}
+                {#                <span>/</span>#}
+                {#                <span>{{ stores_in_page.paginator.num_pages }}</span>#}
+                {#                {% if stores_in_page.has_next %}#}
+                {#                    <a href="?page={{ stores_in_page.next_page_number }}">다음으로</a>#}
+                {#                    <a href="?page={{ stores_in_page.paginator.num_pages }}">맨 뒤로</a>#}
+                {#                {% endif %}#}
+            </form>
+
         </div>
+
+
         {#            {% if stores_univ.has_other_pages %}#}
         {#                <ul class="pagination">#}
         {#                    {% if stores_univ.has_previous %}#}
