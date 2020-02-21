@@ -7,23 +7,35 @@
     <main id="main">
         <section id="portfolio" class="section-bg">
             <div class="container">
-
                 <header class="section-header">
                     <h3 class="section-title">{{ univ }}에서 올라온 포스팅이에요</h3>
-
                 </header>
 
-                <div>
-                    <div style="border: 1px solid black">
-                        <div id="wrapper" class="wrapper">
-                            <input type="text" id="search" name="search" autocomplete="off">
-                        </div>
-                        <div class="list-group" id="result" style="border:1px solid black"></div>
+{#                <div>#}
+{#                    <div style="border: 1px solid black">#}
+{#                        <div id="wrapper" class="wrapper">#}
+{#                            <input type="text" id="search" name="search" autocomplete="off">#}
+{#                        </div>#}
+{#                        <div class="list-group" id="result" style="border:1px solid black"></div>#}
+{##}
+{#                        <button type="button" id="search_button" onclick="search_tag()" style="color: white;">검색#}
+{#                        </button>#}
+{#                    </div>#}
+{#                </div>#}
 
-                        <button type="button" id="search_button" onclick="search_tag()" style="color: white;">검색
+                <div class="input-group" id="wrapper">
+                    <input type="text" aria-describedby="button-addon5" class="form-control" id="search" name="search" autocomplete="off">
+                    <div class="input-group-append">
+                        <button id="button-addon5 search_button" type="button" class="btn btn-primary" onclick="search_tag()">
+                            <i class="fa fa-search"></i>
                         </button>
                     </div>
                 </div>
+                <div class="list-group" id="result" style="display:block;"></div>
+
+
+
+
 
 
                 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -66,12 +78,12 @@
                         $('html').click(function (e) {
                             if (!$(e.target).hasClass("list_group_item") && (!$(e.target).hasClass("tag_list_item"))) {
                                 $('#result').html('');
-                                $('#search_button').hide();
+                                {#$('#search_button').hide();#}
                             } else if ($(e.target).hasClass("tag_list_item")) {
                                 $('#result').html('');
-                                $('#search_button').show();
+                                {#$('#search_button').show();#}
                             } else {
-                                $('#search_button').show()
+                                {#$('#search_button').show()#}
                             }
                         })
 
@@ -90,7 +102,7 @@
                                                 for (var i in value) {
                                                     {#console.log(now, i, value[i]['name'])#}
                                                     $('#result').append('<div class="list_group_item">' +
-                                                        '<button class="tag_list_item"onclick="javascript:complete(\'' + value[i] + '\'' + ')" style = "color:white">' +
+                                                        '<button class="tag_list_item form-control"onclick="javascript:complete(\'' + value[i] + '\'' + ')" style = "color:black;text-align: left; border-radius:0;border:0;"">' +
                                                         value[i] + '</button></div>');
                                                 }
 
@@ -99,7 +111,7 @@
                                                 for (var i in value) {
                                                     {#console.log(now, i, value[i]['name'])#}
                                                     $('#result').append('<div class="list_group_item">' +
-                                                        '<button class="tag_list_item"onclick="javascript:complete(\'' + value[i] + '\'' + ')" style = "color:white">' +
+                                                        '<button class="tag_list_item form-control"onclick="javascript:complete(\'' + value[i] + '\'' + ')" style = "color:black;text-align: left;border-radius:0;border:0;">' +
                                                         value[i] + '</button></div>');
                                                 }
                                             }
