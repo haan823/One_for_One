@@ -24,14 +24,15 @@ def room(request, pk):
     # if room.now_number  room.Posting_id.max_num:
     #     raise PermissionDenied
     if request.user not in allowed_users:
-        raise PermissionDenied
-    return render(request, 'chat/room.html', {
-        'room': room,
-        'posting': posting,
-        'username': mark_safe(json.dumps(request.user.username)),
-        'allowed_users': allowed_users,
-        'now_user': request.user
-    })
+        return render(request, 'chat/already_out.html')
+    else:
+        return render(request, 'chat/room.html', {
+            'room': room,
+            'posting': posting,
+            'username': mark_safe(json.dumps(request.user.username)),
+            'allowed_users': allowed_users,
+            'now_user': request.user
+        })
 
 
 def create_Room(request, pk):
@@ -60,9 +61,11 @@ def room_finished(request, pk):
 def review(request, pk):
     now_user = Profile.objects.get(pk=request.user.pk)
     posting = Posting.objects.get(pk=pk)
+    room = Room.objects.get(pk=pk)
     contacts = Contact.objects.filter(posting_id=pk)
     allowed_users = [contact.allowed_user.user for contact in contacts]
     return render(request, 'chat/review.html', {
+        'room': room,
         'now_user': now_user,
         'posting': posting,
         'allowed_users': allowed_users

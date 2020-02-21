@@ -90,7 +90,9 @@
                                         </div>
                                         {% if profile.user == posting.user_id %}
                                             {% if posting.chat_created == False %}
-                                                {% if posting.now_num < posting.max_num %}
+                                                {% if posting.now_num == 1 %}
+                                                    <button class="btn btn-sm btn-primary ml-auto enter" onclick="alert('아직 참여자가 없습니다.')">채팅방 개설</button>
+                                                {% elif posting.now_num < posting.max_num %}
                                                     <script>
                                                         function choice(){
                                                             var choice;
@@ -180,11 +182,11 @@
                                                 }
                                             }
                                         </script>
-                                        {% if posting.user_id == current_user %}
-                                            <button class="btn btn-sm btn-primary ml-auto" onclick="delete_posting();">
-                                                포스팅 삭제하기
-                                            </button>
-                                        {% endif %}
+{#                                        {% if posting.user_id == current_user %}#}
+{#                                            <button class="btn btn-sm btn-primary ml-auto" onclick="delete_posting();">#}
+{#                                                포스팅 삭제하기#}
+{#                                            </button>#}
+{#                                        {% endif %}#}
                                     </div>
                                     <span class="d-block font-13 mb-30">참여자 목록</span>
                                     {% for contact in contacts %}

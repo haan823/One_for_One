@@ -2,6 +2,7 @@ import datetime
 import json
 
 from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator, EmptyPage, InvalidPage, PageNotAnInteger
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -98,8 +99,14 @@ def match_new(request):
     current_user = request.user
     profile = Profile.objects.get(user=current_user)
     univ = profile.univ
-
-    if request.method == "POST":
+    contacts = Contact.objects.filter(allowed_user=profile)
+    if len(contacts)>=3:
+        data = {
+            'profile': profile,
+            'univ': univ
+        }
+        return render(request, 'core/not_allowed.html', data)
+    elif request.method == "POST":
         menu_name = request.POST['menu_name']
         menu_price = request.POST['menu_price']
         with_num = request.POST['with_num']
@@ -177,6 +184,7 @@ def match_new(request):
             'univ': univ
         }
         return render(request, 'core/match_new.html', data)
+
 
 def choice_detail(request):
     cat_list = ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점']
@@ -284,7 +292,6 @@ def delete_posting(request, pk):
 def match_request(request):
     posting_pk = request.GET['posting_pk']
     contacts_num = int(request.GET['contacts_num'])
-    print(contacts_num)
     posting = Posting.objects.get(pk=posting_pk)
     univ_pk = Profile.objects.get(user=request.user).univ.pk
     contacts = Contact.objects.filter(posting_id=posting)

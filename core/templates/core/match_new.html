@@ -22,7 +22,6 @@
 {% block content %}
     {% load static %}
     <div class="wrap-signup100 p-t-50 p-b-90">
-
         <form id="parentForm" action="{% url 'core:match_new' %}" method="POST">
             {% csrf_token %}
             <span class="login100-form-title p-b-51">

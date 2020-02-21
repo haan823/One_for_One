@@ -86,25 +86,32 @@
             </ul>
         </div>
         <div id="bottom-bar">
-            <button type="button" class="room-finished" name="{{ room.pk }}">
-                <i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>
-                <span>채팅 끝!!</span>
-            </button>
-            <button type="button" class="re_match" name="{{ room.pk }}" onclick="location.href='javascript:review_popup()'">
-                <i class="fa fas fa-check" aria-hidden="true"></i>
-                <span>평가하고 나가기</span>
-            </button>
+            {% if now_user == posting.user_id %}
+                <button type="button" class="room-finished" name="{{ room.pk }}">
+                    <i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>
+                    <span>채팅 끝!!</span>
+                </button>
+                <button type="button" class="review" name="{{ room.pk }}" onclick="location.href='javascript:review_popup()'">
+                    <i class="fa fas fa-check" aria-hidden="true"></i>
+                    <span>평가하고 나가기</span>
+                </button>
+            {% else %}
+                <button style="width:100%;" type="button" class="review" name="{{ room.pk }}" onclick="location.href='javascript:review_popup()'">
+                    <i class="fa fas fa-check" aria-hidden="true"></i>
+                    <span>평가하고 나가기</span>
+                </button>
+            {% endif %}
         </div>
     </div>
     <div class="content">
         <div class="contact-profile">
             <img src="https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png" alt=""/>
             <p>{{ username }}</p>
-            <div class="social-media">
-                <i class="fa fa-facebook" aria-hidden="true"></i>
-                <i class="fa fa-twitter" aria-hidden="true"></i>
-                <i class="fa fa-instagram" aria-hidden="true"></i>
-            </div>
+{#            <div class="social-media">#}
+{#                <i class="fa fa-facebook" aria-hidden="true"></i>#}
+{#                <i class="fa fa-twitter" aria-hidden="true"></i>#}
+{#                <i class="fa fa-instagram" aria-hidden="true"></i>#}
+{#            </div>#}
         </div>
         <div class="messages">
             <ul id="chat-log">
@@ -254,14 +261,9 @@
         var url = "{% url "chat:review" room.pk%}";
         var name = "review";
         var option = "width = 500, height = 300, top = 200, left = 400, location = no ";
-        if({{ room.match_finished }}){
-            window.open(url, name, option);
-        }else{
-            alert('포스팅 담당자가 아직 채팅완료를 하지 않았습니다.');
-        }
-
+        window.name = "room";
+        window.open(url, name, option);
     }
-
 </script>
 </body>
 </html>
