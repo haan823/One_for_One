@@ -18,8 +18,12 @@
             opener.document.getElementById("pInput4").value = d;
             opener.document.getElementById("pInput5").value = e;
         }
+
+
     </script>
 
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'font.css' %}">
     <style>
         .tabs {
             display: flex;
@@ -45,7 +49,7 @@
             width: 100%;
             display: none;
             padding: 1rem;
-            background: #002752;
+            background: white;
         }
 
         .tabs input[type="radio"] {
@@ -62,7 +66,7 @@
         }
     </style>
 </head>
-<body>
+    <body style="font-family: BMDOHYEON_ttf">
 <div class="tabs">
     {% for cat in cat_list %}
         {% if cat == '치킨' %}
@@ -81,7 +85,7 @@
                         {% csrf_token %}
                         {% if s.cat_name == cat %}
                             <div class="card mb-3"
-                                 style="width: 18%; box-sizing: border-box; text-align: center; justify-content: center; margin: 1%; background-color: palevioletred ">
+                                 style="width: 20%; box-sizing: border-box; border: 1px solid black; text-align: center; justify-content: center;">
                                 <div class="row no-gutters">
                                     <div class="col-md-4">
                                         <input type="image" id='cInput3{{ s.id }}' src="{{ s.logo }}" width="100px" ,
@@ -101,7 +105,7 @@
                                             {#                                                <p id="del_time" class="card-text">{{ s.del_time }}</p>#}
                                             <input type="text" id="cInput4{{ s.id }}" value="{{ s.pk }}" hidden>
                                             <p id="store_url" class="card-text"><small class="text-muted">
-                                                <button onclick="window.open('{{ s.store_url }}', '네이버1', 'width=1200, height=1200, toolbar=yes, menubar=yes, scrollbars=yes, resizable=yes'); return false;">
+                                                <button class='btn btn-secondary' onclick="window.open('{{ s.store_url }}', '네이버1', 'width=1200, height=1200, toolbar=yes, menubar=yes, scrollbars=yes, resizable=yes'); return false;">
                                                     페이지로
                                                     이동
                                                 </button>

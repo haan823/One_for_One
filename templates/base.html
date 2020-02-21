@@ -43,7 +43,7 @@
 {#<a class="menu-toggle rounded" href="#">#}
 {#    <i class="fas fa-bars"></i>#}
 {#</a>#}
-<ul class="nav">
+<ul class="nav" >
     <li class="nav-item">
         <a class="nav-link" href="{% url 'core:main' %}">
             <img src="{% static 'img/logo.png' %}" alt="저기요" style="width: 100px;">
@@ -66,6 +66,9 @@
     </li>
     {% if user.is_active %}
         <li class="nav-item2">
+            <a id='nav_login' class="nav-link" href="{% url 'core:match_new' %}">포스팅</a>
+        </li>
+        <li class="nav-item2">
             <a id='nav_logout' class="nav-link" href="{% url 'account:logout' %}">LOG OUT</a>
         </li>
     {% else %}
@@ -83,7 +86,7 @@
     </li>
 </ul>
 
-<nav id="sidebar-wrapper">
+<nav id="sidebar-wrapper" style="overflow:scroll;">
     <ul class="sidebar-nav">
         <li class="sidebar-brand">
 

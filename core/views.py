@@ -3,6 +3,7 @@ import json
 import math
 
 from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator, EmptyPage, InvalidPage, PageNotAnInteger
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -49,6 +50,7 @@ def home(request, pk):
         rm_dup_tags = list(set(tags_list))
         data = {
             'contacts': contacts,
+            'contacts_num': len(contacts),
             'rooms': rooms,
             'postings': postings,
             'current_user': current_user.id,
@@ -98,8 +100,14 @@ def match_new(request):
     current_user = request.user
     profile = Profile.objects.get(user=current_user)
     univ = profile.univ
-
-    if request.method == "POST":
+    contacts = Contact.objects.filter(allowed_user=profile)
+    if len(contacts)>=3:
+        data = {
+            'profile': profile,
+            'univ': univ
+        }
+        return render(request, 'core/not_allowed.html', data)
+    elif request.method == "POST":
         menu_name = request.POST['menu_name']
         menu_price = request.POST['menu_price']
         with_num = request.POST['with_num']
@@ -134,6 +142,12 @@ def match_new(request):
             menu_change=menu_change,
             together=together,
         )
+        contact = Contact.objects.create(
+            posting_id=on_posting,
+            allowed_user=Profile.objects.get(user=current_user),
+            accepted=True
+        )
+        contact.save()
 
         posting_tag1 = request.POST['posting_tag1']
         posting_tag2 = request.POST['posting_tag2']
@@ -162,7 +176,8 @@ def match_new(request):
                 posting_id=on_posting,
                 content=posting_tag3
             )
-        return render(request, 'core/match_fin.html', {'profile': profile, 'univ': univ,})
+        on_posting.save()
+        return render(request, 'core/match_fin.html', {'profile': profile, 'univ': univ})
     else:
         data = {
             'profile': profile,
@@ -233,17 +248,27 @@ def my_page(request):
     profile = Profile.objects.get(user=current_user)
     contacts = Contact.objects.all()
     user_contacts = contacts.filter(allowed_user=profile)
-    print(user_contacts)
-    postings = []
+    expired_postings = []
+    now_postings = []
+    end_postings = []
     for contact in user_contacts:
         posting_id = contact.posting_id.pk
-        postings.append(Posting.objects.get(pk=posting_id))
-    print(postings)
+        posting = Posting.objects.get(pk=posting_id)
+        due = posting.create_date + datetime.timedelta(minutes=posting.timer)
+        now = datetime.datetime.now()
+        if due < now:
+            expired_postings.append(posting)
+        elif contact.finished == True:
+            end_postings.append(posting)
+        else:
+            now_postings.append(posting)
     context = {
         'rooms': Room.objects.all(),
         'current_user': current_user,
         'profile': profile,
-        'postings': postings,
+        'now_postings': now_postings,
+        'end_postings': end_postings,
+        'expired_postings': expired_postings,
         'contacts': contacts,
     }
     return render(request, 'core/my_page.html', context)
@@ -266,6 +291,37 @@ def refuse(request, pk):
     contact = Contact.objects.get(pk=pk)
     contact.delete()
     return redirect('core:my_page')
+
+
+def delete_posting(request, pk):
+    posting = Posting.objects.get(pk=pk)
+    messages = Message.objects.filter(room_id=posting.pk)
+    messages.delete()
+    posting.delete()
+    return redirect('core:my_page')
+
+
+def match_request(request):
+    posting_pk = request.GET['posting_pk']
+    contacts_num = int(request.GET['contacts_num'])
+    posting = Posting.objects.get(pk=posting_pk)
+    univ_pk = Profile.objects.get(user=request.user).univ.pk
+    contacts = Contact.objects.filter(posting_id=posting)
+    if contacts_num > 3:
+        print(1)
+        raise Exception
+    elif posting.now_num == posting.max_num:
+        print(2)
+        raise Exception
+    for contact in contacts:
+        if contact.allowed_user.user == request.user:
+            print(3)
+            raise Exception
+    Contact.objects.create(
+        posting_id=posting,
+        allowed_user=Profile.objects.get(user=request.user),
+    )
+    return redirect('core:home', univ_pk)
 
 
 def store_choice(request):

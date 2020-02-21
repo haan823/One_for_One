@@ -28,6 +28,7 @@
 {% extends 'base.html' %}
 {% block content %}
 {#		<div class="container-login100">#}
+    <div class="buffer" style="height: 20%;"></div>
 			<div class="wrap-login100 p-t-50 p-b-90">
 				<form class="login100-form validate-form flex-sb flex-w" action="{% url 'account:goto_signup' %}" method="POST">
                     {% csrf_token %}
