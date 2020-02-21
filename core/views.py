@@ -271,8 +271,6 @@ def accept(request, pk):
         posting.save()
         contact.accepted = True
         contact.save()
-    else:
-        pass
     return redirect('core:my_page')
 
 

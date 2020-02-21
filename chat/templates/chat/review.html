@@ -105,8 +105,13 @@
     <br/><br/><br/>
     <ul>
         <li>
-            <div>아직 포스팅 게시자가 채팅완료처리를 하지 않았습니다.</div><br/><br/>
-            <input type="submit" class="submit-btn" value="확인" onclick="window.close()">
+            {% if now_user.user == posting.user_id %}
+                <div>"채팅 끝!!" 버튼을 눌러 주세요!</div><br/><br/>
+                <input type="submit" class="submit-btn" value="확인" onclick="window.close()">
+            {% else %}
+                <div>아직 포스팅 게시자가 채팅완료 처리를 하지 않았습니다.</div><br/><br/>
+                <input type="submit" class="submit-btn" value="확인" onclick="window.close()">
+            {% endif %}
         </li>
     </ul>
 {% endif %}

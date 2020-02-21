@@ -88,7 +88,18 @@
                                                                 수락완료된 참여자입니다.
                                                             </button>
                                                         {% else %}
-                                                            <button class="btn btn-xs btn-primary ml-15 w-sm-100p" onclick="location.href='{% url "core:accept" contact.pk %}'">수락하기</button>
+                                                            <script>
+                                                                function accept(){
+                                                                    var now_num = {{ posting.now_num }};
+                                                                    var max_num = {{ posting.max_num }};
+                                                                    if(now_num === max_num){
+                                                                        alert("최대 인원을 초과할 수 없습니다.")
+                                                                    } else{
+                                                                        location.href = '{% url "core:accept" contact.pk %}';
+                                                                    }
+                                                                }
+                                                            </script>
+                                                            <button class="btn btn-xs btn-primary ml-15 w-sm-100p" onclick="accept()">수락하기</button>
                                                             <button class="btn btn-xs btn-primary ml-15 w-sm-100p" onclick="location.href='{% url "core:refuse" contact.pk %}'">거절하기</button>
                                                         {% endif %}
                                                     </div>
