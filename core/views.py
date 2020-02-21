@@ -334,6 +334,8 @@ def match_request(request):
         posting_id=posting,
         allowed_user=Profile.objects.get(user=request.user),
     )
+    # 문자 보내기
+    phone_number = posting.user_id.profile.phone_number;
     return redirect('core:home', univ_pk)
 
 

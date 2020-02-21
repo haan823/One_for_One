@@ -47,6 +47,8 @@ def create_Room(request, pk):
     for contact in contacts:
         contact.accepted = True
         contact.save()
+        # 문자 다 보내기
+        contact.allowed_user.phone_number
     return redirect('core:my_page')
 
 def room_finished(request, pk):
