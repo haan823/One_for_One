@@ -21,20 +21,43 @@
                 openWin = window.open("{% url 'core:choice_detail' %}",
                     "childForm", "width=1200, height=1200, resizable = no, scrollbars = no");
 
+                {#document.parentForm.store_name.focus();#}
+                {#document.getElementById('store_name').select();#}
                 return false;
             }
 
-
-            function showHide() {
-                document.getElementById('pInput3').style.visibility = "visible";
+            var menuName = document.parentForm.menu_name;
+            if (menuName.value == '') {
+                window.alert("메뉴를 입력해주세요");
+                document.parentForm.menu_name.focus();
+                document.getElementById('menu_name').select();
+                return false;
             }
+
+            var menuprice = document.parentForm.menu_price;
+            if (menuprice.value == '') {
+                window.alert("메뉴의 가격을 입력해주세요");
+                document.parentForm.menu_price.focus();
+                document.getElementById('menu_price').select();
+                return false;
+            }
+
+            var reg = /^\d+$/;
+            result = reg.test(menuprice.value)
+            if (!result) {
+                window.alert('가격을 숫자로만 입력해주세요! 예) 10000');
+                document.parentForm.menu_price.focus();
+                document.getElementById('menu_price').select();
+                return false;
+            }
+        }
     </script>
 {% endblock %}
 
 {% block content %}
     {% load static %}
     <div class="wrap-signup100 p-t-50 p-b-90">
-        <form id="parentForm" action="{% url 'core:match_new' %}" method="POST">
+        <form name="parentForm" id="parentForm" action="{% url 'core:match_new' %}" method="POST" onsubmit="return checkForm();">
             {% csrf_token %}
             <span class="login100-form-title p-b-51">
                 포스팅 생성
@@ -43,14 +66,15 @@
 
             <div class="container-login100-form-btn m-t-17">
                 <a class="login100-form-btn" style='color: white; cursor: pointer;' onclick="window.name = 'parentForm';
-                    openWin = window.open('{% url 'core:choice_detail' %}', 'childForm', 'width=1200, height=1200, resizable = no, scrollbars = no');">가게
-                선택</a>
+                        openWin = window.open('{% url 'core:choice_detail' %}', 'childForm', 'width=1200, height=800, resizable = no, scrollbars = no');">가게
+                    선택</a>
             </div>
             <br>
 
             <div class="container store_logo" data-validate="">
                 <div class="form-group" style="color: white">
-                    <input type="image" id="pInput3" name="pInput3" onerror="{% static 'img/logo.png' %}" src="pInput3" style="pointer-events: none" readonly alt="">
+                    <input type="image" id="pInput3" name="pInput3" onerror="{% static 'img/logo.png' %}" src="pInput3"
+                           style="pointer-events: none" readonly alt="">
                 </div>
             </div>
 
@@ -65,7 +89,7 @@
                 <input class="input100" type="text" id="pInput1" value='가게 이름' name="store_name" readonly>
                 <span class="focus-input100"></span>
             </div>
-            <br />
+            <br/>
 
             <div style="display: flex; justify-content: space-between;">
                 <div class="wrap-input49 validate-input m-b-16">
@@ -179,7 +203,6 @@
             </div>
             <br/>
 
-        </div>
 
             <div class="container-login100-form-btn m-t-17">
                 <button type='submit' class="login100-form-btn">

@@ -96,7 +96,7 @@
         <h1 style="font-size: 6rem;" class="mb-1">최소 주문 금액</h1>
         <br>
         {% if user.is_active %}
-            <a class="btn btn-primary btn-xl js-scroll-trigger" href="{% url 'account:logout' %}">로그아웃</a>
+            <a class="btn btn-primary btn-xl js-scroll-trigger" href="{% url 'core:home' profile.univ.id %}">포스팅 보러가기</a>
         {% else %}
             <a class="btn btn-primary btn-xl js-scroll-trigger" href="{% url 'account:login' %}">로그인</a>
             <a class="btn btn-primary btn-xl js-scroll-trigger" href="{% url 'account:goto_signup' %}">회원가입</a>
