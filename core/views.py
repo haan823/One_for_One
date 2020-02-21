@@ -133,7 +133,6 @@ def match_new(request):
             timer=posting_time,
             menu_change=menu_change,
             together=together,
-            finished=False
         )
 
         posting_tag1 = request.POST['posting_tag1']
@@ -163,7 +162,7 @@ def match_new(request):
                 posting_id=on_posting,
                 content=posting_tag3
             )
-        return render(request, 'core/match_fin.html', {'profile': profile, 'univ': univ})
+        return render(request, 'core/match_fin.html', {'profile': profile, 'univ': univ,})
     else:
         data = {
             'profile': profile,
@@ -178,7 +177,6 @@ def choice_detail(request):
     profile = Profile.objects.get(user=current_user)
     stores_univ = Store.objects.filter(univ_id=profile.univ)
     stores = Store.objects.all()
-    # store_치킨 = Store.objects.filter(cat_name='치킨')
 
     if request.method == 'POST':
         stores = Store.objects.all()

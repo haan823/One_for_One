@@ -81,91 +81,81 @@
                             <button type="button" onclick="document.getElementById('searchField').click()"
                                     style="color: white"></button>
                             <script>
-                    {#$('#search_button').hide()#}
-                    function search_tag() {
-                        var searchField = $('#search').val();
-                        document.getElementById(searchField).click()
-                    }
-                    function complete(kwd) {
-                        $('#search').val(kwd);
-                        {#$('#wrapper').append('<input type="hidden" class="id" name="id" value="' + id + '">')#}
-                    }
-                    function delay(callback, ms) {
-                        var timer = 0;
-                        return function () {
-                            var context = this, args = arguments;
-                            clearTimeout(timer);
-                            timer = setTimeout(function () {
-                                callback.apply(context, args);
-                            }, ms || 0);
-                        };
-                    }
-                    {#$('#search_button').innerHTML = '<div data-filter=".filter-' + 'qwerty'+ '" id="search_button">검색</div>';#}
-                    {#'<div data-filter=".filter-' + 'qwerty'+ '" id="search_button">검색</div>';#}
-                    $(document).ready(function () {
-                        $('html').click(function (e) {
-                            if (!$(e.target).hasClass("list_group_item") && (!$(e.target).hasClass("tag_list_item"))) {
-                                $('#result').html('');
-                                $('#search_button').hide();
-                            }
-                            else if ($(e.target).hasClass("tag_list_item")) {
-                                $('#result').html('');
-                                $('#search_button').show();
-                            }
-                            else {
-                                $('#search_button').show()
-                            }
-                        })
-                        $('#search').keyup(delay(function () {
-                            $('#result').html('');
-                            var searchField = $('#search').val();
-                            {#console.log(searchField)#}
-                            {#block = document.getElementById('search_button');#}
-                            //var expression = new RegExp(searchField, "i");
-                            {#" class="filter-active"#}
-                            $.ajax({
-                                type: "POST",
-                                url: "{% url 'core:search_store' %}",
-                                data: {'kwd': searchField, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
-                                dataType: "json",
-                                async: true,
-                                success: function (response) {
-                                    $.each(response, function (key, value) {
-                                        {#var now = new Date()#}
-                                        {#console.log(now, key)#}
-                                        {#console.log(now, value)#}
-                                        if (!value.length) {
-                                            $('#result').append('<div class="list_group_item">태그 검색 결과가 없습니다.</div>');
-                                        } else {
-                                            for (var i in value) {
-                                                {#console.log(now, i, value[i]['name'])#}
-                                                $('#result').append('<div class="list_group_item">' +
-                                                    '<button class="tag_list_item"onclick="javascript:complete(\'' + value[i] + '\'' + ')" style = "color:white">' +
-                                                    value[i] + '</button></div>');
-                                            }
-                                        }
-                                    });
+                                {#$('#search_button').hide()#}
+
+                                function search_tag() {
+                                    var searchField = $('#search').val();
+                                    document.getElementById(searchField).click()
                                 }
-                            })
-                        }, 300));
-                    })
 
+                                function complete(kwd) {
+                                    $('#search').val(kwd);
+                                    {#$('#wrapper').append('<input type="hidden" class="id" name="id" value="' + id + '">')#}
+                                }
 
+                                function delay(callback, ms) {
+                                    var timer = 0;
+                                    return function () {
+                                        var context = this, args = arguments;
+                                        clearTimeout(timer);
+                                        timer = setTimeout(function () {
+                                            callback.apply(context, args);
+                                        }, ms || 0);
+                                    };
+                                }
 
-
-
-
+                                {#$('#search_button').innerHTML = '<div data-filter=".filter-' + 'qwerty'+ '" id="search_button">검색</div>';#}
+                                {#'<div data-filter=".filter-' + 'qwerty'+ '" id="search_button">검색</div>';#}
+                                $(document).ready(function () {
+                                    $('html').click(function (e) {
+                                        if (!$(e.target).hasClass("list_group_item") && (!$(e.target).hasClass("tag_list_item"))) {
+                                            $('#result').html('');
+                                            $('#search_button').hide();
+                                        } else if ($(e.target).hasClass("tag_list_item")) {
+                                            $('#result').html('');
+                                            $('#search_button').show();
+                                        } else {
+                                            $('#search_button').show()
+                                        }
+                                    })
+                                    $('#search').keyup(delay(function () {
+                                        $('#result').html('');
+                                        var searchField = $('#search').val();
+                                        {#console.log(searchField)#}
+                                        {#block = document.getElementById('search_button');#}
+                                        //var expression = new RegExp(searchField, "i");
+                                        {#" class="filter-active"#}
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "{% url 'core:search_store' %}",
+                                            data: {'kwd': searchField, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                                            dataType: "json",
+                                            async: true,
+                                            success: function (response) {
+                                                $.each(response, function (key, value) {
+                                                    {#var now = new Date()#}
+                                                    {#console.log(now, key)#}
+                                                    {#console.log(now, value)#}
+                                                    if (!value.length) {
+                                                        $('#result').append('<div class="list_group_item">태그 검색 결과가 없습니다.</div>');
+                                                    } else {
+                                                        for (var i in value) {
+                                                            {#console.log(now, i, value[i]['name'])#}
+                                                            $('#result').append('<div class="list_group_item">' +
+                                                                '<button class="tag_list_item"onclick="javascript:complete(\'' + value[i] + '\'' + ')" style = "color:white">' +
+                                                                value[i] + '</button></div>');
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        })
+                                    }, 300));
+                                })
 
 
                             </script>
                             <script>
-                    {#$('#tag_filter_list').hide()#}
-
-
-
-
-
-
+                                {#$('#tag_filter_list').hide()#}
 
 
                             </script>
@@ -177,8 +167,6 @@
                     function addMinutes(date, minutes) {
                         return new Date(date.getTime() + minutes * 60000);
                     }
-
-
 
 
                 </script>
@@ -212,12 +200,16 @@
                                 <p>유저 id: {{ key.user_id }}</p>
                                 <p>포스팅 타이머: {{ key.timer }}</p>
                                 <p>포스팅 게시 날짜: {{ key.create_date }}</p>
-                                <p>태그: {% for value in values %}#{{ value.content }} {% endfor %}</p>
+                                <p>태그: {% for value in values %}
+                                    {% if value.content %}
+                                   #{{ value.content }}
+                                    {% endif %}
+                                {% endfor %}</p>
                                 <p>유저 good review: {{ key.user_id.profile.good_review }}</p>
                                 <p>유저 bad review: {{ key.user_id.profile.bad_review }}</p>
-                            <p>메뉴 : {{ key.menu }}</p>
-                            <p>{{ key.menu_change }}</p>
-                            <p>{{ key.together }}</p>
+                                <p>메뉴 : {{ key.menu }}</p>
+                                <p>{{ key.menu_change }}</p>
+                                <p>{{ key.together }}</p>
                                 {% with answer=key.user_id.profile.good_review|add:key.user_id.profile.bad_review %}
                                     <p>만족도: {{ key.user_id.profile.good_review|div:answer }}</p>
                                 {% endwith %}

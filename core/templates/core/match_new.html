@@ -10,12 +10,48 @@
             window.name = "parentForm";
             // window.open("open할 window", "자식창 이름", "팝업창 옵션");
             openWin = window.open("{% url 'core:choice_detail' %}",
-                "childForm", "width=1200, height=1200, resizable = no, scrollbars = no");
+                "childForm", "width=1200, height=600, resizable = no, scrollbars = no");
         }
 
-        function showHide() {
-            document.getElementById('pInput3').style.visibility = "visible";
+        function checkForm() {
+
+            var storename = document.parentForm.store_name;
+            if (storename.value == '가게 이름') {
+                window.alert("가게를 선택해주세요");
+                openWin = window.open("{% url 'core:choice_detail' %}",
+                    "childForm", "width=1200, height=1200, resizable = no, scrollbars = no");
+
+                {#document.parentForm.store_name.focus();#}
+                {#document.getElementById('store_name').select();#}
+                return false;
+            }
+
+            var menuName = document.parentForm.menu_name;
+            if (menuName.value == '') {
+                window.alert("메뉴를 입력해주세요");
+                document.parentForm.menu_name.focus();
+                document.getElementById('menu_name').select();
+                return false;
+            }
+
+            var menuprice = document.parentForm.menu_price;
+            if (menuprice.value == '') {
+                window.alert("메뉴의 가격을 입력해주세요");
+                document.parentForm.menu_price.focus();
+                document.getElementById('menu_price').select();
+                return false;
+            }
+
+            var reg = /^\d+$/;
+            result = reg.test(menuprice.value)
+            if (!result) {
+                window.alert('가격을 숫자로만 입력해주세요! 예) 10000');
+                document.parentForm.menu_price.focus();
+                document.getElementById('menu_price').select();
+                return false;
+            }
         }
+
     </script>
 {% endblock %}
 
@@ -23,7 +59,8 @@
     {% load static %}
     <div class="wrap-signup100 p-t-50 p-b-90">
 
-        <form id="parentForm" action="{% url 'core:match_new' %}" method="POST">
+        <form name="parentForm" id="parentForm" action="{% url 'core:match_new' %}" method="POST"
+              onsubmit="return checkForm();">
             {% csrf_token %}
             <span class="login100-form-title p-b-51">
                 포스팅 생성
@@ -31,13 +68,14 @@
             <br>
 
             <a class="btn btn-secondary" value="가게선택" style='cursor: pointer;' onclick="window.name = 'parentForm';
-                    openWin = window.open('{% url 'core:choice_detail' %}', 'childForm', 'width=1200, height=1200, resizable = no, scrollbars = no');">가게
+                    openWin = window.open('{% url 'core:choice_detail' %}', 'childForm', 'width=1200, height=900, resizable = no, scrollbars = no');">가게
                 선택</a>
             <br><br>
 
             <div class="container store_logo" data-validate="">
                 <div class="form-group" style="color: white">
-                    <input type="image" id="pInput3" name="pInput3" onerror="{% static 'img/logo.png' %}" src="pInput3" style="pointer-events: none" readonly alt="">
+                    <input type="image" id="pInput3" name="pInput3" onerror="{% static 'img/logo.png' %}" src="pInput3"
+                           style="pointer-events: none" readonly alt="">
                 </div>
             </div>
 
@@ -52,7 +90,7 @@
                 <input class="input100" type="text" id="pInput1" value='가게 이름' name="store_name" readonly>
                 <span class="focus-input100"></span>
             </div>
-            <br />
+            <br/>
 
             <div style="display: flex; justify-content: space-between;">
                 <div class="wrap-input49 validate-input m-b-16">
@@ -68,13 +106,15 @@
             <br>
 
             <div class="wrap-input100 validate-input m-b-16">
-                <input class="input100" type="text" id="menu_name" placeholder='메뉴' name="menu_name">
+                <input class="input100" type="text" id="menu_name" placeholder="원하는 메뉴를 적어주세요."
+                       name="menu_name">
                 <span class="focus-input100"></span>
             </div>
             <br>
 
             <div class="wrap-input100 validate-input m-b-16">
-                <input class="input100" type="text" id="menu_price" placeholder="가격" name="menu_price">
+                <input class="input100" type="text" id="menu_price" placeholder="'원'없이 '10000'과 같이 메뉴 가격을 입력해주세요."
+                       name="menu_price">
                 <span class="focus-input100"></span>
             </div>
             <br>
@@ -82,11 +122,11 @@
             <div style="color: white;">최대 인원</div>
             <div class="wrap-input100 validate-input m-b-16">
                 <select class="input100" id="exampleFormControlSelect1" name="with_num">
-                    <option>2명이서 도란도란</option>
-                    <option>3명이서 삼삼오오</option>
-                    <option>4명이서 사이좋게</option>
-                    <option>5명이서 우걱우걱</option>
-                    <option>6명이서 냠냠쩝쩝</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
                 </select>
             </div>
             <br>
@@ -147,7 +187,7 @@
                 </div>
             </div>
 
-
+            <div style="color: white;">태그 (옵션)</div>
             <div style="display: flex; justify-content: space-between;">
                 <div class="wrap-input32 validate-input m-b-16 posting_tag1">
                     <input class="input100" type="text" id="posting_tag1" name="posting_tag1" placeholder="태그 #1">
