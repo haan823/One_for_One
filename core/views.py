@@ -1,5 +1,6 @@
 import datetime
 import json
+import math
 
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
@@ -161,7 +162,6 @@ def match_new(request):
             timer=posting_time,
             menu_change=menu_change,
             together=together,
-            finished=False
         )
         contact = Contact.objects.create(
             posting_id=on_posting,
@@ -213,7 +213,6 @@ def choice_detail(request):
     profile = Profile.objects.get(user=current_user)
     stores_univ = Store.objects.filter(univ_id=profile.univ)
     stores = Store.objects.all()
-    # store_치킨 = Store.objects.filter(cat_name='치킨')
 
     if request.method == 'POST':
         stores = Store.objects.all()
@@ -228,21 +227,16 @@ def choice_detail(request):
         }
         return render(request, 'core/match_new.html', data)
     else:
-        # paginator = Paginator(stores_univ, 20)
-        # page = request.GET.get('page', 1)
-        # stores_in_page = paginator.get_page(page)
-        # try:
-        #     lines = paginator.page(page)
-        # except PageNotAnInteger:
-        #     lines = paginator.page(1)
-        # except EmptyPage:
-        #     lines = paginator.page(paginator.num_pages)
+        paginator = Paginator(stores_univ, 10)
+        page = request.GET.get('page')
+        stores_in_page = paginator.get_page(page)
+
         data = {
             'profile': profile,
             'cat_list': cat_list,
             'stores': stores,
             'stores_univ': stores_univ,
-            # 'stores_in_page': stores_in_page,
+            'stores_in_page': stores_in_page,
         }
         return render(request, 'core/choice_detail.html', data)
 
@@ -298,8 +292,6 @@ def accept(request, pk):
         posting.save()
         contact.accepted = True
         contact.save()
-    else:
-        pass
     return redirect('core:my_page')
 
 

@@ -12,14 +12,12 @@
     <title>골라골라</title>
     <script type="text/javascript">
         function setParentText(a, b, c, d, e) {
-            opener.document.getElementById("pInput1").value = a
-            opener.document.getElementById("pInput2").value = b
-            opener.document.getElementById("pInput3").src = c
-            opener.document.getElementById("pInput4").value = d
-            opener.document.getElementById("pInput5").value = e
+            opener.document.getElementById("pInput1").value = a;
+            opener.document.getElementById("pInput2").value = b;
+            opener.document.getElementById("pInput3").src = c;
+            opener.document.getElementById("pInput4").value = d;
+            opener.document.getElementById("pInput5").value = e;
         }
-
-
     </script>
 
     {% load static %}
@@ -40,7 +38,7 @@
             background: #838487;
             font-weight: bold;
             transition: background ease 0.2s;
-            border: solid 1px;
+            border: solid 1px black;
             box-sizing: border-box;
         }
 
@@ -98,16 +96,14 @@
                                         <div class="card-body">
                                             <p id="title" class="card-text">{{ s.title }}</p>
                                             <input type="text" id="cInput1{{ s.id }}" value="{{ s.title }}" hidden>
-                                            <p id="star" class="card-text">
-                                                {{ s.star }}</p>
+                                            <p id="star" class="card-text">{{ s.star }}</p>
                                             <p id="min_price" class="card-text">{{ s.min_price }}</p>
                                             <input type="text" id="cInput5{{ s.id }}" value="{{ s.min_price }}" hidden>
                                             <p id="min_price" class="card-text">{{ s.del_time }}</p>
                                             <input type="text" id="cInput2{{ s.id }}" value="{{ s.del_time }}" hidden>
-                                            {#                                                <p id="del_time" class="card-text">{{ s.del_time }}</p>#}
                                             <input type="text" id="cInput4{{ s.id }}" value="{{ s.pk }}" hidden>
                                             <p id="store_url" class="card-text"><small class="text-muted">
-                                                <button class='btn btn-secondary' onclick="window.open('{{ s.store_url }}', '네이버1', 'width=1200, height=1200, toolbar=yes, menubar=yes, scrollbars=yes, resizable=yes'); return false;">
+                                                <button class='btn btn-secondary' onclick="window.open('{{ s.store_url }}', '저기요', 'width=1200, height=1000, toolbar=yes, menubar=yes, scrollbars=yes, resizable=yes'); return false;">
                                                     페이지로
                                                     이동
                                                 </button>
@@ -124,67 +120,10 @@
 
                     {% endfor %}
                 </div>
-
-                {#                <div class="pagination">#}
-                {#    <span class="step-links">#}
-                {#        {% if contacts.has_previous %}#}
-                {#            <a href="?page=1">&laquo; first</a>#}
-                {#            <a href="?page={{ contacts.previous_page_number }}">previous</a>#}
-                {#        {% endif %}#}
-                {##}
-                {#        {% for i in p_range %}#}
-                {#            <a href="?page={{ i }}" {% if contacts.number == i %}class="active" {% endif %}>{{ i }}</a>#}
-                {#        {% endfor %}#}
-                {##}
-                {#        {% if contacts.has_next %}#}
-                {#            <a href="?page={{ contacts.next_page_number }}">next</a>#}
-                {#            <a href="?page={{ contacts.paginator.num_pages }}">last &raquo;</a>#}
-                {#        {% endif %}#}
-                {#    </span>#}
-                {#                </div>#}
-
-
-                {#                {% if stores_in_page.has_previous %}#}
-                {#                    <a href="?page-1">맨 앞으로</a>#}
-                {#                    <a href="?page={{ stores_in_page.previous_page_number }}">이전으로</a>#}
-                {#                {% endif %}#}
-                {#                <span>{{ post.number }}</span>#}
-                {#                <span>/</span>#}
-                {#                <span>{{ stores_in_page.paginator.num_pages }}</span>#}
-                {#                {% if stores_in_page.has_next %}#}
-                {#                    <a href="?page={{ stores_in_page.next_page_number }}">다음으로</a>#}
-                {#                    <a href="?page={{ stores_in_page.paginator.num_pages }}">맨 뒤로</a>#}
-                {#                {% endif %}#}
             </form>
-
         </div>
 
-
-        {#            {% if stores_univ.has_other_pages %}#}
-        {#                <ul class="pagination">#}
-        {#                    {% if stores_univ.has_previous %}#}
-        {#                        <li><a href="?page={{ stores_univ.previous_page_number }}">&laquo;</a></li>#}
-        {#                    {% else %}#}
-        {#                        <li class="disabled"><span>&laquo;</span></li>#}
-        {#                    {% endif %}#}
-        {##}
-        {#                    {% for i in stores_univ.paginator.page_range %}#}
-        {#                        {% if stores_univ.number == i %}#}
-        {#                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>#}
-        {#                        {% else %}#}
-        {#                            <li><a href="?page={{ i }}">{{ i }}</a></li>#}
-        {#                        {% endif %}#}
-        {#                    {% endfor %}#}
-        {#                    {% if stores_univ.has_next %}#}
-        {#                        <li><a href="?page{{ samelines.next_page_number }}">&raquo;</a></li>#}
-        {#                    {% else %}#}
-        {#                        <li class="disabled"><span>&raquo;</span></li>#}
-        {#                    {% endif %}#}
-        {#                </ul>#}
-        {#            {% endif %}#}
     {% endfor %}
-    {#            <input type="radio" name="tabs" id="tabback" style="background-color: palevioletred">#}
-    {#            <label for="tabone"><a href="{% url 'core:match_new' %}">뒤로 가기</a></label>#}
 </div>
 </body>
 </html>
