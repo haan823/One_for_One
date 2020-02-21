@@ -21,17 +21,9 @@
                 openWin = window.open("{% url 'core:choice_detail' %}",
                     "childForm", "width=1200, height=1200, resizable = no, scrollbars = no");
 
-                {#document.parentForm.store_name.focus();#}
-                {#document.getElementById('store_name').select();#}
                 return false;
             }
 
-            {#function setChildText() {#}
-            {#    openWin.document.getElementById("cInput1{{ s.id }}").value = document.getElementById("pInput1").value;#}
-            {#    openWin.document.getElementById("cInput2{{ s.id }}").value = document.getElementById("pInput2").value;#}
-            {#    openWin.document.getElementById("cInput3{{ s.id }}").src = document.getElementById("pInput3").src;#}
-            {#    openWin.document.getElementById("cInput4{{ s.id }}").value = document.getElementById("pInput4").value;#}
-            {#}#}
 
             function showHide() {
                 document.getElementById('pInput3').style.visibility = "visible";

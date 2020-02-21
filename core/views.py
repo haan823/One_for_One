@@ -209,24 +209,13 @@ def choice_detail(request):
         paginator = Paginator(stores_univ, 10)
         page = request.GET.get('page')
         stores_in_page = paginator.get_page(page)
-        # page_range = 5
-        # current_block = math.ceil(int(page)/page_range)
-        # start_block = (current_block-1) * page_range
-        # end_block = start_block + page_range
-        # p_range = paginator.page_range[start_block:end_block]
-        # try:
-        #     lines = paginator.page(page)
-        # except PageNotAnInteger:
-        #     lines = paginator.page(1)
-        # except EmptyPage:
-        #     lines = paginator.page(paginator.num_pages)
+
         data = {
             'profile': profile,
             'cat_list': cat_list,
             'stores': stores,
             'stores_univ': stores_univ,
             'stores_in_page': stores_in_page,
-            # 'p_range': p_range
         }
         return render(request, 'core/choice_detail.html', data)
 

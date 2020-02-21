@@ -122,67 +122,10 @@
 
                     {% endfor %}
                 </div>
-
-                {#                <div class="pagination">#}
-                {#    <span class="step-links">#}
-                {#        {% if contacts.has_previous %}#}
-                {#            <a href="?page=1">&laquo; first</a>#}
-                {#            <a href="?page={{ contacts.previous_page_number }}">previous</a>#}
-                {#        {% endif %}#}
-                {##}
-                {#        {% for i in p_range %}#}
-                {#            <a href="?page={{ i }}" {% if contacts.number == i %}class="active" {% endif %}>{{ i }}</a>#}
-                {#        {% endfor %}#}
-                {##}
-                {#        {% if contacts.has_next %}#}
-                {#            <a href="?page={{ contacts.next_page_number }}">next</a>#}
-                {#            <a href="?page={{ contacts.paginator.num_pages }}">last &raquo;</a>#}
-                {#        {% endif %}#}
-                {#    </span>#}
-                {#                </div>#}
-
-
-                {#                {% if stores_in_page.has_previous %}#}
-                {#                    <a href="?page-1">맨 앞으로</a>#}
-                {#                    <a href="?page={{ stores_in_page.previous_page_number }}">이전으로</a>#}
-                {#                {% endif %}#}
-                {#                <span>{{ post.number }}</span>#}
-                {#                <span>/</span>#}
-                {#                <span>{{ stores_in_page.paginator.num_pages }}</span>#}
-                {#                {% if stores_in_page.has_next %}#}
-                {#                    <a href="?page={{ stores_in_page.next_page_number }}">다음으로</a>#}
-                {#                    <a href="?page={{ stores_in_page.paginator.num_pages }}">맨 뒤로</a>#}
-                {#                {% endif %}#}
             </form>
-
         </div>
 
-
-        {#            {% if stores_univ.has_other_pages %}#}
-        {#                <ul class="pagination">#}
-        {#                    {% if stores_univ.has_previous %}#}
-        {#                        <li><a href="?page={{ stores_univ.previous_page_number }}">&laquo;</a></li>#}
-        {#                    {% else %}#}
-        {#                        <li class="disabled"><span>&laquo;</span></li>#}
-        {#                    {% endif %}#}
-        {##}
-        {#                    {% for i in stores_univ.paginator.page_range %}#}
-        {#                        {% if stores_univ.number == i %}#}
-        {#                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>#}
-        {#                        {% else %}#}
-        {#                            <li><a href="?page={{ i }}">{{ i }}</a></li>#}
-        {#                        {% endif %}#}
-        {#                    {% endfor %}#}
-        {#                    {% if stores_univ.has_next %}#}
-        {#                        <li><a href="?page{{ samelines.next_page_number }}">&raquo;</a></li>#}
-        {#                    {% else %}#}
-        {#                        <li class="disabled"><span>&raquo;</span></li>#}
-        {#                    {% endif %}#}
-        {#                </ul>#}
-        {#            {% endif %}#}
     {% endfor %}
-    {#            <input type="radio" name="tabs" id="tabback" style="background-color: palevioletred">#}
-    {#            <label for="tabone"><a href="{% url 'core:match_new' %}">뒤로 가기</a></label>#}
 </div>
 </body>
 </html>
