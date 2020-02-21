@@ -1,60 +1,7 @@
-{#{% extends 'base.html' %}#}
-{##}
-{#{% block content %}#}
-{#    <div class="container text-center my-auto">#}
-{#        <h2 class="mb-1" style="color: white">My Page</h2>#}
-{#    <br>#}
-{#    <br>#}
-{#    </div>#}
-{#    <div style="display: inline-block">#}
-{#        <ul class="list-group list-group-flush">#}
-{#            <li class="list-group-item">username: {{ profile.user.username }}</li>#}
-{#            <li class="list-group-item">univ: {{ profile.univ }}</li>#}
-{#            <li class="list-group-item">nickname: {{ profile.nickname }}</li>#}
-{#        </ul>#}
-{#    </div>#}
-{#    <br>#}
-{#    <br>#}
-{#    <div style="display: inline-block">#}
-{#        <ul class="list-group list-group-flush">#}
-{#            <li class="list-group-item">내 포스팅들</li>#}
-{#        </ul>#}
-{#    </div>#}
-{#    <div class="wrap">#}
-{#        <div>참여중인 포스트</div>#}
-{#        {% for posting in now_postings %}#}
-{#            <div class="card" style="width: 18rem; display: inline-block;">#}
-{#                <img src="{{ posting.store_id.logo }}" class="card-img-top" alt="...">#}
-{#                <div class="card-body">#}
-{#                    <h5 class="card-title">{{ posting.menu }}</h5>#}
-{#                    <div class="card-text">store: {{ posting.store_id.title }}</div>#}
-{#                    <div class="card-text">가격: {{ posting.price }}</div>#}
-{#                    <div class="card-text">최대인원: {{ posting.max_num }}</div>#}
-{#                    <br/>#}
-{#                    <a href="#" class="btn btn-primary">채팅방으로</a>#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endfor %}#}
-{#        <div>완료된 포스트</div>#}
-{#        {% for posting in end_postings %}#}
-{#            <div class="card" style="width: 18rem; display: inline-block;">#}
-{#                <img src="{{ posting.store_id.logo }}" class="card-img-top" alt="...">#}
-{#                <div class="card-body">#}
-{#                    <h5 class="card-title">{{ posting.menu }}</h5>#}
-{#                    <div class="card-text">store: {{ posting.store_id.title }}</div>#}
-{#                    <div class="card-text">가격: {{ posting.price }}</div>#}
-{#                    <div class="card-text">최대인원: {{ posting.max_num }}</div>#}
-{#                    <br/>#}
-{#                    <a href="#" class="btn btn-primary">채팅방으로</a>#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endfor %}#}
-{#    </div>#}
-{#{% endblock %}#}
+{% extends "base.html" %}
+{% load mathfilters %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% block extra_head %}
     <meta charset="utf-8">
     <!--  This file has been downloaded from https://bootdey.com  -->
     <!--  All snippets are MIT license https://bootdey.com/license -->
@@ -63,17 +10,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <link href="http://netdna.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'style_mypage.css' %}"/>
-</head>
-<body>
-<div class="container">
+    <link rel="stylesheet" href="{% static 'font.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <div style=" font-family: BMHANNAPro; font-size:30px; color:white;">{{ current_user.username }}</div><br/>
     <div class="row">
         <div class="col-xl-12">
             <div class="card card-lg">
                 <h6 class="card-header">진행중인 포스트</h6>
                 <div class="card-body">
                     <div class="user-activity">
-                        {% for posting in postings %}
-                            {{ posting.pk }}
+                        {% for posting in now_postings %}
                             <div class="media">
                                 <div class="media-img-wrap">
                                     <div class="avatar avatar-sm">
@@ -86,31 +34,39 @@
                                             <span class="d-block mb-5">
                                                 <span class="font-weight-500 text-dark text-capitalize">{{ posting.store_id.title }}</span>
                                                 <br/><span class="font-weight-500 text-dark text-capitalize">메뉴: {{ posting.menu }}</span>
+                                                <span class="d-block font-13 mb-30">현재 참가자 수 : {{ posting.now_num }}</span>
                                             </span>
-                                            <span class="d-block font-13 mb-30">참여자 목록</span>
                                         </div>
-                                        <script type="text/javascript">
-                                            function chat_popup() {
-                                                var url = '{% url "chat:room" posting.pk %}';
-                                                var name = "review";
-                                                var option = "width = 450, height = 550, top = 10, left = 400, location = no ";
-                                                window.name = "room";
-                                                window.open(url, name, option);
-                                            }
-                                        </script>
                                         {% if profile.user == posting.user_id %}
                                             {% if posting.chat_created == False %}
-                                                <button class="btn btn-sm btn-primary ml-auto enter" onclick="location.href='{% url "chat:create_room" posting.pk %}'">{{ posting.pk }}채팅방 개설</button>
+                                                {% if posting.now_num == 1 %}
+                                                    <button class="btn btn-sm btn-primary ml-auto enter" onclick="alert('아직 참여자가 없습니다.')">채팅방 개설</button>
+                                                {% elif posting.now_num < posting.max_num %}
+                                                    <script>
+                                                        function choice(){
+                                                            var choice;
+                                                            choice = confirm("채팅방 개설시 참여자 추가 모집이 불가능합니다. 그래도 채팅방을 개설하시겠습니까?");
+                                                            if(choice){window.location.href='{% url "chat:create_room" posting.pk %}';}
+                                                            else{window.reload();}
+                                                        }
+                                                    </script>
+                                                    <button class="btn btn-sm btn-primary ml-auto enter" onclick="choice();">채팅방 개설</button>
+                                                {% else %}
+                                                    <button class="btn btn-sm btn-primary ml-auto enter" onclick="location.href='{% url "chat:create_room" posting.pk %}';">채팅방 개설</button>
+                                                {% endif %}
                                             {% else %}
-                                                <button class="btn btn-sm btn-primary ml-auto enter" onclick="location.href='javascript:chat_popup()'">채팅방 들어가기</button>
+                                                <button class="btn btn-sm btn-primary ml-auto enter" onclick="window.open('{% url "chat:room" posting.pk %}','','width=800,height=550')">채팅방 들어가기</button>
                                             {% endif %}
                                         {% else %}
                                             {% if posting.chat_created == True %}
-                                                <button class="btn btn-sm btn-primary ml-auto enter" onclick="location.href='javascript:chat_popup()'">채팅방 들어가기</button>
+                                                <button class="btn btn-sm btn-primary ml-auto enter" onclick="window.open('{% url "chat:room" posting.pk %}','','width=800,height=550')">채팅방 들어가기</button>
+                                            {% else %}
+                                                <button class="btn btn-sm btn-primary ml-auto enter" disabled>매칭 진행중....</button>
                                             {% endif %}
                                         {% endif %}
                                     </div>
                                     {% if posting.user_id == current_user %}
+                                        <span class="d-block font-13 mb-30">참여자 목록</span>
                                         {% for contact in contacts %}
                                             {% if contact.posting_id.pk == posting.pk and contact.allowed_user.user != posting.user_id %}
                                                 <div class="card d-inline-block w-sm-360p">
@@ -132,7 +88,18 @@
                                                                 수락완료된 참여자입니다.
                                                             </button>
                                                         {% else %}
-                                                            <button class="btn btn-xs btn-primary ml-15 w-sm-100p" onclick="location.href='{% url "core:accept" contact.pk %}'">수락하기</button>
+                                                            <script>
+                                                                function accept(){
+                                                                    var now_num = {{ posting.now_num }};
+                                                                    var max_num = {{ posting.max_num }};
+                                                                    if(now_num === max_num){
+                                                                        alert("최대 인원을 초과할 수 없습니다.")
+                                                                    } else{
+                                                                        location.href = '{% url "core:accept" contact.pk %}';
+                                                                    }
+                                                                }
+                                                            </script>
+                                                            <button class="btn btn-xs btn-primary ml-15 w-sm-100p" onclick="accept()">수락하기</button>
                                                             <button class="btn btn-xs btn-primary ml-15 w-sm-100p" onclick="location.href='{% url "core:refuse" contact.pk %}'">거절하기</button>
                                                         {% endif %}
                                                     </div>
@@ -147,32 +114,126 @@
                 </div>
             </div>
             <div class="card card-lg">
-                <h6 class="card-header">완료된 포스트</h6>
-                {% for posting in end_postings %}
-                    <div class="media">
-                        <div class="media-img-wrap">
-                            <div class="avatar avatar-sm">
-                                <img src="{{ posting.store_id.logo }}" alt="user" class="avatar-img rounded-circle">
-                            </div>
-                        </div>
-                        <div class="media-body">
-                            <div class="d-flex align-items-start">
-                                <div>
-                                    <span class="d-block mb-5"><span
-                                            class="font-weight-500 text-dark text-capitalize">{{ posting.menu }}</span><span
-                                            class="pl-5">매칭대기중</span></span>
+                <h6 class="card-header">기간만료된 포스트</h6>
+                <div class="card-body">
+                    <div class="user-activity">
+                        {% for posting in expired_postings %}
+                            <div class="media">
+                                <div class="media-img-wrap">
+                                    <div class="avatar avatar-sm">
+                                        <img src="{{ posting.store_id.logo }}" alt="user" class="avatar-img rounded-circle">
+                                    </div>
                                 </div>
-                                <button class="btn btn-sm btn-primary ml-auto"
-                                        onclick="location.href='{% url "chat:room" posting.pk %}'">포스팅 삭제하기
-                                </button>
+                                <div class="media-body">
+                                    <div class="d-flex align-items-start">
+                                        <div>
+                                            <span class="d-block mb-5">
+                                                <span class="font-weight-500 text-dark text-capitalize">{{ posting.store_id.title }}</span>
+                                                <br/><span class="font-weight-500 text-dark text-capitalize">메뉴: {{ posting.menu }}</span>
+                                            </span>
+                                        </div>
+                                        {% if posting.user_id == current_user %}
+                                            <button class="btn btn-sm btn-primary ml-auto" onclick="window.location.href='{% url "core:delete_posting" posting.pk %}'">
+                                                포스팅 삭제하기
+                                            </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
-                {% endfor %}
+                </div>
             </div>
+            <div class="card card-lg">
+                <h6 class="card-header">완료된 포스트</h6>
+                <div class="card-body">
+                    <div class="user-activity">
+                        {% for posting in end_postings %}
+                            <div class="media">
+                                <div class="media-img-wrap">
+                                    <div class="avatar avatar-sm">
+                                        <img src="{{ posting.store_id.logo }}" alt="user" class="avatar-img rounded-circle">
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <div class="d-flex align-items-start">
+                                        <div>
+                                            <span class="d-block mb-5">
+                                                <span class="font-weight-500 text-dark text-capitalize">{{ posting.store_id.title }}</span>
+                                                <br/><span class="font-weight-500 text-dark text-capitalize">메뉴: {{ posting.menu }}</span>
+                                            </span>
+                                        </div>
+                                        <script>
+                                            function delete_posting() {
+                                                var status= "{{ posting.finished }}";
+                                                if(status==="False"){
+                                                    alert("아직 모든 참여자의 리뷰작성이 완료되지 않았습니다.");
+                                                } else{
+                                                    window.location.href='{% url "core:delete_posting" posting.pk %}';
+                                                }
+                                            }
+                                        </script>
+{#                                        {% if posting.user_id == current_user %}#}
+{#                                            <button class="btn btn-sm btn-primary ml-auto" onclick="delete_posting();">#}
+{#                                                포스팅 삭제하기#}
+{#                                            </button>#}
+{#                                        {% endif %}#}
+                                    </div>
+                                    <span class="d-block font-13 mb-30">참여자 목록</span>
+                                    {% for contact in contacts %}
+                                        {% if contact.posting_id.pk == posting.pk and contact.allowed_user.user != posting.user_id %}
+                                            <div class="card d-inline-block w-sm-360p">
+                                                <div class="card-body">
+                                                    <div class="d-flex flex-wrap">
+                                                        <img class="d-86 rounded mb-15 mr-15"
+                                                             src="https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png"
+                                                             alt="thumb">
+                                                        <div class="w-65">
+                                                            <h6 class="mb-5">{{ contact.allowed_user.user.username }}</h6>
+                                                            <p>
+                                                                {% if contact.finished == True %}
+                                                                    <button class="btn btn-xs btn-primary ml-15 w-sm-100p"
+                                                                            disabled>리뷰 작성 완료
+                                                                    </button>
+                                                                {% else %}
+                                                                    <button class="btn btn-xs btn-primary ml-15 w-sm-100p"
+                                                                            disabled>리뷰 미작성
+                                                                    </button>
+                                                                {% endif %}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {#            <div class="card card-lg">#}
+            {#                <h6 class="card-header">완료된 포스트</h6>#}
+            {#                {% for posting in end_postings %}#}
+            {#                    <div class="media">#}
+            {#                        <div class="media-img-wrap">#}
+            {#                            <div class="avatar avatar-sm">#}
+            {#                                <img src="{{ posting.store_id.logo }}" alt="user" class="avatar-img rounded-circle">#}
+            {#                            </div>#}
+            {#                        </div>#}
+            {#                        <div class="media-body">#}
+            {#                            <div class="d-flex align-items-start">#}
+            {#                                <div>#}
+            {#                                    <span class="d-block mb-5"><span class="font-weight-500 text-dark text-capitalize">{{ posting.menu }}</span></span>#}
+            {#                                </div>#}
+            {#                                <button class="btn btn-sm btn-primary ml-auto" onclick="location.href='{% url "chat:room" posting.pk %}'">포스팅 삭제하기</button>#}
+            {#                            </div>#}
+            {#                        </div>#}
+            {#                    </div>#}
+            {#                {% endfor %}#}
+            {#            </div>#}
         </div>
     </div>
-</div>
-<script src="http://netdna.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-</body>
-</html>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+{% endblock %}

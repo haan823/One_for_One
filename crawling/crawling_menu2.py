@@ -23,7 +23,6 @@ def scroll_down():
             break
         last_height = new_height
 
-
 univ_addr_list = [
     # '서울특별시 마포구 상수동 와우산로 94',
     # '서울특별시 관악구 신림동 산 56-1 서울대학교',
@@ -42,7 +41,7 @@ univ_addr_list = [
     # '경기도 성남시 수정구 성남대로 1342',
 ]
 
-x = "경희대"
+x = "서울대"
 y = '서울특별시 마포구 상수동 와우산로 94'
 wb = openpyxl.Workbook()
 sheet = wb.active
@@ -71,8 +70,9 @@ for univ_addr in univ_addr_list:
 
     for i in range(11, 15):
         try:
-            # index = ['상세페이지URL', '로고URL', '상호명', '별점', '최소주문금액', '소요시간', '리뷰수']
+            # in    dex = ['상세페이지URL', '로고URL', '상호명', '별점', '최소주문금액', '소요시간', '리뷰수']
             index = ['store_url', 'logo', 'title', 'star', 'min_price', 'del_time', 'review', 'univ_id', 'cat_name']
+
             sheet.append(index)
             driver.find_element_by_css_selector(f'div#category ul li:nth-child({i})').click()
             category = driver.find_element_by_css_selector(f'div#category ul li:nth-child({i})').text
@@ -100,10 +100,10 @@ for univ_addr in univ_addr_list:
             containers = driver.find_elements_by_css_selector('div.item.clearfix')
             print(len(containers))
             if len(containers) > 100:
-                con = 120
+                con = 110
             else:
                 con = len(containers)
-            for c in range(con):
+            for c in range(31,con):
                 try:
                     time.sleep(1)
 

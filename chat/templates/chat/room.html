@@ -77,36 +77,41 @@
                                     <p class="name">{{ user.username }}</p>
                                 </div>
                             </div>
-                            {% if now_user == room.Posting_id.user_id and room.Posting_id.finished != true %}
-                                <button style="margin:3px;" type="button" id="user_out" class="btn-danger user_out" name={{ user.pk }}>
-                                    <span style="font-size: 1em">OUT</span>
-                                </button>
-                            {% endif %}
+{#                            <button style="margin:3px;" type="button" id="user_out" class="btn-danger user_out" name={{ user.pk }}>#}
+{#                                <span style="font-size: 1em">신고하기</span>#}
+{#                            </button>#}
                         </li>
                     {% endif %}
                 {% endfor %}
             </ul>
         </div>
         <div id="bottom-bar">
-            <button type="button" class="match-finished" name="{{ room.pk }}">
-                <i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>
-                <span>매칭 완료</span>
-            </button>
-            <button type="button" class="re_match" name="{{ room.pk }}" onclick="location.href='javascript:review_popup()'">
-                <i class="fa fas fa-check" aria-hidden="true"></i>
-                <span>평가하고 나가기</span>
-            </button>
+            {% if now_user == posting.user_id %}
+                <button type="button" class="room-finished" name="{{ room.pk }}">
+                    <i class="fa fa-user-plus fa-fw" aria-hidden="true"></i>
+                    <span>채팅 끝!!</span>
+                </button>
+                <button type="button" class="review" name="{{ room.pk }}" onclick="location.href='javascript:review_popup()'">
+                    <i class="fa fas fa-check" aria-hidden="true"></i>
+                    <span>평가하고 나가기</span>
+                </button>
+            {% else %}
+                <button style="width:100%;" type="button" class="review" name="{{ room.pk }}" onclick="location.href='javascript:review_popup()'">
+                    <i class="fa fas fa-check" aria-hidden="true"></i>
+                    <span>평가하고 나가기</span>
+                </button>
+            {% endif %}
         </div>
     </div>
     <div class="content">
         <div class="contact-profile">
             <img src="https://uybor.uz/borless/uybor/img/user-images/user_no_photo_300x300.png" alt=""/>
             <p>{{ username }}</p>
-            <div class="social-media">
-                <i class="fa fa-facebook" aria-hidden="true"></i>
-                <i class="fa fa-twitter" aria-hidden="true"></i>
-                <i class="fa fa-instagram" aria-hidden="true"></i>
-            </div>
+{#            <div class="social-media">#}
+{#                <i class="fa fa-facebook" aria-hidden="true"></i>#}
+{#                <i class="fa fa-twitter" aria-hidden="true"></i>#}
+{#                <i class="fa fa-instagram" aria-hidden="true"></i>#}
+{#            </div>#}
         </div>
         <div class="messages">
             <ul id="chat-log">
@@ -217,21 +222,20 @@
             $(".messages").animate({scrollTop: $(document).height()*10}, "fast");
         }
     }
-    alert(document.height());
 </script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
-    $(".match-finished").click(function () {
+    $(".room-finished").click(function () {
         var pk = $(this).attr('name');
         $.ajax({
             type: "GET",
-            url: "{% url 'chat:match_finished' room.pk%}",
+            url: "{% url 'chat:room_finished' room.pk%}",
             data: {'pk': pk},
             success: function () {
-                alert("매칭완료처리되었습니다.");
+                alert("완료");
             },
             error: function (request, status, error) {
-                alert("이미 매칭완료 처리되었습니다.");
+                alert("이미 처리되었습니다.");
             },
         });
     });
@@ -260,7 +264,6 @@
         window.name = "room";
         window.open(url, name, option);
     }
-
 </script>
 </body>
 </html>

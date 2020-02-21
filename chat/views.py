@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 import json
 
 from account.models import Profile
-from chat.models import Room, Contact
+from account.utils import send_alarm_sms
+from chat.models import Room, Contact, Message
 from core.models import Posting
 
 
@@ -20,18 +21,19 @@ def room(request, pk):
     room = Room.objects.get(pk=pk)
     posting = Posting.objects.get(pk=pk)
     contacts = Contact.objects.filter(posting_id=pk)
-    allowed_users = [contact.allowed_user.user for contact in contacts if contact.finished==False]
+    allowed_users = [contact.allowed_user.user for contact in contacts if contact.accepted==True]
     # if room.now_number  room.Posting_id.max_num:
     #     raise PermissionDenied
     if request.user not in allowed_users:
-        raise PermissionDenied
-    return render(request, 'chat/room.html', {
-        'room': room,
-        'posting': posting,
-        'username': mark_safe(json.dumps(request.user.username)),
-        'allowed_users': allowed_users,
-        'now_user': request.user
-    })
+        return render(request, 'chat/already_out.html')
+    else:
+        return render(request, 'chat/room.html', {
+            'room': room,
+            'posting': posting,
+            'username': mark_safe(json.dumps(request.user.username)),
+            'allowed_users': allowed_users,
+            'now_user': request.user
+        })
 
 
 def create_Room(request, pk):
@@ -46,34 +48,30 @@ def create_Room(request, pk):
     for contact in contacts:
         contact.accepted = True
         contact.save()
+    # 문자 다 보내기
+    for contact in contacts:
+        content = f'<저기요> 채팅방이 개설되었습니다. store: ' + posting.store_id.title
+        send_alarm_sms(contact.allowed_user.phone_number, content)
+        print(content)
     return redirect('core:my_page')
 
-def matching_finished(request, pk):
-    posting = Posting.objects.get(pk=pk)
-    if posting.finished == True:
+def room_finished(request, pk):
+    room = Room.objects.get(pk=pk)
+    if room.match_finished== True:
         raise Exception
     else:
-        posting.finished = True
-        posting.save()
-    return redirect('chat:room', posting.pk)
-
-
-def re_match(request, pk):
-    posting = Posting.objects.get(pk=pk)
-    if posting.finished == False:
-        raise Exception
-    else:
-        posting.finished = False
-        posting.save()
-    return redirect('chat:room', posting.pk)
-
+        room.match_finished = True
+        room.save()
+    return redirect('chat:room', room.pk)
 
 def review(request, pk):
     now_user = Profile.objects.get(pk=request.user.pk)
     posting = Posting.objects.get(pk=pk)
-    contacts = Contact.objects.filter(room_id=pk)
+    room = Room.objects.get(pk=pk)
+    contacts = Contact.objects.filter(posting_id=pk)
     allowed_users = [contact.allowed_user.user for contact in contacts]
     return render(request, 'chat/review.html', {
+        'room': room,
         'now_user': now_user,
         'posting': posting,
         'allowed_users': allowed_users
@@ -82,8 +80,7 @@ def review(request, pk):
 def update_review(request, pk):
     now_user = Profile.objects.get(pk=request.user.pk)
     posting = Posting.objects.get(pk=pk)
-    room = Room.objects.get(pk=pk)
-    contacts = Contact.objects.filter(room_id=pk)
+    contacts = Contact.objects.filter(posting_id=pk)
     allowed_users = [contact.allowed_user for contact in contacts]
     for allowed_user in allowed_users:
         allowed_user_pk= str(allowed_user.pk)
@@ -94,24 +91,15 @@ def update_review(request, pk):
         elif get_review == 'bad':
             allowed_user.bad_review +=1
             allowed_user.save()
-    if room.now_number>1:
-        contact = contacts.get(allowed_user=now_user)
-        contact.finished = True
-        contact.save()
-        room.now_number-=1
-        room.save()
-    elif room.now_number==1:
-        contacts.delete()
-        posting.finished=True
+    contact = contacts.get(allowed_user=now_user)
+    contact.finished = True
+    contact.save()
+    posting.now_num-=1
+    posting.save()
+    if posting.now_num == 0:
+        posting.finished = True
         posting.save()
     return render(request, 'chat/update_review.html')
-
-
-def delete_chatting(request, pk):
-    room = Room.objects.get(pk=pk)
-    room.delete()
-    return redirect('core:home', room.pk)
-
 
 def delete_contact(request, pk):
    user_pk = request.GET['user_pk']

@@ -248,6 +248,14 @@ iframe {
     border-radius: 3px;
 }
 
+.wrap-input32 {
+    width: 32%;
+    position: relative;
+    background-color: #e6e6e6;
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
+
 .wrap-input10 {
     width: 10%;
     position: relative;

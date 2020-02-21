@@ -49,7 +49,7 @@ sheet = wb.active
 sheet.title = f"요기요_{x}_new"
 options = Options()
 
-driver = webdriver.Chrome(executable_path="C:\dev\chromedriver", chrome_options=options)
+driver = webdriver.Chrome(executable_path="C:\\Users\KSH\dev\chromedriver", chrome_options=options)
 driver.get("https://www.yogiyo.co.kr/mobile/#/")
 driver.set_window_size(1600, 1000)
 

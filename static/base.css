@@ -35,7 +35,7 @@
     width: 100%;
     min-width: 400px;
     display: flex;
-    background-color: black;
+    background-color: rgb(0, 0, 0, 0.5);
 }
 
 .nav > .nav-item2 {
@@ -80,7 +80,7 @@
 }
 
 .nav > .nav-item2:nth-child(3) > a:hover {
-    color: mediumpurple;
+    color: rgb(213, 62, 143);
     transition-duration: 0.5s;
 }
 
@@ -177,7 +177,7 @@ h1, h2, h3, h4, h5, h6 {
 
     padding-top: 8rem;
     padding-bottom: 8rem;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/pizza-slices-food.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/767283.jpg');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -529,7 +529,7 @@ a:active, a:focus, a:hover {
 
 
 .wrap-login100 {
-    width: 390px;
+    width: 60%;
     background: #fff;
     border-radius: 10px;
     position: relative;
@@ -538,8 +538,8 @@ a:active, a:focus, a:hover {
 }
 
 .wrap-signup100 {
-    width: 700px;
-    background: #fff;
+    width: 100%;
+    backgrouwrapnd: #fff;
     border-radius: 10px;
     position: relative;
     background-color: inherit;
@@ -580,6 +580,14 @@ a:active, a:focus, a:hover {
 
 .wrap-input49 {
     width: 49%;
+    position: relative;
+    background-color: #e6e6e6;
+    border: 1px solid transparent;
+    border-radius: 3px;
+}
+
+.wrap-input32 {
+    width: 32%;
     position: relative;
     background-color: #e6e6e6;
     border: 1px solid transparent;

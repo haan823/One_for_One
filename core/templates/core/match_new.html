@@ -2,158 +2,214 @@
 {% block extra_head %}
     <meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
     <script language="javascript" type="text/javascript">
-        {#function openWin() {#}
-        {#    window.open("http://www.naver.net", "네이버새창", "width=800, height=700, toolbar=no, menubar=no, scrollbars=no, resizable=yes");#}
-        {#}#}
 
-            var openWin;
+        var openWin;
 
-            function openChild() {
-                // window.name = "부모창 이름";
-                window.name = "parentForm";
-                // window.open("open할 window", "자식창 이름", "팝업창 옵션");
+        function openChild() {
+            // window.name = "부모창 이름";
+            window.name = "parentForm";
+            // window.open("open할 window", "자식창 이름", "팝업창 옵션");
+            openWin = window.open("{% url 'core:choice_detail' %}",
+                "childForm", "width=1200, height=600, resizable = no, scrollbars = no");
+        }
+
+        function checkForm() {
+
+            var storename = document.parentForm.store_name;
+            if (storename.value == '가게 이름') {
+                window.alert("가게를 선택해주세요");
                 openWin = window.open("{% url 'core:choice_detail' %}",
                     "childForm", "width=1200, height=1200, resizable = no, scrollbars = no");
+
+                {#document.parentForm.store_name.focus();#}
+                {#document.getElementById('store_name').select();#}
+                return false;
             }
 
-            {#function setChildText() {#}
-            {#    openWin.document.getElementById("cInput1{{ s.id }}").value = document.getElementById("pInput1").value;#}
-            {#    openWin.document.getElementById("cInput2{{ s.id }}").value = document.getElementById("pInput2").value;#}
-            {#    openWin.document.getElementById("cInput3{{ s.id }}").src = document.getElementById("pInput3").src;#}
-            {#    openWin.document.getElementById("cInput4{{ s.id }}").value = document.getElementById("pInput4").value;#}
-            {#}#}
-
-            function showHide() {
-                document.getElementById('pInput3').style.visibility = "visible";
+            var menuName = document.parentForm.menu_name;
+            if (menuName.value == '') {
+                window.alert("메뉴를 입력해주세요");
+                document.parentForm.menu_name.focus();
+                document.getElementById('menu_name').select();
+                return false;
             }
+
+            var menuprice = document.parentForm.menu_price;
+            if (menuprice.value == '') {
+                window.alert("메뉴의 가격을 입력해주세요");
+                document.parentForm.menu_price.focus();
+                document.getElementById('menu_price').select();
+                return false;
+            }
+
+            var reg = /^\d+$/;
+            result = reg.test(menuprice.value)
+            if (!result) {
+                window.alert('가격을 숫자로만 입력해주세요! 예) 10000');
+                document.parentForm.menu_price.focus();
+                document.getElementById('menu_price').select();
+                return false;
+            }
+        }
     </script>
 {% endblock %}
 
 {% block content %}
-    <form id="parentForm" action="{% url 'core:match_new' %}" method="POST">
-        {% csrf_token %}
-        <div style="background-color: black; padding-bottom: 20px;">
+    {% load static %}
+    <div class="wrap-signup100 p-t-50 p-b-90">
+        <form name="parentForm" id="parentForm" action="{% url 'core:match_new' %}" method="POST" onsubmit="return checkForm();">
+            {% csrf_token %}
+            <span class="login100-form-title p-b-51">
+                포스팅 생성
+            </span>
+            <br>
 
-            <div style="padding-left: 20px; padding-top: 40px;">
-                <input type="button" value="가게선택" onclick="window.name = 'parentForm';
-                openWin = window.open('{% url 'core:choice_detail' %}', 'childForm', 'width=1200, height=1200, resizable = no, scrollbars = no');"><br>
-
-                {#                <a href="#"#}
-                {#                   onClick="window.open('{% url 'core:choice_detail' %}', '네이버', 'width=1200, height=1200, toolbar=no, menubar=no, scrollbars=no, resizable=yes'); return false;">가게선택</a>#}
+            <div class="container-login100-form-btn m-t-17">
+                <a class="login100-form-btn" style='color: white; cursor: pointer;' onclick="window.name = 'parentForm';
+                        openWin = window.open('{% url 'core:choice_detail' %}', 'childForm', 'width=1200, height=800, resizable = no, scrollbars = no');">가게
+                    선택</a>
             </div>
-            <div class="container store_logo" style="background-color: black; padding-top: 20px;">
-                <div class="form-group" style="color: white">
-                    <label for="exampleFormControlSelect1"></label>
-                    <input type="image" id="pInput3" name="pInput3" src="pInput3" readonly>
-                                        <img src="{{ s.logo }}" width="100px" height="100px" alt="">
-                </div>
-            </div>
+            <br>
 
-            <div class="container store_title" style="">
+            <div class="container store_logo" data-validate="">
                 <div class="form-group" style="color: white">
-                    <label for="exampleFormControlSelect2">가게 이름</label>
-                    <input type="text" id="pInput1" name="store_name" readonly>
+                    <input type="image" id="pInput3" name="pInput3" onerror="{% static 'img/logo.png' %}" src="pInput3"
+                           style="pointer-events: none" readonly alt="">
                 </div>
             </div>
 
             <div class="container cat_name" style="background-color: black" hidden>
                 <div class="form-group" style="color: white">
-                    <label for="exampleFormControlSelect5">pk</label>
+                    <label for="exampleFormControlSelect3">pk</label>
                     <input type="text" id="pInput4" name="store_pk">
                 </div>
             </div>
 
-            <div class="container del_time" style="background-color: black;">
-                <div class="form-group" style="color: white">
-                    <label for="exampleFormControlSelect3">예상 배달 시간</label>
-                    <input type="text" id="pInput2" name="pInput2" readonly>
-                </div>
+            <div class="wrap-input100 validate-input m-b-16">
+                <input class="input100" type="text" id="pInput1" value='가게 이름' name="store_name" readonly>
+                <span class="focus-input100"></span>
             </div>
+            <br/>
 
-            <div class="container menu_name" style="background-color: black;">
-                <div class="form-group" style="color: white">
-                    <label for="exampleFormControlSelect4">메뉴</label>
-                    <input type="text" id="menu_name" name="menu_name">
+            <div style="display: flex; justify-content: space-between;">
+                <div class="wrap-input49 validate-input m-b-16">
+                    <input class="input100" type="text" id="pInput5" value='최소 배달 금액' name="min_price" readonly>
+                    <span class="focus-input100"></span>
                 </div>
-            </div>
 
-            <div class="container menu_price" style="background-color: black;">
-                <div class="form-group" style="color: white">
-                    <label for="exampleFormControlSelect5">가격</label>
-                    <input type="text" id="menu_price" name="menu_price">
+                <div class="wrap-input49 validate-input m-b-16">
+                    <input class="input100" type="text" id="pInput2" name="pInput2" value="예상 배달 시간" readonly>
+                    <span class="focus-input100"></span>
                 </div>
             </div>
+            <br>
 
-            <div class="container with_num" style="background-color: black;">
-                <div class="form-group" style="color: white">
-                    <label for="exampleFormControlSelect4">최대 인원</label>
-                    <select class="form-control" id="exampleFormControlSelect1" name="with_num" style="width: 100px;">
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        <option>6</option>
-                    </select>
-                </div>
+            <div class="wrap-input100 validate-input m-b-16">
+                <input class="input100" type="text" id="menu_name" placeholder="원하는 메뉴를 적어주세요."
+                       name="menu_name">
+                <span class="focus-input100"></span>
             </div>
-            <div class="container posting_time" style="background-color: black;">
-                <div class="form-group" style="color: white">
-                    <label for="exampleFormControlSelect5">포스팅 유지 시간</label>
-                    <select class="form-control" id="exampleFormControlSelect1" name="posting_time" style="width: 100px;">
-                        <option>10</option>
-                        <option>20</option>
-                        <option selected>30</option>
-                        <option>40</option>
-                        <option>50</option>
-                        <option>60</option>
-                    </select>
-                </div>
-            </div>
+            <br>
 
-            <div style="margin-left: 20px; margin-bottom: 20px; color: white;">
+            <div class="wrap-input100 validate-input m-b-16">
+                <input class="input100" type="text" id="menu_price" placeholder="'원'없이 '10000'과 같이 메뉴 가격을 입력해주세요."
+                       name="menu_price">
+                <span class="focus-input100"></span>
+            </div>
+            <br>
+
+            <div style="color: white;">최대 인원</div>
+            <div class="wrap-input100 validate-input m-b-16">
+                <select class="input100" id="exampleFormControlSelect1" name="with_num">
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                </select>
+            </div>
+            <br>
+
+            <div style="color: white;">포스팅 유지 시간</div>
+            <div class="wrap-input100 validate-input m-b-16">
+                <select class="input100" id="exampleFormControlSelect1" name="posting_time">
+                    <option>10</option>
+                    <option>20</option>
+                    <option selected>30</option>
+                    <option>40</option>
+                    <option>50</option>
+                    <option>60</option>
+                    <option>90</option>
+                    <option>120</option>
+                    <option>150</option>
+                    <option>180</option>
+                    <option>210</option>
+                    <option>240</option>
+                </select>
+            </div>
+            <br>
+
+            <div style="margin-bottom: 20px; color: white;">
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="customRadioInline1" name="customRadioInline1"
-                           class="custom-control-input">
+                           class="custom-control-input" value="a">
                     <label class="custom-control-label" for="customRadioInline1">오늘은 이게 꼭 먹고 싶어요!</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="customRadioInline2" name="customRadioInline1"
-                           class="custom-control-input">
+                           class="custom-control-input" value="b">
                     <label class="custom-control-label" for="customRadioInline2">다른 메뉴도 좋아요!</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="customRadioInline3" name="customRadioInline1"
-                           class="custom-control-input" checked>
+                           class="custom-control-input" value="c" checked>
                     <label class="custom-control-label" for="customRadioInline3">상관 없어요!</label>
                 </div>
             </div>
 
-
-            <div style="margin-left: 20px; margin-bottom: 20px; color: white;">
+            <div style="margin-bottom: 20px; color: white;">
                 <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="customRadioInline4" name="customRadioInline2" class="custom-control-input">
+                    <input type="radio" id="customRadioInline4" name="customRadioInline2" class="custom-control-input"
+                           value="a">
                     <label class="custom-control-label" for="customRadioInline4">같이 먹어요!</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="customRadioInline5" name="customRadioInline2" class="custom-control-input">
+                    <input type="radio" id="customRadioInline5" name="customRadioInline2" class="custom-control-input"
+                           value="b">
                     <label class="custom-control-label" for="customRadioInline5">따로 먹어요!</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="customRadioInline6" name="customRadioInline2" class="custom-control-input"
+                           value="c"
                            checked>
                     <label class="custom-control-label" for="customRadioInline6">상관 없어요!</label>
                 </div>
             </div>
 
-            {#            <div class="form-check">#}
-            {#                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">#}
-            {#                <label class="form-check-label" for="defaultCheck2">#}
-            {#                    Disabled checkbox#}
-            {#                </label>#}
-            {#            </div>#}
-            <input type="submit" value="생성" style="margin-left: 20px;">
+            <div style="color: white;">태그 (옵션)</div>
+            <div style="display: flex; justify-content: space-between;">
+                <div class="wrap-input32 validate-input m-b-16 posting_tag1">
+                    <input class="input100" type="text" id="posting_tag1" name="posting_tag1" placeholder="태그 #1">
+                    <span class="focus-input100"></span>
+                </div>
+                <div class="wrap-input32 validate-input m-b-16 posting_tag2">
+                    <input class="input100" type="text" id="posting_tag2" name="posting_tag2" placeholder="태그 #2">
+                    <span class="focus-input100"></span>
+                </div>
+                <div class="wrap-input32 validate-input m-b-16 posting_tag3">
+                    <input class="input100" type="text" id="posting_tag3" name="posting_tag3" placeholder="태그 #3">
+                    <span class="focus-input100"></span>
+                </div>
+            </div>
+            <br/>
 
-        </div>
 
-    </form>
+            <div class="container-login100-form-btn m-t-17">
+                <button type='submit' class="login100-form-btn">
+                    SUBMIT
+                </button>
+            </div>
+        </form>
+    </div>
+
 {% endblock %}

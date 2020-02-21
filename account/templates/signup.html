@@ -101,7 +101,7 @@
                     </div>
                     <div class="wrap-input10 validate-input m-b-16">
                         <input id='email_id' class="input100" type="text" name="email_id" value="@" disabled
-                               style="text-align: center; color: black; padding-left: 0px; padding-right: 0px;">
+                               style="text-align: center; color: white; padding-left: 0px; padding-right: 0px;">
                         <span class="focus-input100"></span>
                     </div>
                     <div class="wrap-input49 validate-input m-b-16">
@@ -126,7 +126,7 @@
                 <div class="alert alert-success" id="phone_number-alert-success">등록 가능한 전화번호입니다.</div>
                 <div class="alert alert-danger" id="phone_number-alert-danger">이미 등록된 전화번호이거나 올바른 형식의 전화번호가 아닙니다.</div>
 
-                <button type="button" id="addedKeyword" onclick="sms()">인증번호 전송</button>
+                <button type="button" id="addedKeyword" style="color: white" onclick="sms()">인증번호 전송</button>
                 <div id="imdiv"></div>
                 <div class="wrap-input100 validate-input m-b-16" data-validate="user_auth_number is required" id="auth_div">
                     <input id='user_auth_number' class="input100" type="text" name="user_auth_number" placeholder="인증번호를 입력해주세요">
@@ -138,7 +138,7 @@
 
 
                 <div class="container-login100-form-btn m-t-17">
-                    <button type='button' class="login100-form-btn" onclick="real_submit()">
+                    <button type='button' class="login100-form-btn" onclick="real_submit();">
                         Submit
                     </button>
                 </div>
@@ -184,6 +184,7 @@
                             alert("올바른 형태로 정보를 입력해주세요.")
                         } else {
                             document.signup_form.submit()
+                            alert('입력하신 이메일로 url을 전송하였습니다.')
                         }
                     }
 
@@ -292,8 +293,6 @@
                                 $("#phone_number-alert-danger").hide();
                             }
                         }
-
-
                     })
                 function auth_validation_check(string) {
                     var bool1, bool2;
