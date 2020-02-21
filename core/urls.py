@@ -15,5 +15,5 @@ urlpatterns = [
     path('refuse/<int:pk>', views.refuse, name='refuse'),
     path('search/', views.search, name='search'),
     path('search_store/', views.search_store, name='search_store'),
-
+    path('home/<int:pk>/menu_search/', views.menu_search, name='menu_search'),
 ]

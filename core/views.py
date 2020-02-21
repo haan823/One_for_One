@@ -27,9 +27,11 @@ def home(request, pk):
         rooms = Room.objects.all()
         stores = Store.objects.filter(univ_id=pk)
         postings = []
+        menus = []
         for store in stores:
             postings2 = Posting.objects.filter(store_id=store.id)
-            for posting in postings2:
+            postings3 = postings2
+            for posting in postings3:
                 postings.append(posting)
         tag_dic = {}
         for posting in postings:
@@ -39,12 +41,19 @@ def home(request, pk):
                 tags = []
                 tags += Tag.objects.filter(posting_id=posting.id)
                 posting.create_date_string = convert_date_PytoJs(str(posting.create_date))
-                print(posting.create_date_string)
                 tag_dic[posting] = tags
+                menus.append(posting.menu)
+                print('live: ', posting.menu)
+            else:
+                posting.finished = True
+                posting.save()
+                print('finished: ', posting.menu)
         all_tags = set(Tag.objects.all())
         tags_list = []
         for all_tag in all_tags:
-            tags_list.append(all_tag.content)
+            if all_tag.posting_id.create_date + datetime.timedelta(
+                    minutes=all_tag.posting_id.timer) > datetime.datetime.now():
+                tags_list.append(all_tag.content)
         rm_dup_tags = list(set(tags_list))
         data = {
             'contacts': contacts,
@@ -56,6 +65,7 @@ def home(request, pk):
             'categories': ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점'],
             'tag_dic': tag_dic,
             'rm_dup_tags': rm_dup_tags,
+            'menus': menus,
         }
         return render(request, 'core/home.html', data)
     else:
@@ -63,9 +73,12 @@ def home(request, pk):
         univ = Univ.objects.get(pk=pk)
         univs = Univ.objects.all()
         postings = []
+        menus = []
         for store in stores:
             postings2 = Posting.objects.filter(store_id=store.id)
-            for posting in postings2:
+            postings3 = postings2
+            for posting in postings3:
+                postings.append(posting)
                 postings.append(posting)
         tag_dic = {}
         for posting in postings:
@@ -75,12 +88,16 @@ def home(request, pk):
                 tags = []
                 tags += Tag.objects.filter(posting_id=posting.id)
                 posting.create_date_string = convert_date_PytoJs(str(posting.create_date))
-                print(posting.create_date_string)
                 tag_dic[posting] = tags
+                menus.append(posting.menu)
+            else :
+                posting.finished = True
+                posting.save()
         all_tags = set(Tag.objects.all())
         tags_list = []
         for all_tag in all_tags:
-            tags_list.append(all_tag.content)
+            if all_tag.posting_id.create_date + datetime.timedelta(minutes=all_tag.posting_id.timer) > datetime.datetime.now():
+                tags_list.append(all_tag.content)
         rm_dup_tags = list(set(tags_list))
         data = {
             'postings': postings,
@@ -89,6 +106,7 @@ def home(request, pk):
             'categories': ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점'],
             'tag_dic': tag_dic,
             'rm_dup_tags': rm_dup_tags,
+            'menus': menus
         }
         return render(request, 'core/home.html', data)
 
@@ -188,7 +206,7 @@ def my_page(request):
     current_user = request.user
     profile = Profile.objects.get(user=current_user)
     contacts = Contact.objects.all()
-    user_contacts=contacts.filter(allowed_user=profile)
+    user_contacts = contacts.filter(allowed_user=profile)
     print(user_contacts)
     postings = []
     for contact in user_contacts:
@@ -197,7 +215,7 @@ def my_page(request):
     print(postings)
     context = {
         'rooms': Room.objects.all(),
-        'current_user' : current_user,
+        'current_user': current_user,
         'profile': profile,
         'postings': postings,
         'contacts': contacts,
@@ -208,19 +226,21 @@ def my_page(request):
 def accept(request, pk):
     contact = Contact.objects.get(pk=pk)
     posting = Posting.objects.get(pk=contact.posting_id.pk)
-    if(posting.now_num!=posting.max_num):
-        posting.now_num+=1
+    if (posting.now_num != posting.max_num):
+        posting.now_num += 1
         posting.save()
-        contact.accepted=True
+        contact.accepted = True
         contact.save()
     else:
         pass
     return redirect('core:my_page')
 
+
 def refuse(request, pk):
     contact = Contact.objects.get(pk=pk)
     contact.delete()
     return redirect('core:my_page')
+
 
 def store_choice(request):
     return render(request, 'core/store_choice.html')
@@ -255,8 +275,10 @@ def search_store(request):
     if kwd:
         all_tags = set(Tag.objects.all())
         tags_list = []
+        menus_filtered = []
         for all_tag in all_tags:
-            tags_list.append(all_tag.content)
+            if all_tag.posting_id.finished:
+                tags_list.append(all_tag.content)
         tags = list(set(tags_list))
         filtered_tags = []
         for tag in tags:
@@ -264,15 +286,15 @@ def search_store(request):
                 # print(kwd)
                 # print(tag)
                 filtered_tags.append(tag)
-        # postings = Posting.objects.filter(menu__icontains=kwd)
-        # for posting in postings:
-        #     data['content'].append({
-        #         'menu': posting.menu,
-        #         'price': posting.price,
-        #         'max_num': posting.max_num,
-        #         # 'tags': tags
-        #     })
-        data = {'filtered_tags': filtered_tags}
+        postings = Posting.objects.filter(menu__icontains=kwd, finished=False)
+        for posting in postings:
+            if not posting.finished:
+                print(posting.menu)
+                menus_filtered.append(posting.menu)
+        data = {
+            'filtered_tags': filtered_tags,
+            'menus_filtered': menus_filtered
+        }
 
     return HttpResponse(json.dumps(data), content_type="application/json")
 
@@ -312,3 +334,95 @@ def new_test(request):
         'stores_univ': stores_univ
     }
     return render(request, 'core/new_test.html', data)
+
+
+def menu_search(request, pk):
+    if request.method == 'POST':
+        kwd = request.POST['kwd']
+        kwd_string = str(kwd)
+        print(kwd_string)
+        if request.user.is_authenticated:
+            current_user = request.user
+            profile = Profile.objects.get(user=current_user.id)
+            univ = profile.univ
+            contacts = Contact.objects.filter(allowed_user=profile)
+            rooms = Room.objects.all()
+            stores = Store.objects.filter(univ_id=pk)
+            postings = []
+            menus = []
+            for store in stores:
+                postings2 = Posting.objects.filter(store_id=store.id)
+                postings3 = postings2.filter(menu=kwd_string)
+                for posting in postings3:
+                    postings.append(posting)
+            tag_dic = {}
+            for posting in postings:
+                if not posting.finished:
+                    tags = []
+                    tags += Tag.objects.filter(posting_id=posting.id)
+                    posting.create_date_string = convert_date_PytoJs(str(posting.create_date))
+                    tag_dic[posting] = tags
+                    menus.append(posting.menu)
+                else:
+                    posting.finished = True
+            all_tags = set(Tag.objects.all())
+            tags_list = []
+            for all_tag in all_tags:
+                if not all_tag.posting_id.finished:
+                    tags_list.append(all_tag.content)
+            rm_dup_tags = list(set(tags_list))
+            data = {
+                'contacts': contacts,
+                'rooms': rooms,
+                'postings': postings,
+                'current_user': current_user.id,
+                'univ': univ,
+                'profile': profile,
+                'categories': ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점'],
+                'tag_dic': tag_dic,
+                'rm_dup_tags': rm_dup_tags,
+                'menus': menus,
+            }
+            return render(request, 'core/home.html', data)
+        else:
+            stores = Store.objects.filter(univ_id=pk)
+            univ = Univ.objects.get(pk=pk)
+            univs = Univ.objects.all()
+            postings = []
+            menus = []
+            for store in stores:
+                postings2 = Posting.objects.filter(store_id=store.id)
+                postings3 = postings2.filter(menu=kwd_string)
+                for posting in postings3:
+                    postings.append(posting)
+                    postings.append(posting)
+            tag_dic = {}
+            for posting in postings:
+                if not posting.finished:
+                    tags = []
+                    tags += Tag.objects.filter(posting_id=posting.id)
+                    posting.create_date_string = convert_date_PytoJs(str(posting.create_date))
+                    tag_dic[posting] = tags
+                    menus.append(posting.menu)
+                else:
+                    posting.finished = True
+            all_tags = set(Tag.objects.all())
+            tags_list = []
+            for all_tag in all_tags:
+                if not all_tag.posting_id.finished:
+                    tags_list.append(all_tag.content)
+            rm_dup_tags = list(set(tags_list))
+            data = {
+                'postings': postings,
+                'univ': univ,
+                'univs': univs,
+                'categories': ['치킨', '피자양식', '중국집', '한식', '일식돈까스', '족발보쌈', '야식', '분식', '카페디저트', '편의점'],
+                'tag_dic': tag_dic,
+                'rm_dup_tags': rm_dup_tags,
+                'menus': menus
+            }
+            return render(request, 'core/home.html', data)
+
+
+
+

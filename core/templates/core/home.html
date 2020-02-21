@@ -2,22 +2,6 @@
 
 {% block content %}
     {% load static %}
-    {#    <div style="text-align: center">#}
-    {#        {{ univ }}#}
-    {#        <ul style="list-style: none;">#}
-    {#            <li><a href="">all</a></li>#}
-    {#            {% for category in categories %}#}
-    {#                <li><a href="">{{ category.cat_name }}</a></li>#}
-    {#            {% endfor %}#}
-    {#        </ul>#}
-    {##}
-    {#    </div>#}
-    {#    <div>#}
-    {#        {% if user.is_active %}#}
-    {#            <a href="{% url 'core:match_new' user.id %}"><img#}
-    {#                    src="https://image.flaticon.com/icons/svg/1659/1659463.svg" width="200px" height="200px" alt=""></a>#}
-    {#        {% endif %}#}
-    {#    </div>#}
     <main id="main">
         <section id="portfolio" class="section-bg">
             <div class="container">
@@ -34,7 +18,7 @@
                         </div>
                         <div class="list-group" id="result" style="border:1px solid black"></div>
 
-                        <button type="button" id="search_button" onclick="search_tag()" style="color: white;">태그 검색
+                        <button type="button" id="search_button" onclick="search_tag()" style="color: white;">검색
                         </button>
                     </div>
                 </div>
@@ -46,10 +30,29 @@
                         style="color: white"></button>
                 <script>
                     {#$('#search_button').hide()#}
+                    tags_list = [
+                        {% for i in rm_dup_tags %}
+                            '{{ i }}',
+                        {% endfor %}
+                    ];
+                    menus_list = [
+                        {% for i in menus %}
+                            '{{ i }}',
+                        {% endfor %}
+                    ];
 
                     function search_tag() {
                         var searchField = $('#search').val();
-                        document.getElementById(searchField).click()
+                        if (tags_list.includes(searchField)) {
+                            document.getElementById(searchField).click()
+                        }
+                        else {
+                            console.log(searchField);
+                            document.getElementById(searchField).click();
+
+                        }
+
+
                     }
 
                     function complete(kwd) {
@@ -84,38 +87,48 @@
                         })
 
                         $('#search').keyup(delay(function () {
-                            $('#result').html('');
-                            var searchField = $('#search').val();
-                            {#console.log(searchField)#}
-                            {#block = document.getElementById('search_button');#}
-                            //var expression = new RegExp(searchField, "i");
-                            {#" class="filter-active"#}
-                            $.ajax({
-                                type: "POST",
-                                url: "{% url 'core:search_store' %}",
-                                data: {'kwd': searchField, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
-                                dataType: "json",
-                                async: true,
-                                success: function (response) {
-                                    $.each(response, function (key, value) {
-                                        {#var now = new Date()#}
-                                        {#console.log(now, key)#}
-                                        {#console.log(now, value)#}
-                                        if (!value.length) {
-                                            $('#result').append('<div class="list_group_item">태그 검색 결과가 없습니다.</div>');
-                                        } else {
-                                            for (var i in value) {
-                                                {#console.log(now, i, value[i]['name'])#}
-                                                $('#result').append('<div class="list_group_item">' +
-                                                    '<button class="tag_list_item"onclick="javascript:complete(\'' + value[i] + '\'' + ')" style = "color:white">' +
-                                                    value[i] + '</button></div>');
-                                            }
-                                        }
-                                    });
-                                }
-                            })
+                                $('#result').html('');
+                                var searchField = $('#search').val();
+                                {#console.log(searchField)#}
+                                {#block = document.getElementById('search_button');#}
+                                //var expression = new RegExp(searchField, "i");
+                                {#" class="filter-active"#}
+                                $.ajax({
+                                    type: "POST",
+                                    url: "{% url 'core:search_store' %}",
+                                    data: {'kwd': searchField, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                                    dataType: "json",
+                                    async: true,
+                                    success: function (response) {
+                                        $.each(response, function (key, value) {
+                                            if (key === 'filtered_tags') {
+                                                for (var i in value) {
+                                                    {#console.log(now, i, value[i]['name'])#}
+                                                    $('#result').append('<div class="list_group_item">' +
+                                                        '<button class="tag_list_item"onclick="javascript:complete(\'' + value[i] + '\'' + ')" style = "color:white">' +
+                                                        value[i] + '</button></div>');
+                                                }
 
-                        }, 300));
+                                            }
+                                            if (key === 'menus_filtered') {
+                                                for (var i in value) {
+                                                    {#console.log(now, i, value[i]['name'])#}
+                                                    $('#result').append('<div class="list_group_item">' +
+                                                        '<button class="tag_list_item"onclick="javascript:complete(\'' + value[i] + '\'' + ')" style = "color:white">' +
+                                                        value[i] + '</button></div>');
+                                                }
+                                            }
+                                        })
+                                        if ((response['filtered_tags'].length === 0) && (response['menus_filtered'].length === 0)) {
+                                            $('#result').append('<div class="list_group_item">검색 결과가 없습니다.</div>');
+                                        }
+                                    }
+                                })
+
+                            },
+                            300
+                        ))
+                        ;
 
 
                     })
@@ -185,9 +198,8 @@
                         </div>
 
                         <script>
-
                             // Set the date we're counting down to
-                            console.log('hello')
+                            {#console.log('hello')#}
                             {#console.log(countDownDate);#}
                             {#console.log(due_date);#}
                             // Update the count down every 1 second
@@ -200,7 +212,7 @@
                                 // Get today's date and time
                                 // Find the distance between now and the count down date
                                 var distance = due_date_{{ key.pk }} - now;
-                                console.log('distance: ' + distance)
+                                {#console.log('distance: ' + distance)#}
                                 // Time calculations for days, hours, minutes and seconds
                                 var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                                 var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -221,6 +233,24 @@
                     {% endfor %}
                 </div>
             </div>
+
+            <div class="col-lg-12" id ="MENU">
+                    {% for menu in menus %}
+                        <div style="display: inline-block">
+                            <form action="{% url 'core:menu_search' request.user.profile.univ.pk %}" method="POST"
+                            name="{{ menu }}">
+                                {% csrf_token %}
+                                <input value="{{ menu }}" name="kwd">
+                            <button id="{{ menu }}" >{{ menu }}검색</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+
+            </div>
+            <script>
+                $("#MENU").hide()
+            </script>
+
 
 
         </section><!-- #portfolio -->
