@@ -332,8 +332,8 @@ def match_request(request):
     )
     # 문자 보내기
     match_phone_number = posting.user_id.profile.phone_number
-    content = ('게시한 포스팅에 ' + request.user.profile.user.username + '님이 매칭 신청을 했습니다!'
-               + ' store: ' + posting.store_id.title + ' 현재 참가자 수: ' + str(posting.now_num))
+    content = ('<저기요> 게시한 포스팅에 ' + request.user.profile.user.username + '님이 매칭 신청을 했습니다!'
+               + ' store: ' + posting.store_id.title )
     send_alarm_sms(match_phone_number, content)
     return redirect('core:home', univ_pk)
 

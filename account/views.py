@@ -70,7 +70,7 @@ def signup(request, pk):
             )
             profile.save()
             auth.login(request, user)
-            mail = EmailMessage('One for One 회원가입 인증 메일입니다.',
+            mail = EmailMessage('<저기요> 회원가입 인증 메일입니다.',
                                 'url을 클릭하면 인증됩니다.' + 'http://52.79.67.35/account/active/' + user.last_name,
                                 to=[email])
             mail.send()

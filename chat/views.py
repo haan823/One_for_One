@@ -50,7 +50,7 @@ def create_Room(request, pk):
         contact.save()
     # 문자 다 보내기
     for contact in contacts:
-        content = f'<저기요> 채팅방이 개설되었습니다. store: ' + posting.store_id.title
+        content = (f'<저기요> 채팅방이 개설되었습니다. store: ' + posting.store_id.title )
         send_alarm_sms(contact.allowed_user.phone_number, content)
         print(content)
     return redirect('core:my_page')
