@@ -40,7 +40,7 @@
     </li>
     {% if user.is_active %}
         <li class="nav-item2">
-            <a id='nav_login' class="nav-link" href="{% url 'core:match_new' %}">포스팅</a>
+            <a id='nav_login' class="nav-link" href="{% url 'core:match_new' %}"><i class="fas fa-plus"></i></a>
         </li>
         <li class="nav-item2">
             <a id='nav_logout' class="nav-link" href="{% url 'account:logout' %}">LOG OUT</a>
@@ -91,9 +91,9 @@
 </nav>
 <header class="masthead d-flex">
     <div class="container">
-        <h1 style="font-size: 6rem;" class="mb-1">혼자 시키기</h1>
-        <h1 style="font-size: 6rem;" class="mb-1">부담스러운</h1>
-        <h1 style="font-size: 6rem;" class="mb-1">최소 주문 금액</h1>
+        <h1 style="font-size: 6rem;" class="mb-1">저기요</h1>
+        <h1 style="font-size: 6rem;" class="mb-1">배달</h1>
+        <h1 style="font-size: 6rem;" class="mb-1">같이 시키실래요?</h1>
         <br>
         {% if user.is_active %}
             <a class="btn btn-primary btn-xl js-scroll-trigger" href="{% url 'core:home' profile.univ.id %}">포스팅 보러가기</a>
