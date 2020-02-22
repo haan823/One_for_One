@@ -280,6 +280,7 @@ def my_page(request):
         'end_postings': end_postings,
         'expired_postings': expired_postings,
         'contacts': contacts,
+        'univ': profile.univ_id
     }
     return render(request, 'core/my_page.html', context)
 
