@@ -48,11 +48,6 @@ def home(request, pk):
                 posting.create_date_string = convert_date_PytoJs(str(posting.create_date))
                 tag_dic[posting] = tags
                 menus.append(posting.menu)
-                print('live: ', posting.menu)
-            else:
-                posting.finished = True
-                posting.save()
-                print('finished: ', posting.menu)
         all_tags = set(Tag.objects.all())
         tags_list = []
         for all_tag in all_tags:
@@ -95,10 +90,6 @@ def home(request, pk):
                 posting.create_date_string = convert_date_PytoJs(str(posting.create_date))
                 tag_dic[posting] = tags
                 menus.append(posting.menu)
-            else:
-                posting.finished = True
-                posting.save()
-                print(posting.finished)
         all_tags = set(Tag.objects.all())
         tags_list = []
         for all_tag in all_tags:
@@ -373,7 +364,9 @@ def search_store(request):
         tags_list = []
         menus_filtered = []
         for all_tag in all_tags:
-            if not all_tag.posting_id.finished:
+            due1 = all_tag.posting_id.create_date + datetime.timedelta(minutes=all_tag.posting_id.timer)
+            now1 = datetime.datetime.now()
+            if due1 > now1:
                 tags_list.append(all_tag.content)
         tags = list(set(tags_list))
         filtered_tags = []
@@ -453,7 +446,9 @@ def menu_search(request, pk):
                     postings.append(posting)
             tag_dic = {}
             for posting in postings:
-                if not posting.finished:
+                due = posting.create_date + datetime.timedelta(minutes=posting.timer)
+                now = datetime.datetime.now()
+                if due > now:
                     tags = []
                     tags += Tag.objects.filter(posting_id=posting.id)
                     posting.create_date_string = convert_date_PytoJs(str(posting.create_date))
@@ -464,7 +459,9 @@ def menu_search(request, pk):
             all_tags = set(Tag.objects.all())
             tags_list = []
             for all_tag in all_tags:
-                if not all_tag.posting_id.finished:
+                due1 = all_tag.posting_id.create_date + datetime.timedelta(minutes=all_tag.posting_id.timer)
+                now1 = datetime.datetime.now()
+                if due1 > now1:
                     tags_list.append(all_tag.content)
             rm_dup_tags = list(set(tags_list))
             data = {
@@ -494,7 +491,9 @@ def menu_search(request, pk):
                     postings.append(posting)
             tag_dic = {}
             for posting in postings:
-                if not posting.finished:
+                due = posting.create_date + datetime.timedelta(minutes=posting.timer)
+                now = datetime.datetime.now()
+                if due > now:
                     tags = []
                     tags += Tag.objects.filter(posting_id=posting.id)
                     posting.create_date_string = convert_date_PytoJs(str(posting.create_date))
@@ -505,7 +504,9 @@ def menu_search(request, pk):
             all_tags = set(Tag.objects.all())
             tags_list = []
             for all_tag in all_tags:
-                if not all_tag.posting_id.finished:
+                due1 = all_tag.posting_id.create_date + datetime.timedelta(minutes=all_tag.posting_id.timer)
+                now1 = datetime.datetime.now()
+                if due1 > now1:
                     tags_list.append(all_tag.content)
             rm_dup_tags = list(set(tags_list))
             data = {
