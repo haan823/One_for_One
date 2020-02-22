@@ -79,15 +79,14 @@ def signup(request, pk):
             return render(request, 'signup.html', {'message': '비밀번호가 일치하지 않습니다.', 'pk': request.GET.pk})
     else:
         UNIV_DOMAIN_MAPPING = {
-            '가톨릭대학교': 'cathollic.ac.kr',
-            '건국대학교': 'konkuk.ac.kr',
-            '경기대학교': 'kyonggi.ac.kr',
-            '경희대학교': 'khu.ac.kr',
+            '가천대학교 글로벌캠퍼스': 'gc.gachon.ac.kr',
+            '경기대학교 수원캠퍼스': 'kyonggi.ac.kr',
+            '경희대학교 국제캠퍼스': 'khu.ac.kr',
             '성신여자대학교': 'sungshin.ac.kr',
             '세종대학교': 'sju.ac.kr',
             '숙명여자대학교': 'sookmyung.ac.kr',
             '중앙대학교': 'cau.ac.kr',
-            '한국외국어대학교': 'hufs.ac.kr',
+            '한국외국어대학교 서울캠퍼스': 'hufs.ac.kr',
             '한양대학교': 'hanyang.ac.kr',
             '서울대학교': 'snu.ac.kr',
             '성균관대학교 자연과학캠퍼스': 'g.skku.edu',
