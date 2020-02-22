@@ -290,6 +290,10 @@ def accept(request, pk):
 def refuse(request, pk):
     contact = Contact.objects.get(pk=pk)
     contact.delete()
+    phone_number = contact.allowed_user.phone_number
+    content = ('<저기요> 상대방이 매칭 신청을 거절했습니다. store: ' + contact.posting_id.store_id.title)
+    send_alarm_sms(phone_number, content)
+
     return redirect('core:my_page')
 
 
