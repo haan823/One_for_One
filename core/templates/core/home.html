@@ -11,22 +11,24 @@
                     <h3 class="section-title"><span style="font-size: 3rem;">{{ univ }}</span>에서 같이 먹을사람~</h3>
                 </header>
 
-{#                <div>#}
-{#                    <div style="border: 1px solid black">#}
-{#                        <div id="wrapper" class="wrapper">#}
-{#                            <input type="text" id="search" name="search" autocomplete="off">#}
-{#                        </div>#}
-{#                        <div class="list-group" id="result" style="border:1px solid black"></div>#}
-{##}
-{#                        <button type="button" id="search_button" onclick="search_tag()" style="color: white;">검색#}
-{#                        </button>#}
-{#                    </div>#}
-{#                </div>#}
+                {#                <div>#}
+                {#                    <div style="border: 1px solid black">#}
+                {#                        <div id="wrapper" class="wrapper">#}
+                {#                            <input type="text" id="search" name="search" autocomplete="off">#}
+                {#                        </div>#}
+                {#                        <div class="list-group" id="result" style="border:1px solid black"></div>#}
+                {##}
+                {#                        <button type="button" id="search_button" onclick="search_tag()" style="color: white;">검색#}
+                {#                        </button>#}
+                {#                    </div>#}
+                {#                </div>#}
 
                 <div class="input-group" id="wrapper">
-                    <input type="text" aria-describedby="button-addon5" class="form-control" id="search" name="search" autocomplete="off">
+                    <input type="text" aria-describedby="button-addon5" class="form-control" id="search" name="search"
+                           autocomplete="off">
                     <div class="input-group-append">
-                        <button style='z-index: 0;' id="button-addon5 search_button" type="button" class="btn btn-primary" onclick="search_tag()">
+                        <button style='z-index: 0;' id="button-addon5 search_button" type="button"
+                                class="btn btn-primary" onclick="search_tag()">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -128,11 +130,6 @@
                     })
 
 
-
-
-
-
-
                 </script>
                 <div class="row" id="tag_filter_list" style="display:none">
                     <div class="col-lg-12">
@@ -167,9 +164,6 @@
                     function addMinutes(date, minutes) {
                         return new Date(date.getTime() + minutes * 60000);
                     }
-
-
-
 
 
                 </script>
@@ -217,8 +211,11 @@
                                         <span>{{ key.store_id.min_price }}</span><br>
                                         <span id="clock_{{ key.pk }}" style="color: white"></span><br>
                                         <span>메뉴 : {{ key.menu }}</span><br>
+                                        <span>가격 : {{ key.price }}원</span><br>
+                                        <span>{{ key.max_num }}명이서 냠냠 (현재 {{ key.now_num }}명)</span><br>
                                         <span>{{ key.menu_change }}</span><br>
                                         <span>{{ key.together }}</span><br>
+
                                         {% for value in values %}
                                             {% if value.content %}
                                                 <span style="color: skyblue;">#{{ value.content }} </span>
@@ -264,24 +261,21 @@
                 </div>
             </div>
 
-            <div class="col-lg-12" id ="MENU">
-                    {% for menu in menus %}
-                        <div style="display: inline-block">
-                            <form action="{% url 'core:menu_search' univ.pk %}" method="POST"
-                            name="{{ menu }}">
-                                {% csrf_token %}
-                                <input value="{{ menu }}" name="kwd">
-                            <button id="{{ menu }}" >{{ menu }}검색</button>
-                            </form>
-                        </div>
-                    {% endfor %}
+            <div class="col-lg-12" id="MENU">
+                {% for menu in menus %}
+                    <div style="display: inline-block">
+                        <form action="{% url 'core:menu_search' univ.pk %}" method="POST"
+                              name="{{ menu }}">
+                            {% csrf_token %}
+                            <input value="{{ menu }}" name="kwd">
+                            <button id="{{ menu }}">{{ menu }}검색</button>
+                        </form>
+                    </div>
+                {% endfor %}
 
             </div>
             <script>
                 $("#MENU").hide()
-
-
-
 
 
             </script>
@@ -298,14 +292,13 @@
                 data: {'posting_pk': posting_pk, 'contacts_num': contacts_num},
                 success: function () {
                     alert("매칭신청되었습니다.");
-                    window.location.href="{% url 'core:my_page' %}"
+                    window.location.href = "{% url 'core:my_page' %}"
                 },
                 error: function (request, status, error) {
-                    if (contacts_num===3){
+                    if (contacts_num === 3) {
                         alert("참여가능한 포스팅은 최대 3개입니다.");
                         window.location.reload()
-                    }
-                    else{
+                    } else {
                         alert("이미 신청한 포스팅이거나 최대 신청 가능인원을 초과하였습니다.");
                         window.location.reload()
                     }
