@@ -15,7 +15,7 @@ cryptography==2.8
 daphne==2.4.1
 defusedxml==0.6.0
 diff-match-patch==20181111
-Django==2.2.9
+Django==2.2.13
 django-excel==0.0.10
 django-import-export==2.0.1
 et-xmlfile==1.0.1
